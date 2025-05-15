@@ -23,5 +23,9 @@ from pybo import views
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("ai_chat/", views.ai_chat, name="ai_chat"),
-    path("", views.index, name="index"),  
+    path("", views.home_view, name="home"),  # 홈페이지
+    path('signup/', views.signup_view, name='signup'),  # 회원가입
+    path('login/', views.login_view, name='login'),  # 로그인
+    path('logout/', views.logout_view, name='logout'),  # 로그아웃
+
 ]
