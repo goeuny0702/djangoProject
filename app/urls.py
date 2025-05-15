@@ -17,6 +17,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from pybo import views
+from django.urls import path, include
 
 
 
@@ -27,5 +28,7 @@ urlpatterns = [
     path('signup/', views.signup_view, name='signup'),  # 회원가입
     path('login/', views.login_view, name='login'),  # 로그인
     path('logout/', views.logout_view, name='logout'),  # 로그아웃
+    path('resume/', include('resume.urls')), # 이력서 관련 URL
+
 
 ]

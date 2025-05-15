@@ -2,6 +2,7 @@
 venv/
 mysite/
 __pycache__/
+/app/resume/migrations/
 
 # 환경 변수 파일
 .env
