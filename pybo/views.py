@@ -93,3 +93,6 @@ def home_view(request):
 def logout_view(request):
     logout(request)
     return redirect('login')  # 로그아웃 후 로그인 페이지로 보내기
+
+def main_view(request):
+    return render(request, 'main.html')

@@ -18,17 +18,17 @@ from django.contrib import admin
 from django.urls import path
 from pybo import views
 from django.urls import path, include
+# from resume import views
 
 
 
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("ai_chat/", views.ai_chat, name="ai_chat"),
-    path("", views.home_view, name="home"),  # 홈페이지
+    path("home/", views.home_view, name="home"),  # 홈페이지
     path('signup/', views.signup_view, name='signup'),  # 회원가입
-    path('login/', views.login_view, name='login'),  # 로그인
+    path('', views.login_view, name='login'),  # 로그인
     path('logout/', views.logout_view, name='logout'),  # 로그아웃
-    path('resume/', include('resume.urls')), # 이력서 관련 URL
-
-
+    path('main/', views.main_view, name='main'),  # 이력서
+    
 ]
