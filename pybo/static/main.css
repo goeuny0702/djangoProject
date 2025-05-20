@@ -17,14 +17,17 @@ body {
   flex-direction: column;
   align-items: center; 
   background-color: #fff;
+  height: auto; /* 자동 확장 */
+  box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+  border-radius: 12px;
+  margin: 20px;
 }
 
 .mycontainer .namecontainer {
-  position: absolute;
-  top: 20px;
-  /* left: 20px; */
-  width: 200px;
+  position: relative;
+  width: 100%;
   text-align: center;
+  margin-bottom: 12px;
 }
 
 .mycontainer .namecontainer h1 {
@@ -35,14 +38,17 @@ body {
 
 .mycontainer .logoutcontainer {
   text-align: center;
-  position: absolute;
-  top: 80px;
-  /* left: 20px; */
-  width: 200px;
+  width: 100%;
   border: 2px solid #f5d1ea;
   padding: 12px;
   border-radius: 10px;
   background-color: white;
+  margin-bottom: 20px;
+  transition: background 0.3s;
+}
+
+.mycontainer .logoutcontainer:hover {
+  background-color: #fff0f5;
 }
 
 .mycontainer .logoutbtn a {
@@ -57,8 +63,7 @@ body {
 }
 
 .mycontainer .sidebar {
-  margin: 140px 0 0 0px;
-  width: 260px;
+  width: 100%;
   padding: 20px;
   background: white;
   border-radius: 12px;
@@ -76,6 +81,7 @@ body {
 .sidebar .resume-list {
   border-top: 2px solid #f5d1ea;
   padding-top: 10px;
+  height: auto; /* 자동 확장 */
 }
 
 .sidebar .resume-list div {
