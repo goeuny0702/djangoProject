@@ -37,6 +37,7 @@ body {
 }
 
 .mycontainer .logoutcontainer {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   text-align: center;
   width: 100%;
   border: 2px solid #f5d1ea;
@@ -44,7 +45,7 @@ body {
   border-radius: 10px;
   background-color: white;
   margin-bottom: 20px;
-  transition: background 0.3s;
+  transition: 0.3s;
 }
 
 .mycontainer .logoutcontainer:hover {
@@ -185,34 +186,78 @@ body {
   background: #ff69b4;
 }
 
+/* 마이커리어 부분분 */
 .right-panel {
   position: fixed;
   right: 0;
   top: 0;
   width: 300px;
   height: 100%;
-  background: white;
-  padding: 20px;
-  border-left: 2px solid #f5d1ea;
+  background: #fff;
+  padding: 24px;
+  border-left: 1px solid #eee;
+  box-shadow: -4px 0 8px rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  font-family: 'Segoe UI', sans-serif;
 }
 
 .right-panel-title {
-  font-size: 24px;
+  font-size: 30px;
   font-weight: bold;
+  color: #333;
   margin-bottom: 20px;
 }
 
-.endbtn {
-  width: 100%;
-  height: 48px;
-  border: none;
-  border-radius: 8px;
-  font-size: 18px;
-  background: #ff69b4;
-  color: white;
-  margin-top: 16px;
+.checkbox-group {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.checkboxtext {
+  display: flex;
+  justify-content: space-between;  /* 텍스트 왼쪽, 체크박스 오른쪽 */
+  align-items: center;
+  font-size: 14px;
+  color: #333;
+  padding: 4px 8px;
+  border-radius: 6px;
+  transition: background 0.2s;
   cursor: pointer;
 }
+
+.checkboxtext:hover {
+  background-color: #f8f8f8;
+}
+
+.checkboxtext input[type="checkbox"] {
+  accent-color: #ff69b4;
+  width: 16px;
+  height: 16px;
+}
+
+
+.endbtn {
+  width: 100%;
+  height: 44px;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: bold;
+  background: #ff69b4;
+  color: white;
+  margin-top: 12px;
+  cursor: pointer;
+  transition: background 0.2s ease-in-out;
+}
+
+.endbtn:hover {
+  background: #ff4da6;
+}
+
 
 .skill-tag {
   border: 2px solid #f5d1ea;

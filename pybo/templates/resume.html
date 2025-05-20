@@ -387,21 +387,44 @@
           <strong>My Career</strong>
         </div>
         <div class="checkbox-group">
-          <label class="checkboxtext"><input type="checkbox" onchange="toggleSection('education-section')"> 학력</label>
-          <label class="checkboxtext"><input type="checkbox" onchange="toggleSection('career-section')"> 경력</label>
-          <label class="checkboxtext"><input type="checkbox" onchange="toggleSection('skill-section')"> 스킬</label>
-          <label class="checkboxtext"><input type="checkbox"
-              onchange="toggleSection('experience-section')">경험/활동/교육</label>
-          <label class="checkboxtext"><input type="checkbox"
-              onchange="toggleSection('certificate-section')">자격/어학/수상</label>
-          <label class="checkboxtext"><input type="checkbox"
-              onchange="toggleSection('preference-section')">취업우대사항</label>
-          <label class="checkboxtext"><input type="checkbox" onchange="toggleSection('portfolio-section')">포트폴리오</label>
-          <label class="checkboxtext"><input type="checkbox"
-              onchange="toggleSection('career-description-section')">경력기술서</label>
-          <label class="checkboxtext"><input type="checkbox"
-              onchange="toggleSection('introduction-section')">자기소개서</label>
+          <div class="checkboxtext">
+            <span>학력</span>
+            <input type="checkbox" onchange="toggleSection('education-section')">
+          </div>
+          <div class="checkboxtext">
+            <span>경력</span>
+            <input type="checkbox" onchange="toggleSection('career-section')">
+          </div>
+          <div class="checkboxtext">
+            <span>스킬</span>
+            <input type="checkbox" onchange="toggleSection('skill-section')">
+          </div>
+          <div class="checkboxtext">
+            <span>경험/활동/교육</span>
+            <input type="checkbox" onchange="toggleSection('experience-section')">
+          </div>
+          <div class="checkboxtext">
+            <span>자격/어학/수상</span>
+            <input type="checkbox" onchange="toggleSection('certificate-section')">
+          </div>
+          <div class="checkboxtext">
+            <span>취업우대사항</span>
+            <input type="checkbox" onchange="toggleSection('preference-section')">
+          </div>
+          <div class="checkboxtext">
+            <span>포트폴리오</span>
+            <input type="checkbox" onchange="toggleSection('portfolio-section')">
+          </div>
+          <div class="checkboxtext">
+            <span>경력기술서</span>
+            <input type="checkbox" onchange="toggleSection('career-description-section')">
+          </div>
+          <div class="checkboxtext">
+            <span>자기소개서</span>
+            <input type="checkbox" onchange="toggleSection('introduction-section')">
+          </div>
         </div>
+
         <button class="endbtn">이력서 미리보기</button><br>
         <button class="endbtn" onclick="saveResume()">작성완료</button>
       </div>
@@ -1653,28 +1676,32 @@
         document.getElementById("noSpaceBytes").innerText = byteNoSpace;
       }
 
-      function savedescription() {
+      function saveDescription() {
         const text = document.getElementById("careerDescriptionText").value;
-        if (!text.trim()) {
-          alert("내용을 입력하세요.");
-          return;
-        }
 
         const summaryContainer = document.createElement("div");
         summaryContainer.className = "career-desc-card";
+        summaryContainer.style.border = "1px solid #ddd";
+        summaryContainer.style.padding = "10px";
+        summaryContainer.style.marginTop = "10px";
+        summaryContainer.style.position = "relative";
+
         summaryContainer.innerHTML = `
-      <div style="white-space: pre-wrap;">${text}</div>
-      <div style="margin-top: 10px; text-align: right;">
-        <button onclick="editDescription(this)" class="cencle_save_btn">수정</button>
-        <button onclick="removeDescription(this)" class="cencle_save_btn">삭제</button>
-      </div>
-    `;
+          <div style="white-space: pre-wrap;">${text}</div>
+          <div style="margin-top: 10px; text-align: right;">
+            <button onclick="editDescription(this)" class="cencle_save_btn">수정</button>
+            <button onclick="removeDescription(this)" class="cencle_save_btn">삭제</button>
+          </div>
+        `;
 
         document.getElementById("career-description-list").appendChild(summaryContainer);
+
+        // 입력폼 초기화
         document.getElementById("careerDescriptionText").value = "";
         document.getElementById("career-description-form").style.display = "none";
         updateCharCount();
       }
+
 
       function editDescription(button) {
         const card = button.closest(".career-desc-card");
@@ -1701,12 +1728,12 @@
       summaryContainer.style.marginTop = "10px";
       summaryContainer.style.position = "relative";
       summaryContainer.innerHTML = `
-    <div style="white-space: pre-wrap;">${text}</div>
-    <div style="margin-top: 10px; text-align: right;">
-      <button onclick="editDescription(this)" class="cencle_save_btn">수정</button>
-      <button onclick="removeDescription(this)" class="cencle_save_btn">삭제</button>
-    </div>
-  `;
+        <div style="white-space: pre-wrap;">${text}</div>
+        <div style="margin-top: 10px; text-align: right;">
+          <button onclick="editDescription(this)" class="cencle_save_btn">수정</button>
+          <button onclick="removeDescription(this)" class="cencle_save_btn">삭제</button>
+        </div>
+      `;
 
       document.getElementById("career-description-list").appendChild(summaryContainer);
 

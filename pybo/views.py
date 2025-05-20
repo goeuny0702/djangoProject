@@ -91,6 +91,8 @@ def logout_view(request):
 @login_required
 def save_resume(request):
     if request.method == 'POST':
+        print("POST 요청 받음:", request.POST)
+
         content_dict = {
             "name": request.POST.get("name"),
             "gender": request.POST.get("gender"),
@@ -102,12 +104,15 @@ def save_resume(request):
             "skills": request.POST.get("skills")
         }
 
+        print("content_dict 저장 전:", content_dict)
+
         Resume.objects.create(
             user=request.user,
             title=request.POST.get("title"),
             content=json.dumps(content_dict)
         )
         return redirect('resume_page')
+
 
 @login_required
 def resume_page(request):
