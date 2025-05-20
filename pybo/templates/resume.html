@@ -9,26 +9,29 @@
 </head>
 
 <body>
-  <div class="namecontainer">
-    <h1>{{ user.username }}님 환영합니다 ♡</h1>
-  </div>
-  <div class="logoutcontainer">
-    <div class="logoutbtn"><a href="{% url 'logout' %}">로그아웃</a></div>
-  </div>
-  <div class="sidebar">
-    <div class="resume-management">이력서 관리</div>
-    <div class="resume-list">
-      {% for resume in resumes %}
-        <div class="resume-item" style="position: relative; padding: 5px;" onmouseenter="this.querySelector('.delete-btn').style.display='inline'" onmouseleave="this.querySelector('.delete-btn').style.display='none'">
-          <span onclick="loadResumeFromServer('{{ resume.id }}')" style="cursor: pointer;">
-            {{ resume.title }}
-          </span>
-          <button class="delete-btn" onclick="deleteResume('{{ resume.id }}')" style="position: absolute; right: 0; top: 50%; transform: translateY(-50%); display: none; background: #f8d7da; border: none; color: #721c24; padding: 2px 6px; border-radius: 4px; cursor: pointer;">삭제</button>
-        </div>
-      {% empty %}
-        <p>작성한 이력서가 없습니다.</p>
-      {% endfor %}
+  <div class="mycontainer">
+    <div class="namecontainer">
+      <h1>{{ user.username }}님 환영합니다 ♡</h1>
     </div>
+    <div class="logoutcontainer">
+      <div class="logoutbtn"><a href="{% url 'logout' %}">로그아웃</a></div>
+    </div>
+    <div class="sidebar">
+      <div class="resume-management">이력서 관리</div>
+      <div class="resume-list">
+        {% for resume in resumes %}
+          <div class="resume-item" style="position: relative; padding: 5px;" onmouseenter="this.querySelector('.delete-btn').style.display='inline'" onmouseleave="this.querySelector('.delete-btn').style.display='none'">
+            <span onclick="loadResumeFromServer('{{ resume.id }}')" style="cursor: pointer;">
+              {{ resume.title }}
+            </span>
+            <button class="delete-btn" onclick="deleteResume('{{ resume.id }}')" style="position: absolute; right: 0; top: 50%; transform: translateY(-50%); display: none; background: #f8d7da; border: none; color: #721c24; padding: 2px 6px; border-radius: 4px; cursor: pointer;">삭제</button>
+          </div>
+        {% empty %}
+          <p>작성한 이력서가 없습니다.</p>
+        {% endfor %}
+    </div>
+  </div>
+  
     
 
   </div>
@@ -38,11 +41,11 @@
     </div>
     <div class="inputgroup"
       style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
-      <div class="profile-image" style="width: 20%; height: 200px;"></div>
+      <div class="profile-image" style="width: 20%; height: 200px; background-color: #f8d7da;"></div>
       <div class="personal-info" style="width: 70%;">
         <input type="text" placeholder="이름" class="text_input_main" id="name">
-        <input type="text" placeholder="성별" style="font-size: 32px; height: 10%; width: 20%;" id="gender">
-        <input type="text" placeholder="생년월일" style="font-size: 32px; height: 10%; width: 23%;" id="birthdate"><br><br>
+        <input type="text" placeholder="성별" class="text_input_main" id="gender">
+        <input type="text" placeholder="생년월일" class="text_input_main" id="birthdate"><br><br>
         <input type="email" placeholder="이메일" class="text_input_main" id="email">
         <input type="text" placeholder="휴대폰" class="text_input_main" id="phone"><br><br>
         <input type="text" placeholder="주소" class="text_input_main" id="address">
