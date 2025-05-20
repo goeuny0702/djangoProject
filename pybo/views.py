@@ -8,17 +8,17 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
 from django.contrib.auth import authenticate, login
-
+from .models import Resume
+import json
+from django.views.decorators.csrf import csrf_exempt
+from django.shortcuts import get_object_or_404
+from django.views.decorators.http import require_POST
 
 from openai import OpenAI
 from openai import OpenAIError, RateLimitError, AuthenticationError
 
-
 # API 키 설정 (환경변수에서 받아오기)
 openai.api_key = settings.OPENAI_API_KEY
-
-def index(request):
-    return HttpResponse("Hello, Django! 여기는 홈페이지입니다.")
 
 def ai_chat(request):
     user_input = request.GET.get('q', '')
@@ -26,7 +26,7 @@ def ai_chat(request):
     try:
         client = OpenAI(api_key=openai.api_key)
 
-        response: ChatCompletion = client.chat.completions.create(
+        response = client.chat.completions.create(
             model="gpt-3.5-turbo",
             messages=[
                 {"role": "user", "content": user_input}
@@ -36,20 +36,18 @@ def ai_chat(request):
         answer = response.choices[0].message.content
         return JsonResponse({'answer': answer}, json_dumps_params={'ensure_ascii': False})
 
-
     except RateLimitError:
-        return JsonResponse({'error': '요청 한도를 초과했어요! 잠시 후 다시 시도해주세요 🥲'}, status=429)
+        return JsonResponse({'error': '요청 한도를 초과했어요! 잠시 후 다시 시도해주세요'}, status=429)
 
     except AuthenticationError:
-        return JsonResponse({'error': 'API 키 인증 오류입니다! 설정을 다시 확인해 주세요 🔑'}, status=401)
+        return JsonResponse({'error': 'API 키 인증 오류입니다! 설정을 다시 확인해 주세요'}, status=401)
 
     except OpenAIError as e:
         return JsonResponse({'error': f'OpenAI 오류 발생: {str(e)}'}, status=500)
 
     except Exception as e:
         return JsonResponse({'error': f'예기치 못한 오류 발생: {str(e)}'}, status=500)
-    
-    
+
 def signup_view(request):
     if request.method == 'POST':
         username = request.POST.get('username')
@@ -67,7 +65,7 @@ def signup_view(request):
         user = User.objects.create_user(username=username, password=password1)
         login(request, user)  # 가입 후 바로 로그인 처리
         messages.success(request, f'{username}님 환영합니다 ♡')
-        return redirect('home')  # 가입 후 이동할 페이지 
+        return redirect('login')
 
     return render(request, 'signup.html')    
 
@@ -79,20 +77,66 @@ def login_view(request):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
-            messages.success(request, f'{username}님 환영합니다 ♡')
-            return redirect('home')  # 로그인 후 이동할 페이지
+            # messages.success(request, f'{username}님 환영합니다 ♡')
+            return redirect('resume_page')
         else:
             messages.error(request, '아이디 또는 비밀번호가 틀려요.')
 
     return render(request, 'login.html')
 
-def home_view(request):
-    return render(request, 'home.html')
-
-
 def logout_view(request):
     logout(request)
-    return redirect('login')  # 로그아웃 후 로그인 페이지로 보내기
+    return redirect('login')
 
-def main_view(request):
-    return render(request, 'main.html')
+@login_required
+def save_resume(request):
+    if request.method == 'POST':
+        content_dict = {
+            "name": request.POST.get("name"),
+            "gender": request.POST.get("gender"),
+            "birthdate": request.POST.get("birthdate"),
+            "email": request.POST.get("email"),
+            "phone": request.POST.get("phone"),
+            "address": request.POST.get("address"),
+            "detail_address": request.POST.get("detail-address"),
+            "skills": request.POST.get("skills")
+        }
+
+        Resume.objects.create(
+            user=request.user,
+            title=request.POST.get("title"),
+            content=json.dumps(content_dict)
+        )
+        return redirect('resume_page')
+
+@login_required
+def resume_page(request):
+    resumes = Resume.objects.filter(user=request.user)  # 로그인한 유저 것만
+    return render(request, 'resume.html', {'resumes': resumes})
+
+@login_required
+def get_resume(request, resume_id):
+    try:
+        resume = Resume.objects.get(id=resume_id, user=request.user)
+        resume_data = {
+            'title': resume.title,
+            'content': json.loads(resume.content)
+        }
+        return JsonResponse(resume_data)
+    except Resume.DoesNotExist:
+        return JsonResponse({'error': '이력서를 찾을 수 없습니다.'}, status=404)
+    
+@login_required
+@csrf_exempt
+def delete_resume(request, resume_id):
+    if request.method == 'POST':
+        try:
+            resume = Resume.objects.get(id=resume_id, user=request.user)
+            resume.delete()
+            return JsonResponse({'success': True})
+        except Resume.DoesNotExist:
+            return JsonResponse({'success': False, 'error': 'Resume not found'}, status=404)
+    return JsonResponse({'success': False, 'error': 'Invalid method'}, status=405)
+
+
+    

@@ -25,10 +25,14 @@ from django.urls import path, include
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("ai_chat/", views.ai_chat, name="ai_chat"),
-    path("home/", views.home_view, name="home"),  # 홈페이지
     path('signup/', views.signup_view, name='signup'),  # 회원가입
     path('', views.login_view, name='login'),  # 로그인
     path('logout/', views.logout_view, name='logout'),  # 로그아웃
-    path('main/', views.main_view, name='main'),  # 이력서
-    
+    path('resume/', views.resume_page, name='resume_page'),  # 이력서
+    path('save_resume/', views.save_resume, name='save_resume'),
+    path('get_resume/<int:resume_id>/', views.get_resume, name='get_resume'),
+    path('resume/delete/<int:resume_id>/', views.delete_resume, name='delete_resume'),
+
+
+
 ]

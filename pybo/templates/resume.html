@@ -6,36 +6,47 @@
   <meta charset="UTF-8">
   <title>이력서 작성</title>
   <link rel="stylesheet" href="{% static 'main.css' %}">
-
 </head>
 
 <body>
-  <div class="header">
-    <div class="logo"><a href="{% url 'login' %}">Login</a></div
+  <div class="namecontainer">
+    <h1>{{ user.username }}님 환영합니다 ♡</h1>
+  </div>
+  <div class="logoutcontainer">
+    <div class="logoutbtn"><a href="{% url 'logout' %}">로그아웃</a></div>
   </div>
   <div class="sidebar">
     <div class="resume-management">이력서 관리</div>
-    <div class=" resume-list">
-      <div>목록1</div>
-      <div>목록2</div>
-      <div>목록3</div>
+    <div class="resume-list">
+      {% for resume in resumes %}
+        <div class="resume-item" style="position: relative; padding: 5px;" onmouseenter="this.querySelector('.delete-btn').style.display='inline'" onmouseleave="this.querySelector('.delete-btn').style.display='none'">
+          <span onclick="loadResumeFromServer('{{ resume.id }}')" style="cursor: pointer;">
+            {{ resume.title }}
+          </span>
+          <button class="delete-btn" onclick="deleteResume('{{ resume.id }}')" style="position: absolute; right: 0; top: 50%; transform: translateY(-50%); display: none; background: #f8d7da; border: none; color: #721c24; padding: 2px 6px; border-radius: 4px; cursor: pointer;">삭제</button>
+        </div>
+      {% empty %}
+        <p>작성한 이력서가 없습니다.</p>
+      {% endfor %}
     </div>
+    
+
   </div>
   <div class="main">
     <div style="display: flex; justify-content: center;">
-      <input type="text" placeholder="이력서 제목" class="input-title"><br>
+      <input type="text" placeholder="이력서 제목" class="input-title" id="resume-title"><br>
     </div>
-    <div class="inputgroup-"
+    <div class="inputgroup"
       style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
       <div class="profile-image" style="width: 20%; height: 200px;"></div>
       <div class="personal-info" style="width: 70%;">
-        <input type="text" placeholder="이름" class="text_input_main">
-        <input type="text" placeholder="성별" style="font-size: 32px; height: 10%; width: 20%;">
-        <input type="text" placeholder="생년월일" style="font-size: 32px; height: 10%; width: 23%;"><br><br>
-        <input type="email" placeholder="이메일" class="text_input_main">
-        <input type="text" placeholder="휴대폰" class="text_input_main"><br><br>
-        <input type="text" placeholder="주소" class="text_input_main">
-        <input type="text" placeholder="상세주소" class="text_input_main">
+        <input type="text" placeholder="이름" class="text_input_main" id="name">
+        <input type="text" placeholder="성별" style="font-size: 32px; height: 10%; width: 20%;" id="gender">
+        <input type="text" placeholder="생년월일" style="font-size: 32px; height: 10%; width: 23%;" id="birthdate"><br><br>
+        <input type="email" placeholder="이메일" class="text_input_main" id="email">
+        <input type="text" placeholder="휴대폰" class="text_input_main" id="phone"><br><br>
+        <input type="text" placeholder="주소" class="text_input_main" id="address">
+        <input type="text" placeholder="상세주소" class="text_input_main" id="detail-address">
       </div>
     </div>
 
@@ -321,10 +332,13 @@
               onchange="toggleSection('introduction-section')">자기소개서</label>
         </div>
         <button class="endbtn">이력서 미리보기</button><br>
-        <button class="endbtn">작성완료</button>
+        <button class="endbtn" onclick="saveResume()">작성완료</button>
       </div>
     </div>
     <script>
+      const loggedInUserId = "{{ request.user.username }}";
+
+
        // 사용할 스킬 목록
       const availableSkills = [
       "Python", "Java", "C", "C++", "C#", "JavaScript", "TypeScript", "Go", "Kotlin", "Swift", "Ruby", "PHP", "Rust", "Scala",
@@ -332,11 +346,229 @@
       "Django", "Flask", "Spring", "Spring Boot", "Node.js", "Express", "FastAPI", "NestJS", "Ruby on Rails", "ASP.NET",
       "MySQL", "PostgreSQL", "SQLite", "MongoDB", "Firebase", "Oracle", "AWS", "Azure", "Google Cloud", "Docker", "Kubernetes",
       "Git", "GitHub", "Linux", "VS Code", "Jenkins", "Notion", "Figma", "TensorFlow", "PyTorch", "OpenCV", "Unity", "Unreal Engine"
-    ];
+      ];
 
 
       // 선택된 스킬 저장 배열
       let selectedSkills = [];
+
+      function saveResume() {
+        const title = document.getElementById('resume-title').value;
+        const name = document.getElementById('name').value;
+        const gender = document.getElementById('gender').value;
+        const birthdate = document.getElementById('birthdate').value;
+        const email = document.getElementById('email').value;
+        const phone = document.getElementById('phone').value;
+        const address = document.getElementById('address').value;
+        const detailAddress = document.getElementById('detail-address').value;
+
+        const resumeData = {
+          title: title,
+          name: name,
+          gender: gender,
+          birthdate: birthdate,
+          email: email,
+          phone: phone,
+          address: address,
+          'detail-address': detailAddress,
+          skills: JSON.stringify(selectedSkills)
+        };
+
+        fetch('/save_resume/', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'X-CSRFToken': getCookie('csrftoken')
+          },
+          body: new URLSearchParams(resumeData)
+        })
+        .then(response => {
+          if (response.redirected) {
+            window.location.href = response.url;
+          } else {
+            alert("저장 실패");
+          }
+        })
+        .catch(error => {
+          console.error('Error:', error);
+        });
+      }
+
+      function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+          const cookies = document.cookie.split(';');
+          for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            // 이 쿠키가 우리가 찾는 이름인지 확인
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+              cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+              break;
+            }
+          }
+        }
+        return cookieValue;
+      }
+
+
+
+      function addToResumeList(title) {
+        const listDiv = document.querySelector('.resume-list');
+        const newItem = document.createElement('div');
+        newItem.textContent = title;
+        newItem.onclick = () => loadResume(title);
+        listDiv.appendChild(newItem);
+      }
+
+      function loadResume(title) {
+        const resumes = JSON.parse(localStorage.getItem('resumeList')) || [];
+        const resume = resumes.find(r => r.basicInfo.title === title);
+        if (!resume) return;
+
+        document.getElementById('resume-title').value = resume.basicInfo.title;
+        document.getElementById('name').value = resume.basicInfo.name;
+        document.getElementById('gender').value = resume.basicInfo.gender;
+        document.getElementById('birthdate').value = resume.basicInfo.birthdate;
+        document.getElementById('email').value = resume.basicInfo.email;
+        document.getElementById('phone').value = resume.basicInfo.phone;
+        document.getElementById('address').value = resume.basicInfo.address;
+        document.getElementById('detail-address').value = resume.basicInfo.detailAddress;
+
+        selectedSkills = resume.skills || [];
+        updateSkillList();
+      }
+
+    function loadResumeFromServer(resumeId) {
+      fetch(`/get_resume/${resumeId}/`)
+        .then(response => {
+          if (!response.ok) throw new Error('이력서 불러오기 실패');
+          return response.json();
+        })
+        .then(data => {
+          const resume = data.content;
+          document.getElementById('resume-title').value = data.title;
+          document.getElementById('name').value = resume.name || '';
+          document.getElementById('gender').value = resume.gender || '';
+          document.getElementById('birthdate').value = resume.birthdate || '';
+          document.getElementById('email').value = resume.email || '';
+          document.getElementById('phone').value = resume.phone || '';
+          document.getElementById('address').value = resume.address || '';
+          document.getElementById('detail-address').value = resume.detail_address || '';
+
+          selectedSkills = resume.skills;
+          if (typeof selectedSkills === 'string') {
+            try {
+              selectedSkills = JSON.parse(selectedSkills);
+            } catch (e) {
+              selectedSkills = [];
+            }
+          }
+
+          updateSkillList();
+        })
+
+        .catch(error => {
+          alert('이력서 불러오기 실패: ' + error.message);
+        });
+    }
+
+    function deleteResume(resumeId) {
+      if (!confirm("정말 이 이력서를 삭제하시겠습니까?")) return;
+
+      fetch(`/resume/delete/${resumeId}/`, {
+        method: 'POST',
+        headers: {
+          'X-CSRFToken': getCookie('csrftoken')
+        }
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          alert("이력서가 삭제되었습니다.");
+          location.reload();
+        } else {
+          alert("삭제 실패");
+        }
+      })
+      .catch(error => {
+        console.error("삭제 오류:", error);
+        alert("오류 발생");
+      });
+    }
+
+
+
+
+
+
+      // 각 섹션별 데이터 수집 함수들
+      function collectEducationData() {
+        const educationEntries = document.querySelectorAll('.education-card');
+        return Array.from(educationEntries).map(entry => ({
+          school: entry.querySelector('h4').textContent,
+          major: entry.querySelector('p:nth-child(2)').textContent,
+          grade: entry.querySelector('p:nth-child(3)').textContent,
+          graduation: entry.querySelector('p:nth-child(4)').textContent
+        }));
+      }
+
+      function collectCareerData() {
+        const careerEntries = document.querySelectorAll('.career-card');
+        return Array.from(careerEntries).map(entry => ({
+          company: entry.querySelector('h4').textContent,
+          position: entry.querySelector('p:nth-child(2)').textContent,
+          department: entry.querySelector('p:nth-child(3)').textContent,
+          rank: entry.querySelector('p:nth-child(4)').textContent,
+          duties: entry.querySelector('p:nth-child(5)').textContent
+        }));
+      }
+
+      function collectExperienceData() {
+        const experienceEntries = document.querySelectorAll('.experience-card');
+        return Array.from(experienceEntries).map(entry => ({
+          activity: entry.querySelector('h4').textContent,
+          organization: entry.querySelector('p:nth-child(2)').textContent,
+          description: entry.querySelector('p:nth-child(3)').textContent
+        }));
+      }
+
+      function collectCertificateData() {
+        const certificateForm = document.getElementById('certificate-form');
+        return {
+          content: certificateForm.querySelector('input').value
+        };
+      }
+      
+      function collectPreferenceData() {
+        const preferenceForm = document.getElementById('preference-form');
+        return {
+          content: preferenceForm.querySelector('input').value
+        };
+      }
+
+      function collectPortfolioData() {
+        const portfolioEntries = document.querySelectorAll('.portfolio-card');
+        return Array.from(portfolioEntries).map(entry => ({
+          project: entry.querySelector('h4').textContent,
+          description: entry.querySelector('p:nth-child(2)').textContent,
+          files: entry.querySelector('p:nth-child(3)')?.textContent
+        }));
+      }
+      
+      function collectCareerDescriptionData() {
+        const descriptionForm = document.getElementById('career-description-form');
+        return {
+          content: descriptionForm.querySelector('input').value
+        };
+      }
+
+      function collectIntroductionData() {
+        const introductionForm = document.getElementById('introduction-form');
+        return {
+          title: introductionForm.querySelector('input[type="text"]').value,
+          content: introductionForm.querySelector('input.longtext').value
+        };
+      }
 
       // 추가 버튼 누르면 검색창 보이기
       function showskill() {
@@ -356,10 +588,10 @@
 
       // 저장 버튼 누르면 선택된 스킬 화면에 출력
       function saveskill() {
-        const list = document.getElementById("skill-list");
-        list.innerHTML = selectedSkills.map(skill => `<span style="margin-right: 10px;">✔️ ${skill}</span>`).join("");
-        document.getElementById("skill-form").style.display = "none";
+      updateSkillList();
+      document.getElementById("skill-form").style.display = "none";
       }
+
 
       // 자동완성 검색
       function searchSkills() {
@@ -396,14 +628,71 @@
 
           // ✅ 리스트 실시간 업데이트
           const list = document.getElementById("skill-list");
-          list.innerHTML = selectedSkills.map(skill => `<span style="margin-right: 10px;">✔️ ${skill}</span>`).join("");
+          updateSkillList();
+          searchSkills(); // 중복 제거용
 
-          searchSkills(); // 중복 제거용 다시 호출
         };
 
         suggestionsBox.appendChild(div);
       });
     }
+
+    function updateSkillList() {
+      const list = document.getElementById("skill-list");
+      list.innerHTML = "";
+
+      selectedSkills.forEach((skill, index) => {
+        const span = document.createElement("span");
+        span.className = "skill-tag";
+        span.style.position = "relative";
+        span.style.display = "inline-block";
+        span.style.marginRight = "10px";
+        span.style.padding = "6px 24px 6px 10px";
+        span.style.border = "3px solid #F5D1EA";
+        span.style.borderRadius = "5px";
+        span.style.backgroundColor = "none";
+        span.style.cursor = "default";
+
+        const skillText = document.createTextNode(`✔ ${skill}`);
+        span.appendChild(skillText);
+
+        const closeBtn = document.createElement("span");  // ✅ 선언 먼저!
+        closeBtn.className = "delete-btn";
+        closeBtn.textContent = "×";
+        closeBtn.style.position = "absolute";
+        closeBtn.style.right = "4px";
+        closeBtn.style.top = "4px";
+        closeBtn.style.fontSize = "14px";
+        closeBtn.style.cursor = "pointer";
+        closeBtn.style.color = "#ff4d4d";
+        closeBtn.style.backgroundColor = "#fff";
+        closeBtn.style.padding = "0 4px";
+        closeBtn.style.borderRadius = "50%";
+        closeBtn.style.border = "1px solid #ccc";
+        closeBtn.style.display = "none"; // ❗ 선언 이후에 display 조작
+
+        // 마우스 오버 시 보이기
+        span.addEventListener("mouseenter", () => {
+          closeBtn.style.display = "inline";
+        });
+        span.addEventListener("mouseleave", () => {
+          closeBtn.style.display = "none";
+        });
+
+        closeBtn.onclick = () => {
+          selectedSkills.splice(index, 1);
+          updateSkillList();
+        };
+
+        span.appendChild(closeBtn);
+        list.appendChild(span);
+      });
+    }
+
+
+
+
+
 
 
       //토글 
@@ -480,56 +769,20 @@
           }
         });
 
-  
-
-      function searchSkills() {
-      const input = document.getElementById("skillSearch").value.toLowerCase();
-      const suggestionsBox = document.getElementById("skillSuggestions");
-      suggestionsBox.innerHTML = "";
-
-      if (!input) {
-        suggestionsBox.style.display = "none";
-        return;
-      }
-
-      const matches = availableSkills.filter(skill =>
-        skill.toLowerCase().includes(input) && !selectedSkills.includes(skill)
-      );
-
-      if (matches.length === 0) {
-        suggestionsBox.style.display = "none";
-        return;
-      }
-
-      suggestionsBox.style.display = "block";
-      matches.forEach(skill => {
-        const div = document.createElement("div");
-        div.textContent = skill;
-        div.style.padding = "5px";
-        div.style.cursor = "pointer";
-        div.onclick = () => {
-          selectedSkills.push(skill);
-          document.getElementById("skillSearch").value = "";
-          suggestionsBox.style.display = "none";
-          searchSkills(); // 다시 실행해서 새 목록 반영
-        };
-        suggestionsBox.appendChild(div);
-      });
-    }
 
 
         // 보기 카드 형태로 출력될 HTML 구성
         summary.innerHTML = `
-    <div class="education-card">
-      <h4>${values['학교명'] || ''} (${values['입학년도'] || ''} ~ ${values['졸업년도'] || ''})</h4>
-      <p><strong>전공:</strong> ${values['전공'] || ''}</p>
-      <p><strong>학점:</strong> ${values['학점'] || ''}</p>
-      <p><strong>졸업 구분:</strong> ${values['졸업구분'] || ''}
-        <button onclick="editEducation(this)" class="cencle_save_btn" style="float: right; margin-left: 8px;">수정</button>
-        <button onclick="removeEducationForm(this)" class="cencle_save_btn" style="float: right;">삭제</button>
-      </p>
-    </div>
-  `;
+        <div class="education-card">
+          <h4>${values['학교명'] || ''} (${values['입학년도'] || ''} ~ ${values['졸업년도'] || ''})</h4>
+          <p><strong>전공:</strong> ${values['전공'] || ''}</p>
+          <p><strong>학점:</strong> ${values['학점'] || ''}</p>
+          <p><strong>졸업 구분:</strong> ${values['졸업구분'] || ''}
+            <button onclick="editEducation(this)" class="cencle_save_btn" style="float: right; margin-left: 8px;">수정</button>
+            <button onclick="removeEducationForm(this)" class="cencle_save_btn" style="float: right;">삭제</button>
+          </p>
+        </div>
+      `;
 
         // 입력 요소 숨기기
         inputs.forEach(input => input.style.display = "none");
@@ -645,6 +898,14 @@
         // 저장 로직 구현
         document.getElementById('introduction-form').style.display = 'none';
       }
+
+      window.onload = () => {
+        const resumes = JSON.parse(localStorage.getItem('resumeList')) || [];
+        resumes.forEach(resume => addToResumeList(resume.basicInfo.title));
+      };
+
+
+
 
     </script>
 </body>

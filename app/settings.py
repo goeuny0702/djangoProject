@@ -39,7 +39,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "resume",
+    'pybo',
 ]
 
 MIDDLEWARE = [
@@ -130,3 +130,8 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # API 키 설정
 OPENAI_API_KEY = config('OPENAI_API_KEY')
+
+# settings.py
+LOGIN_URL = '/login/'  # 로그인 페이지 경로
+LOGIN_REDIRECT_URL = '/resume/'  # 로그인 성공 후 이력서 페이지로 이동
+
