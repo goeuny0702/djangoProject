@@ -2079,12 +2079,73 @@
       }
 
 
-
-
       window.onload = () => {
         const resumes = JSON.parse(localStorage.getItem('resumeList')) || [];
         resumes.forEach(resume => addToResumeList(resume.basicInfo.title));
       };
+
+
+      function resetResumeForm() {
+        // 1. 기본 정보 입력란 비우기
+        document.getElementById('resume-title').value = '';
+        document.getElementById('name').value = '';
+        document.getElementById('gender').value = '';
+        document.getElementById('birthdate').value = '';
+        document.getElementById('email').value = '';
+        document.getElementById('phone').value = '';
+        document.getElementById('address').value = '';
+        document.getElementById('detail-address').value = '';
+
+        // 2. 체크박스 모두 해제 + 폼 모두 닫기
+        const sectionNames = [
+          'education', 'career', 'skill', 'experience', 'certificate',
+          'preference', 'portfolio', 'career-description', 'introduction'
+        ];
+        sectionNames.forEach(key => {
+          const cb = document.getElementById(`section-${key}`);
+          const section = document.getElementById(`${key}-section`);
+          if (cb) cb.checked = false;
+          if (section) section.style.display = 'none';
+        });
+
+        // 3. 각 항목 리스트 비우기
+        // 학력/경력/스킬 등 리스트 부분 초기화
+        const sectionListIds = [
+          'education-list', 'career-list', 'skill-list', 'experience-list',
+          'certificate-list', 'preference-list', 'portfolio-list',
+          'career-description-list', 'introduction-list'
+        ];
+        sectionListIds.forEach(id => {
+          const el = document.getElementById(id);
+          if (el) el.innerHTML = '';
+        });
+
+        // 4. 스킬 태그 초기화
+        selectedSkills = [];
+        updateSkillList();
+
+        // 5. 기타(포트폴리오, 경력기술서 등 임시 입력폼도 닫기)
+        const formIds = [
+          'education-form-template', 'career-form-template', 'skill-form',
+          'experience-form-template', 'certificate-form', 'preference-form',
+          'portfolio-form-template', 'career-description-form', 'introduction-form'
+        ];
+        formIds.forEach(fid => {
+          const f = document.getElementById(fid);
+          if (f) f.style.display = 'none';
+        });
+
+        // 6. sectionData 등 데이터 배열들도 비울 것 있으면 여기서 비우기
+        // 예: certificateData = [], preferenceData = []
+
+        if (typeof certificateData !== 'undefined') certificateData = [];
+        if (typeof preferenceData !== 'undefined') preferenceData = [];
+
+        // 7. 미리보기 등 기타 영역도 초기화 필요하면 여기서
+
+      
+      }
+
 
 
     </script>
