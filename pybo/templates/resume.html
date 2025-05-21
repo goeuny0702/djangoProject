@@ -473,9 +473,12 @@
         }
       }
 
-      function saveResume(event) {
-        event.preventDefault();  // form 동작 방지
+      // 자기소개서 데이터를 수집하는 함수 (이제 saveResume 위에 위치)
+      function collectIntroductionData() {
+        // ... 함수 내용 ...
+      }
 
+      function saveResume() {
         const title = document.getElementById('resume-title').value;
         const name = document.getElementById('name').value;
         const gender = document.getElementById('gender').value;
@@ -485,22 +488,16 @@
         const address = document.getElementById('address').value;
         const detailAddress = document.getElementById('detail-address').value;
 
-        const sectionCheckboxStates = getSectionCheckboxStates();
-        const sections = {
-          education: collectEducationData() || [],
-          career: collectCareerData() || [],
-          experience: collectExperienceData() || [],
-          certificate: collectCertificateData() || [],
-          preference: collectPreferenceData() || [],
-          portfolio: collectPortfolioData() || [],
-          description: collectCareerDescriptionData() || [],
-          introduction: collectIntroductionData() || [],
-          skills: selectedSkills || [],
-          sectionCheckboxStates: sectionCheckboxStates
-        };
+        // 각 섹션별 데이터 수집
+        const educationData = collectEducationData();
+        const careerData = collectCareerData();
+        const experienceData = collectExperienceData();
+        const certificateDataCollected = collectCertificateData(); // 변수 이름 변경
+        const preferenceDataCollected = collectPreferenceData(); // 변수 이름 변경
+        const portfolioDataCollected = collectPortfolioData(); // 변수 이름 변경
+        const careerDescriptionDataCollected = collectCareerDescriptionData(); // 변수 이름 변경
+        const introductionData = collectIntroductionData();
 
-        document.getElementById("sections-json").value = JSON.stringify(sections);
-        console.log("sections-json 값:", document.getElementById("sections-json").value);
 
         const resumeData = {
           title: title,
@@ -511,7 +508,16 @@
           phone: phone,
           address: address,
           'detail-address': detailAddress,
-          sections_json: JSON.stringify(sections)
+          skills: JSON.stringify(selectedSkills), // 스킬은 기존 방식 유지
+          education: JSON.stringify(educationData),
+          career: JSON.stringify(careerData),
+          experience: JSON.stringify(experienceData),
+          certificates: JSON.stringify(certificateDataCollected), // 속성 이름 변경
+          preferences: JSON.stringify(preferenceDataCollected), // 속성 이름 변경
+          portfolios: JSON.stringify(portfolioDataCollected), // 속성 이름 변경
+          career_descriptions: JSON.stringify(careerDescriptionDataCollected), // 속성 이름 변경
+          introduction: JSON.stringify(introductionData),
+
         };
 
         fetch('/save_resume/', {
@@ -525,20 +531,14 @@
         .then(response => {
           if (response.redirected) {
             window.location.href = response.url;
-          } else if (response.ok) {
-            alert("이력서 저장 완료!");
           } else {
-            return response.text().then(text => {
-              console.error(text);
-              alert("저장 실패: " + text);
-            });
+            alert("저장 실패");
           }
         })
         .catch(error => {
-          console.error("에러 발생:", error);
-          alert("서버 요청 중 오류가 발생했어요.");
+          console.error('Error:', error);
         });
-    }
+      }
 
 
     function getCookie(name) {

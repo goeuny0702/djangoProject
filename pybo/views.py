@@ -132,7 +132,7 @@ def logout_view(request):
 def save_resume(request):
     if request.method == 'POST':
         import pprint
-        pprint.pprint(request.POST)   # 1) sections_json 실제로 오는지 확인
+        # pprint.pprint(request.POST)   # 1) sections_json 실제로 오는지 확인
 
         content_dict = {
             "name": request.POST.get("name"),
@@ -142,24 +142,46 @@ def save_resume(request):
             "phone": request.POST.get("phone"),
             "address": request.POST.get("address"),
             "detail_address": request.POST.get("detail-address"),
-            # "skills": request.POST.get("skills"),  
+            "skills": json.loads(request.POST.get("skills", "[]")), # skills 데이터 파싱
         }
 
-        sections_json = request.POST.get("sections_json")
-        if sections_json:
-            try:
-                sections_data = json.loads(sections_json)
-                content_dict["sections"] = sections_data   
-            except Exception as e:
-                print("sections_json 파싱 실패", e)
+        # 각 섹션별 데이터 파싱 및 추가
+        sections_to_process = [
+            ("education", "education"),
+            ("career", "career"),
+            ("experience", "experience"),
+            ("certificates", "certificates"),
+            ("preferences", "preferences"),
+            ("portfolios", "portfolios"),
+            ("career_descriptions", "career_descriptions"),
+            ("introduction", "introduction"),
+        ]
 
-        pprint.pprint(content_dict)  # 저장 직전 실제로 skills, sections 찍힘?
+        for field_name, dict_key in sections_to_process:
+            data_json = request.POST.get(field_name)
+            if data_json:
+                try:
+                    content_dict[dict_key] = json.loads(data_json)
+                except json.JSONDecodeError as e:
+                    print(f"{field_name} JSON 파싱 실패: {e}")
+                    content_dict[dict_key] = [] # 파싱 실패 시 빈 리스트 할당 또는 오류 처리
 
-        Resume.objects.create(
+        # pprint.pprint(content_dict)  # 저장 직전 실제로 skills, sections 찍힘?
+
+        # Resume.objects.create(
+        #     user=request.user,
+        #     title=request.POST.get("title"),
+        #     content=json.dumps(content_dict) # content 전체를 JSON 문자열로 저장
+        # )
+        
+        # 기존 이력서가 있으면 업데이트, 없으면 생성
+        resume_title = request.POST.get("title")
+        resume_instance, created = Resume.objects.update_or_create(
             user=request.user,
-            title=request.POST.get("title"),
-            content=json.dumps(content_dict)
+            title=resume_title,
+            defaults={'content': json.dumps(content_dict)}
         )
+
         return redirect('resume_page')
 
 
