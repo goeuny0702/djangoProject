@@ -1998,27 +1998,6 @@
       }
       const text = document.getElementById("careerDescriptionText").value;
 
-      const summaryContainer = document.createElement("div");
-      summaryContainer.className = "career-desc-card";
-      summaryContainer.style.border = "1px solid #ddd";
-      summaryContainer.style.padding = "10px";
-      summaryContainer.style.marginTop = "10px";
-      summaryContainer.style.position = "relative";
-      summaryContainer.innerHTML = `
-        <div style="white-space: pre-wrap;">${text}</div>
-        <div style="margin-top: 10px; text-align: right;">
-          <button onclick="editDescription(this)" class="cencle_save_btn">수정</button>
-          <button onclick="removeDescription(this)" class="cencle_save_btn">삭제</button>
-        </div>
-      `;
-
-      document.getElementById("career-description-list").appendChild(summaryContainer);
-
-      // 입력폼 초기화
-      document.getElementById("careerDescriptionText").value = "";
-      document.getElementById("career-description-form").style.display = "none";
-      updateCharCount();
-
       function insertTemplate(type) {
         const textarea = document.getElementById("careerDescriptionText");
         let content = "";
