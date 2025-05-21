@@ -13,6 +13,7 @@ import json
 from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import get_object_or_404
 from django.views.decorators.http import require_POST
+import pprint
 
 from openai import OpenAI
 from openai import OpenAIError, RateLimitError, AuthenticationError
@@ -91,7 +92,8 @@ def logout_view(request):
 @login_required
 def save_resume(request):
     if request.method == 'POST':
-        print("POST 요청 받음:", request.POST)
+        import pprint
+        pprint.pprint(request.POST)   # 1) sections_json 실제로 오는지 확인
 
         content_dict = {
             "name": request.POST.get("name"),
@@ -101,10 +103,18 @@ def save_resume(request):
             "phone": request.POST.get("phone"),
             "address": request.POST.get("address"),
             "detail_address": request.POST.get("detail-address"),
-            "skills": request.POST.get("skills")
+            # "skills": request.POST.get("skills"),  
         }
 
-        print("content_dict 저장 전:", content_dict)
+        sections_json = request.POST.get("sections_json")
+        if sections_json:
+            try:
+                sections_data = json.loads(sections_json)
+                content_dict["sections"] = sections_data   
+            except Exception as e:
+                print("sections_json 파싱 실패", e)
+
+        pprint.pprint(content_dict)  # 저장 직전 실제로 skills, sections 찍힘?
 
         Resume.objects.create(
             user=request.user,
@@ -119,17 +129,20 @@ def resume_page(request):
     resumes = Resume.objects.filter(user=request.user)  # 로그인한 유저 것만
     return render(request, 'resume.html', {'resumes': resumes})
 
+
 @login_required
 def get_resume(request, resume_id):
     try:
         resume = Resume.objects.get(id=resume_id, user=request.user)
         resume_data = {
             'title': resume.title,
-            'content': json.loads(resume.content)
+            'content': json.loads(resume.content)  # content 전체를 dict로 전달
         }
         return JsonResponse(resume_data)
     except Resume.DoesNotExist:
         return JsonResponse({'error': '이력서를 찾을 수 없습니다.'}, status=404)
+
+
     
 @login_required
 @csrf_exempt
