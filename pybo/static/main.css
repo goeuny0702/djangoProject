@@ -63,6 +63,33 @@ body {
   color: #ff69b4;
 }
 
+.mycontainer .writecontainer {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  width: 100%;
+  border: 2px solid #f5d1ea;
+  padding: 12px;
+  border-radius: 10px;
+  background-color: white;
+  margin-bottom: 20px;
+  transition: 0.3s;
+}
+
+.mycontainer .writecontainer:hover {
+  background-color: #fff0f5;
+}
+
+.mycontainer .writebtn a {
+  font-size: 18px;
+  text-decoration: none;
+  color: #333;
+  font-weight: bold;
+}
+
+.mycontainer .writebtn a:hover {
+  color: #ff69b4;
+}
+
 .mycontainer .sidebar {
   width: 100%;
   padding: 20px;
