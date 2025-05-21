@@ -32,6 +32,8 @@ urlpatterns = [
     path('save_resume/', views.save_resume, name='save_resume'),
     path('get_resume/<int:resume_id>/', views.get_resume, name='get_resume'),
     path('resume/delete/<int:resume_id>/', views.delete_resume, name='delete_resume'),
+    path("api/spellcheck/", views.spellcheck, name="spellcheck"),
+    path("api/proofread/",  views.proofread,  name="proofread"),
 
 
 

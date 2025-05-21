@@ -19,7 +19,46 @@ from openai import OpenAI
 from openai import OpenAIError, RateLimitError, AuthenticationError
 
 # API 키 설정 (환경변수에서 받아오기)
-openai.api_key = settings.OPENAI_API_KEY
+client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+
+# ─────────────────── 맞춤법 ───────────────────
+@csrf_exempt
+@require_POST
+def spellcheck(request):
+    text = json.loads(request.body).get("text", "")
+
+    resp = client.chat.completions.create(
+        model="gpt-4o-mini",
+        messages=[
+            {"role":"system","content":"너는 한국어 교정 도우미야. 맞춤법·띄어쓰기·오탈자만 고쳐서 원문 형식 그대로 돌려줘."},
+            {"role":"user",  "content":text}
+        ],
+        temperature=0
+    )
+    corrected = resp.choices[0].message.content.strip()
+    return JsonResponse({"result": corrected})
+
+# ─────────────────── AI 첨삭 ───────────────────
+@csrf_exempt
+@require_POST
+def proofread(request):
+    text = json.loads(request.body).get("text", "")
+
+    resp = client.chat.completions.create(
+        model="gpt-4o-mini",
+        messages=[
+            {"role":"system","content":(
+              "너는 인사담당자 관점의 첨삭 코치야. 문맥은 유지하되 "
+              "① 맞춤법 ② 문장 간 흐름 ③ 구체적·적극적 어휘 제안 세가지를 반영해 "
+              "수정본만 돌려줘."
+              "직업에 따른 전문용어를 포함해서 작성해줘"
+            )},
+            {"role":"user","content":text}
+        ],
+        temperature=0.3
+    )
+    improved = resp.choices[0].message.content.strip()
+    return JsonResponse({"result": improved})
 
 def ai_chat(request):
     user_input = request.GET.get('q', '')
