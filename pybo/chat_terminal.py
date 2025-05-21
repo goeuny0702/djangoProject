@@ -11,7 +11,7 @@ def chat_with_gpt():
 
     try:
         response = client.chat.completions.create(
-            model="gpt-3.5-turbo-",
+            model="gpt-3.5-turbo",
             messages=[{"role": "user", "content": user_input}]
         )
         print("\n°ε♡з° 지삐띠의 답변 °ε♡з°:")
