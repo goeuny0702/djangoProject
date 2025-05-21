@@ -37,7 +37,7 @@
   </div>
   <div class="main">
     <div style="display: flex; justify-content: center;">
-      <input type="text" placeholder="이력서 제목" class="input-title" id="resume-title"><br>
+      <input type="text" placeholder="이력서 제목" class="input-title" id="resume-title" name="title"><br>
     </div>
     <div class="inputgroup"
       style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
@@ -426,7 +426,9 @@
         </div>
 
         <button class="endbtn">이력서 미리보기</button><br>
-        <button class="endbtn" onclick="saveResume()">작성완료</button>
+        <input type="hidden" id="sections-json">
+        <button class="endbtn" onclick="saveResume(event)">작성완료</button>
+
       </div>
     </div>
 
@@ -447,7 +449,9 @@
       // 선택된 스킬 저장 배열
       let selectedSkills = [];
 
-      function saveResume() {
+      function saveResume(event) {
+        event.preventDefault();  // form 동작 방지
+
         const title = document.getElementById('resume-title').value;
         const name = document.getElementById('name').value;
         const gender = document.getElementById('gender').value;
@@ -456,6 +460,21 @@
         const phone = document.getElementById('phone').value;
         const address = document.getElementById('address').value;
         const detailAddress = document.getElementById('detail-address').value;
+
+        const sections = {
+          education: collectEducationData() || [],
+          career: collectCareerData() || [],
+          experience: collectExperienceData() || [],
+          certificate: collectCertificateData() || [],
+          preference: collectPreferenceData() || [],
+          portfolio: collectPortfolioData() || [],
+          description: collectCareerDescriptionData() || [],
+          introduction: collectIntroductionData() || [],
+          skills: selectedSkills || []
+        };
+
+        document.getElementById("sections-json").value = JSON.stringify(sections);
+        console.log("sections-json 값:", document.getElementById("sections-json").value);
 
         const resumeData = {
           title: title,
@@ -466,7 +485,7 @@
           phone: phone,
           address: address,
           'detail-address': detailAddress,
-          skills: JSON.stringify(selectedSkills)
+          sections_json: JSON.stringify(sections)
         };
 
         fetch('/save_resume/', {
@@ -480,14 +499,26 @@
         .then(response => {
           if (response.redirected) {
             window.location.href = response.url;
+          } else if (response.ok) {
+            alert("이력서 저장 완료!");
           } else {
-            alert("저장 실패");
+            return response.text().then(text => {
+              console.error(text);
+              alert("저장 실패: " + text);
+            });
           }
         })
         .catch(error => {
-          console.error('Error:', error);
+          console.error("에러 발생:", error);
+          alert("서버 요청 중 오류가 발생했어요.");
         });
-      }
+    }
+
+
+      
+
+
+
 
       function getCookie(name) {
         let cookieValue = null;
@@ -495,7 +526,6 @@
           const cookies = document.cookie.split(';');
           for (let i = 0; i < cookies.length; i++) {
             const cookie = cookies[i].trim();
-            // 이 쿠키가 우리가 찾는 이름인지 확인
             if (cookie.substring(0, name.length + 1) === (name + '=')) {
               cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
               break;
@@ -504,6 +534,7 @@
         }
         return cookieValue;
       }
+
 
 
 
@@ -529,8 +560,24 @@
         document.getElementById('address').value = resume.basicInfo.address;
         document.getElementById('detail-address').value = resume.basicInfo.detailAddress;
 
-        selectedSkills = resume.skills || [];
+        selectedSkills = resume.skills;
+
+        // 만약 배열이 아니면 빈 배열로 강제
+        if (!Array.isArray(selectedSkills)) {
+          if (typeof selectedSkills === 'string') {
+            try {
+              selectedSkills = JSON.parse(selectedSkills);
+              if (!Array.isArray(selectedSkills)) selectedSkills = [];
+            } catch (e) {
+              selectedSkills = [];
+            }
+          } else {
+            selectedSkills = [];
+          }
+        }
+
         updateSkillList();
+
       }
 
     function loadResumeFromServer(resumeId) {
@@ -540,8 +587,16 @@
           return response.json();
         })
         .then(data => {
+          console.log("data 확인:", data); // 서버에서 내려온 전체 데이터 확인
+
           const resume = data.content;
-          document.getElementById('resume-title').value = data.title;
+          if (!resume) {
+            alert("이력서 데이터가 없습니다.");
+            return;
+          }
+
+          // 1. 기본 정보
+          document.getElementById('resume-title').value = data.title || '';
           document.getElementById('name').value = resume.name || '';
           document.getElementById('gender').value = resume.gender || '';
           document.getElementById('birthdate').value = resume.birthdate || '';
@@ -550,22 +605,23 @@
           document.getElementById('address').value = resume.address || '';
           document.getElementById('detail-address').value = resume.detail_address || '';
 
-          selectedSkills = resume.skills;
-          if (typeof selectedSkills === 'string') {
-            try {
-              selectedSkills = JSON.parse(selectedSkills);
-            } catch (e) {
-              selectedSkills = [];
-            }
-          }
+          // 2. sections > skills
+          // 구조를 다시 한 번 콘솔로 체크 (꼭!)
+          console.log("resume.sections:", resume.sections);
+          selectedSkills = (resume.sections && Array.isArray(resume.sections.skills)) ? resume.sections.skills : [];
+          console.log("불러온 selectedSkills:", selectedSkills);
 
           updateSkillList();
-        })
 
+        })
         .catch(error => {
           alert('이력서 불러오기 실패: ' + error.message);
         });
     }
+
+
+
+
 
     function deleteResume(resumeId) {
       if (!confirm("정말 이 이력서를 삭제하시겠습니까?")) return;
@@ -598,12 +654,16 @@
 
       // 각 섹션별 데이터 수집 함수들
       function collectEducationData() {
-        const educationEntries = document.querySelectorAll('.education-card');
-        return Array.from(educationEntries).map(entry => {
-          const schoolText = entry.querySelector('h4').textContent;
-          const majorText = entry.querySelector('p:nth-child(2)').textContent.replace('전공:', '').trim();
-          const gradeText = entry.querySelector('p:nth-child(3)').textContent.replace('학점:', '').trim();
-          const graduationText = entry.querySelector('p:nth-child(4)').textContent.split('삭제')[0].replace('졸업 구분:', '').trim();
+        const summaries = document.querySelectorAll('.education-summary');
+
+        return Array.from(summaries).map(summary => {
+          const card = summary.querySelector('.education-card');
+          if (!card) return null;
+
+          const schoolText = card.querySelector('h4')?.textContent || '';
+          const majorText = card.querySelector('p:nth-child(2)')?.textContent.replace('전공:', '').trim() || '';
+          const gradeText = card.querySelector('p:nth-child(3)')?.textContent.replace('학점:', '').trim() || '';
+          const graduationText = card.querySelector('p:nth-child(4)')?.textContent.split('삭제')[0].replace('졸업 구분:', '').trim() || '';
 
           return {
             school: schoolText,
@@ -611,8 +671,9 @@
             grade: gradeText,
             graduation: graduationText
           };
-        });
+        }).filter(item => item !== null);
       }
+
       //경력
       function collectCareerData() {
         const careerEntries = document.querySelectorAll('.career-card');
@@ -827,6 +888,15 @@
       const list = document.getElementById("skill-list");
       list.innerHTML = "";
 
+      if (!Array.isArray(selectedSkills)) {
+        try {
+          selectedSkills = JSON.parse(selectedSkills);
+          if (!Array.isArray(selectedSkills)) selectedSkills = [];
+        } catch (e) {
+          selectedSkills = [];
+        }
+      }
+
       selectedSkills.forEach((skill, index) => {
         const span = document.createElement("span");
         span.className = "skill-tag";
@@ -1012,16 +1082,17 @@
 
         // 보기 카드 형태로 출력될 HTML 구성
         summary.innerHTML = `
-    <div class="education-card">
-      <h4>${values['학교명'] || ''} (${values['입학년도'] || ''} ~ ${values['졸업년도'] || ''})</h4>
-      <p><strong>전공:</strong> ${values['전공'] || ''}</p>
-      <p><strong>학점:</strong> ${values['학점'] || ''}</p>
-      <p><strong>졸업 구분:</strong> ${values['졸업구분'] || ''}
-        <button onclick="removeEducationForm(this)" class="cencle_save_btn" style="float: right; margin-left: 8px;">삭제</button>
-        <button onclick="editEducation(this)" class="cencle_save_btn" style="float: right;">수정</button>
-      </p>
-    </div>
-  `;
+          <div class="education-card">
+            <h4>${values['학교명'] || ''} (${values['입학년도'] || ''} ~ ${values['졸업년도'] || ''})</h4>
+            <p><strong>전공:</strong> ${values['전공'] || ''}</p>
+            <p><strong>학점:</strong> ${values['학점'] || ''}</p>
+            <p><strong>졸업 구분:</strong> ${values['졸업구분'] || ''}
+              <button onclick="editEducation(this)" class="cencle_save_btn" style="float: right; margin-left: 8px;">수정</button>
+              <button onclick="removeEducationForm(this)" class="cencle_save_btn" style="float: right;">삭제</button>
+            </p>
+          </div>
+        `;
+
 
         // 입력 요소 숨기기
         inputs.forEach(input => input.style.display = "none");
@@ -1613,16 +1684,16 @@
         }
 
         summary.innerHTML = `
-    <div class="portfolio-card">
-      <h4>${values['프로젝트명'] || ''}</h4>
-      <p><strong>설명:</strong> ${values['프로젝트 설명'] || ''}</p>
-      ${fileNames.length > 0 ? `<p><strong>첨부파일:</strong> ${fileNames.join(', ')}</p>` : ''}
-      <div style="display: flex; justify-content: flex-end; gap: 8px;">
-        <button onclick="editPortfolio(this)" class="cencle_save_btn">수정</button>
-        <button onclick="removePortfolioForm(this)" class="cencle_save_btn">삭제</button>
-      </div>
-    </div>
-  `;
+        <div class="portfolio-card">
+          <h4>${values['프로젝트명'] || ''}</h4>
+          <p><strong>설명:</strong> ${values['프로젝트 설명'] || ''}</p>
+          ${fileNames.length > 0 ? `<p><strong>첨부파일:</strong> ${fileNames.join(', ')}</p>` : ''}
+          <div style="display: flex; justify-content: flex-end; gap: 8px;">
+            <button onclick="editPortfolio(this)" class="cencle_save_btn">수정</button>
+            <button onclick="removePortfolioForm(this)" class="cencle_save_btn">삭제</button>
+          </div>
+        </div>
+      `;
 
         if (!values['프로젝트명'] || !values['프로젝트 설명']) {
           alert('프로젝트명, 프로젝트 설명은 필수 입력 항목입니다.');
@@ -1664,20 +1735,29 @@
         updateCharCount();
       }
       function updateCharCount() {
-        const text = document.getElementById("careerDescriptionText").value;
+        const textArea = document.getElementById("careerDescriptionText");
+        if (!textArea) return;  // 텍스트 영역이 아직 없으면 그냥 함수 종료
+
+        const text = textArea.value;
         const total = text.length;
         const noSpace = text.replace(/\s/g, "").length;
         const byteSize = new Blob([text]).size;
         const byteNoSpace = new Blob([text.replace(/\s/g, "")]).size;
 
-        document.getElementById("totalChars").innerText = total;
-        document.getElementById("totalBytes").innerText = byteSize;
-        document.getElementById("noSpaceChars").innerText = noSpace;
-        document.getElementById("noSpaceBytes").innerText = byteNoSpace;
+        const totalChars = document.getElementById("totalChars");
+        const totalBytes = document.getElementById("totalBytes");
+        const noSpaceChars = document.getElementById("noSpaceChars");
+        const noSpaceBytes = document.getElementById("noSpaceBytes");
+
+        if (totalChars) totalChars.innerText = total;
+        if (totalBytes) totalBytes.innerText = byteSize;
+        if (noSpaceChars) noSpaceChars.innerText = noSpace;
+        if (noSpaceBytes) noSpaceBytes.innerText = byteNoSpace;
       }
 
+
       function saveDescription() {
-        const text = document.getElementById("careerDescriptionText").value;
+        const text = document.getElementById("careerDescriptionText").value; 
 
         const summaryContainer = document.createElement("div");
         summaryContainer.className = "career-desc-card";
@@ -1696,11 +1776,11 @@
 
         document.getElementById("career-description-list").appendChild(summaryContainer);
 
-        // 입력폼 초기화
         document.getElementById("careerDescriptionText").value = "";
         document.getElementById("career-description-form").style.display = "none";
         updateCharCount();
       }
+
 
 
       function editDescription(button) {
@@ -1720,6 +1800,7 @@
         if (!card) return;
         card.remove();
       }
+      const text = document.getElementById("careerDescriptionText").value;
 
       const summaryContainer = document.createElement("div");
       summaryContainer.className = "career-desc-card";
