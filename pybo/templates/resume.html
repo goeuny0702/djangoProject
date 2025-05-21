@@ -389,39 +389,39 @@
         <div class="checkbox-group">
           <div class="checkboxtext">
             <span>학력</span>
-            <input type="checkbox" onchange="toggleSection('education-section')">
+            <input type="checkbox" id="section-education" onchange="toggleSection('education-section')">
           </div>
           <div class="checkboxtext">
             <span>경력</span>
-            <input type="checkbox" onchange="toggleSection('career-section')">
+            <input type="checkbox" id="section-career" onchange="toggleSection('career-section')">
           </div>
           <div class="checkboxtext">
             <span>스킬</span>
-            <input type="checkbox" onchange="toggleSection('skill-section')">
+            <input type="checkbox" id="section-skill" onchange="toggleSection('skill-section')">
           </div>
           <div class="checkboxtext">
             <span>경험/활동/교육</span>
-            <input type="checkbox" onchange="toggleSection('experience-section')">
+            <input type="checkbox" id="section-experience" onchange="toggleSection('experience-section')">
           </div>
           <div class="checkboxtext">
             <span>자격/어학/수상</span>
-            <input type="checkbox" onchange="toggleSection('certificate-section')">
+            <input type="checkbox" id="section-certificate" onchange="toggleSection('certificate-section')">
           </div>
           <div class="checkboxtext">
             <span>취업우대사항</span>
-            <input type="checkbox" onchange="toggleSection('preference-section')">
+            <input type="checkbox" id="section-preference" onchange="toggleSection('preference-section')">
           </div>
           <div class="checkboxtext">
             <span>포트폴리오</span>
-            <input type="checkbox" onchange="toggleSection('portfolio-section')">
+            <input type="checkbox" id="section-portfolio" onchange="toggleSection('portfolio-section')">
           </div>
           <div class="checkboxtext">
             <span>경력기술서</span>
-            <input type="checkbox" onchange="toggleSection('career-description-section')">
+            <input type="checkbox" id="section-career-description" onchange="toggleSection('career-description-section')">
           </div>
           <div class="checkboxtext">
             <span>자기소개서</span>
-            <input type="checkbox" onchange="toggleSection('introduction-section')">
+            <input type="checkbox" id="section-introduction" onchange="toggleSection('introduction-section')">
           </div>
         </div>
 
@@ -449,6 +449,20 @@
       // 선택된 스킬 저장 배열
       let selectedSkills = [];
 
+      function getSectionCheckboxStates() {
+        return {
+          education: document.getElementById('section-education').checked,
+          career: document.getElementById('section-career').checked,
+          skill: document.getElementById('section-skill').checked,
+          experience: document.getElementById('section-experience').checked,
+          certificate: document.getElementById('section-certificate').checked,
+          preference: document.getElementById('section-preference').checked,
+          portfolio: document.getElementById('section-portfolio').checked,
+          description: document.getElementById('section-career-description').checked,
+          introduction: document.getElementById('section-introduction').checked
+        }
+      }
+
       function saveResume(event) {
         event.preventDefault();  // form 동작 방지
 
@@ -461,6 +475,7 @@
         const address = document.getElementById('address').value;
         const detailAddress = document.getElementById('detail-address').value;
 
+        const sectionCheckboxStates = getSectionCheckboxStates();
         const sections = {
           education: collectEducationData() || [],
           career: collectCareerData() || [],
@@ -470,7 +485,8 @@
           portfolio: collectPortfolioData() || [],
           description: collectCareerDescriptionData() || [],
           introduction: collectIntroductionData() || [],
-          skills: selectedSkills || []
+          skills: selectedSkills || [],
+          sectionCheckboxStates: sectionCheckboxStates
         };
 
         document.getElementById("sections-json").value = JSON.stringify(sections);
@@ -515,70 +531,65 @@
     }
 
 
-      
-
-
-
-
-      function getCookie(name) {
-        let cookieValue = null;
-        if (document.cookie && document.cookie !== '') {
-          const cookies = document.cookie.split(';');
-          for (let i = 0; i < cookies.length; i++) {
-            const cookie = cookies[i].trim();
-            if (cookie.substring(0, name.length + 1) === (name + '=')) {
-              cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-              break;
-            }
+    function getCookie(name) {
+      let cookieValue = null;
+      if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+          const cookie = cookies[i].trim();
+          if (cookie.substring(0, name.length + 1) === (name + '=')) {
+            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+            break;
           }
         }
-        return cookieValue;
       }
+      return cookieValue;
+    }
 
 
 
 
-      function addToResumeList(title) {
-        const listDiv = document.querySelector('.resume-list');
-        const newItem = document.createElement('div');
-        newItem.textContent = title;
-        newItem.onclick = () => loadResume(title);
-        listDiv.appendChild(newItem);
-      }
+    function addToResumeList(title) {
+      const listDiv = document.querySelector('.resume-list');
+      const newItem = document.createElement('div');
+      newItem.textContent = title;
+      newItem.onclick = () => loadResume(title);
+      listDiv.appendChild(newItem);
+    }
 
-      function loadResume(title) {
-        const resumes = JSON.parse(localStorage.getItem('resumeList')) || [];
-        const resume = resumes.find(r => r.basicInfo.title === title);
-        if (!resume) return;
+    function loadResume(title) {
+      const resumes = JSON.parse(localStorage.getItem('resumeList')) || [];
+      const resume = resumes.find(r => r.basicInfo.title === title);
+      if (!resume) return;
 
-        document.getElementById('resume-title').value = resume.basicInfo.title;
-        document.getElementById('name').value = resume.basicInfo.name;
-        document.getElementById('gender').value = resume.basicInfo.gender;
-        document.getElementById('birthdate').value = resume.basicInfo.birthdate;
-        document.getElementById('email').value = resume.basicInfo.email;
-        document.getElementById('phone').value = resume.basicInfo.phone;
-        document.getElementById('address').value = resume.basicInfo.address;
-        document.getElementById('detail-address').value = resume.basicInfo.detailAddress;
+      document.getElementById('resume-title').value = resume.basicInfo.title;
+      document.getElementById('name').value = resume.basicInfo.name;
+      document.getElementById('gender').value = resume.basicInfo.gender;
+      document.getElementById('birthdate').value = resume.basicInfo.birthdate;
+      document.getElementById('email').value = resume.basicInfo.email;
+      document.getElementById('phone').value = resume.basicInfo.phone;
+      document.getElementById('address').value = resume.basicInfo.address;
+      document.getElementById('detail-address').value = resume.basicInfo.detailAddress;
 
-        selectedSkills = resume.skills;
+      selectedSkills = resume.skills;
 
-        // 만약 배열이 아니면 빈 배열로 강제
-        if (!Array.isArray(selectedSkills)) {
-          if (typeof selectedSkills === 'string') {
-            try {
-              selectedSkills = JSON.parse(selectedSkills);
-              if (!Array.isArray(selectedSkills)) selectedSkills = [];
-            } catch (e) {
-              selectedSkills = [];
-            }
-          } else {
+      // 만약 배열이 아니면 빈 배열로 강제
+      if (!Array.isArray(selectedSkills)) {
+        if (typeof selectedSkills === 'string') {
+          try {
+            selectedSkills = JSON.parse(selectedSkills);
+            if (!Array.isArray(selectedSkills)) selectedSkills = [];
+          } catch (e) {
             selectedSkills = [];
           }
+        } else {
+          selectedSkills = [];
         }
-
-        updateSkillList();
-
       }
+
+      updateSkillList();
+
+    }
 
     function loadResumeFromServer(resumeId) {
       fetch(`/get_resume/${resumeId}/`)
@@ -587,15 +598,13 @@
           return response.json();
         })
         .then(data => {
-          console.log("data 확인:", data); // 서버에서 내려온 전체 데이터 확인
-
           const resume = data.content;
           if (!resume) {
             alert("이력서 데이터가 없습니다.");
             return;
           }
 
-          // 1. 기본 정보
+          // 기본 정보
           document.getElementById('resume-title').value = data.title || '';
           document.getElementById('name').value = resume.name || '';
           document.getElementById('gender').value = resume.gender || '';
@@ -605,19 +614,203 @@
           document.getElementById('address').value = resume.address || '';
           document.getElementById('detail-address').value = resume.detail_address || '';
 
-          // 2. sections > skills
-          // 구조를 다시 한 번 콘솔로 체크 (꼭!)
-          console.log("resume.sections:", resume.sections);
-          selectedSkills = (resume.sections && Array.isArray(resume.sections.skills)) ? resume.sections.skills : [];
-          console.log("불러온 selectedSkills:", selectedSkills);
+          // 기존 리스트들 모두 초기화
+          document.getElementById('education-list').innerHTML = '';
+          document.getElementById('career-list').innerHTML = '';
+          document.getElementById('experience-list').innerHTML = '';
+          document.getElementById('skill-list').innerHTML = '';
+          document.getElementById('certificate-list').innerHTML = '';
+          document.getElementById('preference-list').innerHTML = '';
+          document.getElementById('portfolio-list').innerHTML = '';
+          document.getElementById('career-description-list').innerHTML = '';
+          document.getElementById('introduction-list').innerHTML = '';
 
+          // 1. 학력
+          if (resume.sections && Array.isArray(resume.sections.education)) {
+            resume.sections.education.forEach(edu => {
+              const list = document.getElementById('education-list');
+              const entry = document.createElement('div');
+              entry.className = 'education-entry';
+              entry.innerHTML = `
+                <div class="education-summary" style="display:block;">
+                  <div class="education-card">
+                    <h4>${edu.school || ''} (${edu.startDate || edu['입학년도'] || ''} ~ ${edu.endDate || edu['졸업년도'] || ''})</h4>
+                    <p><strong>전공:</strong> ${edu.major || edu['전공'] || ''}</p>
+                    <p><strong>학점:</strong> ${edu.grade || edu['학점'] || ''}</p>
+                    <p><strong>졸업 구분:</strong> ${edu.graduation || edu['졸업구분'] || ''}</p>
+                  </div>
+                </div>
+              `;
+              list.appendChild(entry);
+            });
+          }
+
+          // 2. 경력
+          if (resume.sections && Array.isArray(resume.sections.career)) {
+            resume.sections.career.forEach(career => {
+              const list = document.getElementById('career-list');
+              const entry = document.createElement('div');
+              entry.className = 'career-entry';
+              entry.innerHTML = `
+                <div class="career-summary" style="display:block;">
+                  <div class="career-card">
+                    <h4>${career.company || ''} (${career.startDate || career['입사년월'] || ''} ~ ${career.endDate || career['퇴사년월'] || ''})</h4>
+                    <p><strong>직무:</strong> ${career.position || career['직무'] || ''}</p>
+                    <p><strong>근무부서:</strong> ${career.department || career['근무부서'] || ''}</p>
+                    <p><strong>직급:</strong> ${career.rank || career['직급'] || ''}</p>
+                    <p><strong>담당업무:</strong> ${career.duties || career['담당업무'] || ''}</p>
+                  </div>
+                </div>
+              `;
+              list.appendChild(entry);
+            });
+          }
+
+          // 3. 경험/활동/교육
+          if (resume.sections && Array.isArray(resume.sections.experience)) {
+            resume.sections.experience.forEach(exp => {
+              const list = document.getElementById('experience-list');
+              const entry = document.createElement('div');
+              entry.className = 'experience-entry';
+              entry.innerHTML = `
+                <div class="experience-summary" style="display:block;">
+                  <div class="experience-card">
+                    <h4>${exp.activityType || exp['활동 유형'] || ''} - ${exp.place || exp['기관/장소명'] || ''} 
+                      (${exp.startDate || exp['시작년월'] || ''} ~ ${exp.endDate || exp['종료년월'] || ''})</h4>
+                    <p><strong>활동 설명:</strong> ${exp.description || exp['활동 설명'] || ''}</p>
+                  </div>
+                </div>
+              `;
+              list.appendChild(entry);
+            });
+          }
+
+          // 4. 스킬
+          selectedSkills = (resume.sections && Array.isArray(resume.sections.skills)) ? resume.sections.skills : [];
           updateSkillList();
+
+          // 5. 자격/어학/수상
+          if (resume.sections && Array.isArray(resume.sections.certificate)) {
+            const list = document.getElementById('certificate-list');
+            resume.sections.certificate.forEach(cert => {
+              const card = document.createElement('div');
+              card.className = 'cert-card';
+
+              let detail = '';
+              if (cert.type === 'license' || cert.type === '자격증') {
+                detail = `<strong>[자격증]</strong> ${cert.license_name || cert['자격증명'] || ''} · ${cert.issuer || cert['발행처'] || ''} (${cert.pass_date || cert['합격년월'] || ''})`;
+              } else if (cert.type === 'language' || cert.type === '어학') {
+                detail = `<strong>[어학]</strong> ${cert.lang || cert['언어'] || ''} ${cert.exam || cert['어학시험명'] || ''} ${cert.score || cert['급수/점수'] || ''} (${cert.status || cert['취득상태'] || ''})`;
+              } else if (cert.type === 'award' || cert.type === '수상') {
+                detail = `<strong>[수상]</strong> ${cert.award_name || cert['수상/공모전명'] || ''} · ${cert.host || cert['수여/주최기관'] || ''} (${cert.award_date || cert['수상일'] || ''})`;
+              }
+              card.innerHTML = `<span>${detail}</span>`;
+              list.appendChild(card);
+            });
+          }
+
+          // 6. 취업우대사항
+          if (resume.sections && Array.isArray(resume.sections.preference)) {
+            const list = document.getElementById('preference-list');
+            resume.sections.preference.forEach(pref => {
+              const card = document.createElement('div');
+              card.className = 'pref-card';
+              let detail = '';
+              if (pref.type === 'veteran' || pref.type === '보훈대상') {
+                detail = `[보훈] ${pref.v_type || pref['보훈구분'] || ''} (증서: ${pref.v_cert || pref['증명서 번호'] || ''})`;
+              } else if (pref.type === 'military' || pref.type === '병역대상') {
+                if (pref.m_status === 'served' || pref.m_status === '군필') {
+                  detail = `[군필] ${pref.m_branch || ''}·${pref.m_rank || ''} (${pref.m_start || ''}~${pref.m_end || ''}) / ${pref.m_reason || ''}`;
+                } else {
+                  detail = `[병역] ${pref.m_status || ''}`;
+                }
+              } else if (pref.type === 'employment' || pref.type === '고용지원금') {
+                detail = `[지원금] ${pref.e_type || ''}`;
+              }
+              card.innerHTML = `<span>${detail}</span>`;
+              list.appendChild(card);
+            });
+          }
+
+          // 7. 포트폴리오
+          if (resume.sections && Array.isArray(resume.sections.portfolio)) {
+            const list = document.getElementById('portfolio-list');
+            resume.sections.portfolio.forEach(port => {
+              const entry = document.createElement('div');
+              entry.className = 'portfolio-entry';
+              let files = '';
+              if (port.files && typeof port.files === 'string') files = port.files;
+              if (Array.isArray(port.files)) files = port.files.join(', ');
+              entry.innerHTML = `
+                <div class="portfolio-summary" style="display:block;">
+                  <div class="portfolio-card">
+                    <h4>${port.project || port['프로젝트명'] || ''}</h4>
+                    <p><strong>설명:</strong> ${port.description || port['프로젝트 설명'] || ''}</p>
+                    ${files ? `<p><strong>첨부파일:</strong> ${files}</p>` : ''}
+                  </div>
+                </div>
+              `;
+              list.appendChild(entry);
+            });
+          }
+
+          // 8. 경력기술서
+          if (resume.sections && Array.isArray(resume.sections.description)) {
+            const list = document.getElementById('career-description-list');
+            resume.sections.description.forEach(desc => {
+              const entry = document.createElement('div');
+              entry.className = 'career-desc-card';
+              entry.style.border = "1px solid #ddd";
+              entry.style.padding = "10px";
+              entry.style.marginTop = "10px";
+              entry.style.position = "relative";
+              entry.innerHTML = `
+                <div style="white-space: pre-wrap;">${desc.content || desc['내용'] || ''}</div>
+              `;
+              list.appendChild(entry);
+            });
+          }
+
+          // 9. 자기소개서 (여러개 저장할 수 있게)
+          if (resume.sections && Array.isArray(resume.sections.introduction)) {
+            const list = document.getElementById('introduction-list');
+            resume.sections.introduction.forEach(intro => {
+              const entry = document.createElement('div');
+              entry.className = 'introduction-card';
+              entry.style.border = "1px solid #ddd";
+              entry.style.padding = "10px";
+              entry.style.marginTop = "10px";
+              entry.style.position = "relative";
+              entry.innerHTML = `
+                <h4>${intro.title || intro['제목'] || ''}</h4>
+                <div style="white-space: pre-wrap;">${intro.content || intro['내용'] || ''}</div>
+              `;
+              list.appendChild(entry);
+            });
+          }
+
+          // 10. 체크박스 상태 복원 및 섹션 열기
+          if (resume.sections && resume.sections.sectionCheckboxStates) {
+            const cb = resume.sections.sectionCheckboxStates;
+            Object.keys(cb).forEach(key => {
+              const checked = !!cb[key];
+              const checkbox = document.getElementById(`section-${key}`);
+              const section = document.getElementById(`${key}-section`);
+
+              console.log(`checkbox id: section-${key}`, checkbox, "checked:", checked);
+              
+              if (checkbox) checkbox.checked = checked;
+              if (section) section.style.display = checked ? 'block' : 'none';
+            });
+          }
 
         })
         .catch(error => {
           alert('이력서 불러오기 실패: ' + error.message);
         });
     }
+
+
 
 
 
