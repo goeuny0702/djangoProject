@@ -180,7 +180,7 @@ body {
   height: 150px;
   padding: 12px;
   font-size: 16px;
-  border: 1px solid #ccc;
+  /* border: 1px solid #ccc; */
   border-radius: 8px;
 }
 
@@ -338,4 +338,17 @@ body {
 
 .skill-search {
   padding-bottom: 10px
+}
+
+.pref-card,
+.career-card,
+.cert-card,
+.experience-card,
+.education-card,
+.intro-card,
+.portfolio-card,
+.career-desc-card,
+.experience-card {
+  border-bottom: 1px solid #ddd;
+  padding: 10px 0;
 }
