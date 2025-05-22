@@ -137,3 +137,8 @@ OPENAI_API_KEY = config('OPENAI_API_KEY')
 LOGIN_URL = '/login/'  # 로그인 페이지 경로
 LOGIN_REDIRECT_URL = '/resume/'  # 로그인 성공 후 이력서 페이지로 이동
 
+# 이미지
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
+
+

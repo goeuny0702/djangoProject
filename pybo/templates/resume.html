@@ -44,7 +44,26 @@
     </div>
     <div class="inputgroup"
       style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
-      <div class="profile-image" style="width: 20%; height: 200px; background-color: #f8d7da;"></div>
+      {% comment %} 사진첨부부 {% endcomment %}
+      <!-- 네모 박스 -->
+      <div id="profile-image-preview"
+        style="width: 20%; height: 200px; background-color: #f8d7da; position: relative; background-size: cover; background-position: center; cursor: pointer;">
+      {% if resume.profile_image %}
+        <script>
+          document.addEventListener("DOMContentLoaded", function() {
+            document.getElementById("profile-image-preview").style.backgroundImage = "url('{{ resume.profile_image.url }}')";
+            document.getElementById("upload-plus").style.display = 'none';
+          });
+        </script>
+      {% endif %}
+      <span id="upload-plus" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 24px;">+</span>
+    </div>
+    <input type="file" id="profile-image-input" name="profile_image" style="display: none;" onchange="previewProfileImage(event)">
+
+
+
+
+      
       <div class="personal-info" style="width: 70%;">
         <input type="text" placeholder="이름" class="text_input_main" id="name">
         <input type="text" placeholder="성별" class="text_input_main" id="gender">
@@ -519,13 +538,29 @@
           sections_json: JSON.stringify(sections)
         };
 
+        const formData = new FormData();
+        formData.append('title', title);
+        formData.append('name', name);
+        formData.append('gender', gender);
+        formData.append('birthdate', birthdate);
+        formData.append('email', email);
+        formData.append('phone', phone);
+        formData.append('address', address);
+        formData.append('detail-address', detailAddress);
+        formData.append('sections_json', JSON.stringify(sections));
+
+        // 프로필 이미지가 있으면 추가
+        const profileImageFile = document.getElementById('profile-image-input').files[0];
+        if (profileImageFile) {
+          formData.append('profile_image', profileImageFile);
+        }
+
         fetch('/save_resume/', {
           method: 'POST',
           headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
             'X-CSRFToken': getCookie('csrftoken')
           },
-          body: new URLSearchParams(resumeData)
+          body: formData
         })
         .then(response => {
           if (response.redirected) {
@@ -543,6 +578,7 @@
           console.error("에러 발생:", error);
           alert("서버 요청 중 오류가 발생했어요.");
         });
+
     }
 
 
@@ -840,10 +876,19 @@
             });
           }
 
+          //이미지지
+          if (data.profile_image_url) {
+            const previewDiv = document.getElementById("profile-image-preview");
+            previewDiv.style.backgroundImage = `url('${data.profile_image_url}')`;
+            document.getElementById("upload-plus").style.display = 'none';
+          }
+
         })
         .catch(error => {
           alert('이력서 불러오기 실패: ' + error.message);
         });
+
+
     }
 
 
@@ -2209,7 +2254,22 @@
         if (typeof certificateData !== 'undefined') certificateData = [];
         if (typeof preferenceData !== 'undefined') preferenceData = [];
 
-        // 7. 미리보기 등 기타 영역도 초기화 필요하면 여기서
+        // 7. 이미지 초기화
+        // 프로필 이미지 초기화
+        const previewDiv = document.getElementById("profile-image-preview");
+        const fileInput = document.getElementById("profile-image-input");
+        const uploadPlus = document.getElementById("upload-plus");
+
+        if (previewDiv) {
+          previewDiv.style.backgroundImage = '';
+        }
+        if (uploadPlus) {
+          uploadPlus.style.display = 'inline';
+        }
+        if (fileInput) {
+          fileInput.value = '';  // input[type=file] 초기화
+}
+
 
       
       }
@@ -2316,6 +2376,29 @@
           console.error(e); alert("첨삭 실패");
         }
       }
+
+      
+      // 이미지 선택 시 미리보기로 표시
+      function previewProfileImage(event) {
+        const input = event.target;
+        const previewDiv = document.getElementById("profile-image-preview");
+
+        if (input.files && input.files[0]) {
+          const reader = new FileReader();
+          reader.onload = function(e) {
+            previewDiv.style.backgroundImage = `url('${e.target.result}')`;
+            document.getElementById("upload-plus").style.display = 'none';  // + 버튼 숨김
+          };
+          reader.readAsDataURL(input.files[0]);
+        }
+      }
+
+      // div 클릭 시 파일 선택 input 열기
+      document.getElementById("profile-image-preview").addEventListener("click", function() {
+        document.getElementById("profile-image-input").click();
+      });
+
+
 
 
 

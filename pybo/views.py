@@ -95,7 +95,7 @@ def logout_view(request):
 def save_resume(request):
     if request.method == 'POST':
         import pprint
-        pprint.pprint(request.POST)   # 1) sections_json 실제로 오는지 확인
+        pprint.pprint(request.POST)
 
         content_dict = {
             "name": request.POST.get("name"),
@@ -105,24 +105,35 @@ def save_resume(request):
             "phone": request.POST.get("phone"),
             "address": request.POST.get("address"),
             "detail_address": request.POST.get("detail-address"),
-            # "skills": request.POST.get("skills"),  
         }
 
         sections_json = request.POST.get("sections_json")
         if sections_json:
             try:
                 sections_data = json.loads(sections_json)
-                content_dict["sections"] = sections_data   
+                content_dict["sections"] = sections_data
             except Exception as e:
                 print("sections_json 파싱 실패", e)
 
-        pprint.pprint(content_dict)  # 저장 직전 실제로 skills, sections 찍힘?
+        pprint.pprint(content_dict)
 
-        Resume.objects.create(
+        # 이미지 처리
+        image_file = request.FILES.get("profile_image")
+        resume = Resume.objects.create(
             user=request.user,
             title=request.POST.get("title"),
-            content=json.dumps(content_dict)
+            profile_image=image_file,
+            content="임시"  # 우선 임시 저장
         )
+
+        # 이미지가 있다면 content에도 포함
+        if resume.profile_image:
+            content_dict["profile_image_url"] = resume.profile_image.url
+
+        # 실제 content 저장
+        resume.content = json.dumps(content_dict)
+        resume.save()
+
         return redirect('resume_page')
 
 
@@ -136,13 +147,18 @@ def resume_page(request):
 def get_resume(request, resume_id):
     try:
         resume = Resume.objects.get(id=resume_id, user=request.user)
+        content_dict = json.loads(resume.content)
+
         resume_data = {
             'title': resume.title,
-            'content': json.loads(resume.content)  # content 전체를 dict로 전달
+            'content': content_dict,
+            'profile_image_url': resume.profile_image.url if resume.profile_image else None  # ✅ 쉼표도 포함
         }
         return JsonResponse(resume_data)
     except Resume.DoesNotExist:
         return JsonResponse({'error': '이력서를 찾을 수 없습니다.'}, status=404)
+
+
 
 
     
