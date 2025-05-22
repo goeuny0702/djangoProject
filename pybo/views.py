@@ -19,7 +19,46 @@ from openai import OpenAI
 from openai import OpenAIError, RateLimitError, AuthenticationError
 
 # API 키 설정 (환경변수에서 받아오기)
-openai.api_key = settings.OPENAI_API_KEY
+client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+
+# ─────────────────── 맞춤법 ───────────────────
+@csrf_exempt
+@require_POST
+def spellcheck(request):
+    text = json.loads(request.body).get("text", "")
+
+    resp = client.chat.completions.create(
+        model="gpt-4o-mini",
+        messages=[
+            {"role":"system","content":"너는 한국어 교정 도우미야. 맞춤법·띄어쓰기·오탈자만 고쳐서 원문 형식 그대로 돌려줘."},
+            {"role":"user",  "content":text}
+        ],
+        temperature=0
+    )
+    corrected = resp.choices[0].message.content.strip()
+    return JsonResponse({"result": corrected})
+
+# ─────────────────── AI 첨삭 ───────────────────
+@csrf_exempt
+@require_POST
+def proofread(request):
+    text = json.loads(request.body).get("text", "")
+
+    resp = client.chat.completions.create(
+        model="gpt-4o-mini",
+        messages=[
+            {"role":"system","content":(
+              "너는 인사담당자 관점의 첨삭 코치야. 문맥은 유지하되 "
+              "① 맞춤법 ② 문장 간 흐름 ③ 구체적·적극적 어휘 제안 세가지를 반영해 "
+              "수정본만 돌려줘."
+              "직업에 따른 전문용어를 포함해서 작성해줘"
+            )},
+            {"role":"user","content":text}
+        ],
+        temperature=0.3
+    )
+    improved = resp.choices[0].message.content.strip()
+    return JsonResponse({"result": improved})
 
 def ai_chat(request):
     user_input = request.GET.get('q', '')
@@ -93,7 +132,7 @@ def logout_view(request):
 def save_resume(request):
     if request.method == 'POST':
         import pprint
-        pprint.pprint(request.POST)
+        pprint.pprint(request.POST)   # 1) sections_json 실제로 오는지 확인
 
         content_dict = {
             "name": request.POST.get("name"),
@@ -103,30 +142,24 @@ def save_resume(request):
             "phone": request.POST.get("phone"),
             "address": request.POST.get("address"),
             "detail_address": request.POST.get("detail-address"),
+            # "skills": request.POST.get("skills"),  
         }
 
         sections_json = request.POST.get("sections_json")
         if sections_json:
             try:
                 sections_data = json.loads(sections_json)
-                content_dict["sections"] = sections_data
+                content_dict["sections"] = sections_data   
             except Exception as e:
                 print("sections_json 파싱 실패", e)
 
-        pprint.pprint(content_dict)
+        pprint.pprint(content_dict)  # 저장 직전 실제로 skills, sections 찍힘?
 
-        resume = Resume.objects.create(
+        Resume.objects.create(
             user=request.user,
-            title=request.POST.get("title"),
-            content=json.dumps(content_dict)
+            title=resume_title,
+            defaults={'content': json.dumps(content_dict)}
         )
-
-        # JS에서 'X-Requested-With': 'XMLHttpRequest' 헤더를 보내거나,
-        # 또는 특정 파라미터(예: preview=1)를 보내면 미리보기 요청임을 구분할 수 있습니다.
-        if request.headers.get('x-requested-with') == 'XMLHttpRequest':
-            return JsonResponse({'resume_id': resume.id})
-
-        # 일반 저장(폼 제출 등)일 때는 기존대로 리다이렉트
         return redirect('resume_page')
 
 
