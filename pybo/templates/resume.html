@@ -324,7 +324,7 @@
     </div>
 
     <!--경력기술서-->
-    <div class="section" id="career-description-section" style="display: none;">
+    <div class="section" id="description-section" style="display: none;">
       <div class="section-header" style="display: flex; justify-content: space-between; align-items: center;">
         <div class="section-title">경력기술서</div>
         <button class="addbtn" onclick="showdescription()">+추가</button>
@@ -420,7 +420,7 @@
           </div>
           <div class="checkboxtext">
             <span>경력기술서</span>
-            <input type="checkbox" id="section-career-description" onchange="toggleSection('career-description-section')">
+            <input type="checkbox" id="section-description" onchange="toggleSection('description-section')">
           </div>
           <div class="checkboxtext">
             <span>자기소개서</span>
@@ -461,7 +461,7 @@
           certificate: document.getElementById('section-certificate').checked,
           preference: document.getElementById('section-preference').checked,
           portfolio: document.getElementById('section-portfolio').checked,
-          description: document.getElementById('section-career-description').checked,
+          description: document.getElementById('section-description').checked,
           introduction: document.getElementById('section-introduction').checked
         }
       }
@@ -1952,16 +1952,15 @@
       }
 
 
-      function saveDescription() {
-        const text = document.getElementById("careerDescriptionText").value; 
+      function savedescription() {
+        const text = document.getElementById("careerDescriptionText").value;
+        if (!text.trim()) {
+          alert("내용을 입력하세요.");
+          return;
+        }
 
         const summaryContainer = document.createElement("div");
         summaryContainer.className = "career-desc-card";
-        summaryContainer.style.border = "1px solid #ddd";
-        summaryContainer.style.padding = "10px";
-        summaryContainer.style.marginTop = "10px";
-        summaryContainer.style.position = "relative";
-
         summaryContainer.innerHTML = `
           <div style="white-space: pre-wrap;">${text}</div>
           <div style="margin-top: 10px; text-align: right;">
@@ -1971,7 +1970,6 @@
         `;
 
         document.getElementById("career-description-list").appendChild(summaryContainer);
-
         document.getElementById("careerDescriptionText").value = "";
         document.getElementById("career-description-form").style.display = "none";
         updateCharCount();
