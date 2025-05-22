@@ -93,7 +93,7 @@ def logout_view(request):
 def save_resume(request):
     if request.method == 'POST':
         import pprint
-        pprint.pprint(request.POST)   # 1) sections_json 실제로 오는지 확인
+        pprint.pprint(request.POST)
 
         content_dict = {
             "name": request.POST.get("name"),
@@ -103,24 +103,30 @@ def save_resume(request):
             "phone": request.POST.get("phone"),
             "address": request.POST.get("address"),
             "detail_address": request.POST.get("detail-address"),
-            # "skills": request.POST.get("skills"),  
         }
 
         sections_json = request.POST.get("sections_json")
         if sections_json:
             try:
                 sections_data = json.loads(sections_json)
-                content_dict["sections"] = sections_data   
+                content_dict["sections"] = sections_data
             except Exception as e:
                 print("sections_json 파싱 실패", e)
 
-        pprint.pprint(content_dict)  # 저장 직전 실제로 skills, sections 찍힘?
+        pprint.pprint(content_dict)
 
-        Resume.objects.create(
+        resume = Resume.objects.create(
             user=request.user,
             title=request.POST.get("title"),
             content=json.dumps(content_dict)
         )
+
+        # JS에서 'X-Requested-With': 'XMLHttpRequest' 헤더를 보내거나,
+        # 또는 특정 파라미터(예: preview=1)를 보내면 미리보기 요청임을 구분할 수 있습니다.
+        if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+            return JsonResponse({'resume_id': resume.id})
+
+        # 일반 저장(폼 제출 등)일 때는 기존대로 리다이렉트
         return redirect('resume_page')
 
 
@@ -156,5 +162,20 @@ def delete_resume(request, resume_id):
             return JsonResponse({'success': False, 'error': 'Resume not found'}, status=404)
     return JsonResponse({'success': False, 'error': 'Invalid method'}, status=405)
 
+@login_required
+def preview_pdf(request, resume_id):
+    # 이력서 객체를 가져옴
+    resume = get_object_or_404(Resume, id=resume_id, user=request.user)
+    content = json.loads(resume.content)
+    title = resume.title
 
+    return render(request, 'pdf.html', {
+        'title': title,
+        'content': content
+    })
+
+@login_required
+def get_resume_list(request):
+    resumes = Resume.objects.filter(user=request.user).values('id', 'title')
+    return JsonResponse({'resumes': list(resumes)})
     

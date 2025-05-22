@@ -428,7 +428,8 @@
           </div>
         </div>
 
-        <button class="endbtn">이력서 미리보기</button><br>
+        <button class="endbtn" onclick="previewResume()">이력서 미리보기</button>
+
         <input type="hidden" id="sections-json">
         <button class="endbtn" onclick="saveResume(event)">작성완료</button>
 
@@ -437,6 +438,8 @@
 
 
     <script>
+      let selectedResumeId = null;
+
       const loggedInUserId = "{{ request.user.username }}";
 
        // 사용할 스킬 목록
@@ -595,6 +598,7 @@
     }
 
     function loadResumeFromServer(resumeId) {
+      selectedResumeId = resumeId;
       fetch(`/get_resume/${resumeId}/`)
         .then(response => {
           if (!response.ok) throw new Error('이력서 불러오기 실패');
@@ -2142,6 +2146,69 @@
         // 7. 미리보기 등 기타 영역도 초기화 필요하면 여기서
 
       
+      }
+
+
+      function previewResume() {
+        if (selectedResumeId) {
+          // 이미 저장된 이력서를 선택한 상태인 경우 → GET 요청으로 미리보기
+          window.open(`/resume/preview/${selectedResumeId}/`, '_blank');
+          return;
+        }
+        const title = document.getElementById('resume-title').value;
+        const name = document.getElementById('name').value;
+        const gender = document.getElementById('gender').value;
+        const birthdate = document.getElementById('birthdate').value;
+        const email = document.getElementById('email').value;
+        const phone = document.getElementById('phone').value;
+        const address = document.getElementById('address').value;
+        const detailAddress = document.getElementById('detail-address').value;
+
+        const sectionCheckboxStates = getSectionCheckboxStates();
+        const sections = {
+          education: collectEducationData() || [],
+          career: collectCareerData() || [],
+          experience: collectExperienceData() || [],
+          certificate: collectCertificateData() || [],
+          preference: collectPreferenceData() || [],
+          portfolio: collectPortfolioData() || [],
+          description: collectCareerDescriptionData() || [],
+          introduction: collectIntroductionData() || [],
+          skills: selectedSkills || [],
+          sectionCheckboxStates: sectionCheckboxStates
+        };
+
+        const formData = new URLSearchParams();
+        formData.append("title", title);
+        formData.append("name", name);
+        formData.append("gender", gender);
+        formData.append("birthdate", birthdate);
+        formData.append("email", email);
+        formData.append("phone", phone);
+        formData.append("address", address);
+        formData.append("detail-address", detailAddress);
+        formData.append("sections_json", JSON.stringify(sections));
+
+        fetch('/save_resume/', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'X-CSRFToken': getCookie('csrftoken'),
+            'X-Requested-With': 'XMLHttpRequest'
+          },
+          body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+          if (data.resume_id) {
+            window.open(`/resume/preview/${data.resume_id}/`, '_blank');
+          } else {
+            alert("이력서 저장에 실패했습니다.");
+          }
+        })
+        .catch(err => {
+          alert("미리보기 실패: " + err);
+        });
       }
 
 

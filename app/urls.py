@@ -32,5 +32,6 @@ urlpatterns = [
     path('save_resume/', views.save_resume, name='save_resume'),
     path('get_resume/<int:resume_id>/', views.get_resume, name='get_resume'),
     path('resume/delete/<int:resume_id>/', views.delete_resume, name='delete_resume'),
-
+    path('resume/preview/<int:resume_id>/', views.preview_pdf, name='preview_pdf'),
+    path('get_resume_list/', views.get_resume_list, name='get_resume_list'),
 ]

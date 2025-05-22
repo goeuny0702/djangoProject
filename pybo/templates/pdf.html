@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>이력서</title>
+  <style>
+    @page {
+      size: A4;
+      margin: 0;
+    }
+    body {
+      font-family: 'Noto Sans KR', sans-serif;
+      margin: auto;
+      padding: 20mm;
+      width: 210mm;
+      min-height: 297mm;
+      color: #333;
+      box-sizing: border-box;
+    }
+    .section {
+      border: 1px solid #ccc;
+      padding: 24px;
+      margin-bottom: 32px;
+      border-radius: 6px;
+    }
+    .header, .subtitle { font-weight: bold; margin-bottom: 16px; }
+    .line { border-top: 1px solid #ccc; margin: 24px 0; }
+    .profile-pic { width: 120px; height: 160px; background: #eee; border: 1px solid #ccc; }
+    ul { padding-left: 20px; }
+  </style>
+</head>
+<body>
+  <div class="section">
+    <div class="header">{{ title }}</div>
+    <div style="display: flex;">
+      <div class="profile-pic"></div>
+      <div style="margin-left: 20px;">
+        <p><strong>{{ content.name }}</strong></p>
+        <p>{{ content.gender }}, {{ content.birthdate }}</p>
+        <p>{{ content.email }}</p>
+        <p>{{ content.phone }}</p>
+        <p>{{ content.address }} {{ content.detail_address }}</p>
+      </div>
+    </div>
+  </div>
+
+  {% if content.sections.education %}
+  <div class="section">
+    <div class="subtitle">학력</div>
+    {% for edu in content.sections.education %}
+      <div>{{ edu.school }} ({{ edu.startDate }} ~ {{ edu.endDate }}) - {{ edu.graduation }}<br>전공: {{ edu.major }} / 학점: {{ edu.grade }}</div>
+    {% endfor %}
+  </div>
+  {% endif %}
+
+  {% if content.sections.career %}
+  <div class="section">
+    <div class="subtitle">경력</div>
+    {% for c in content.sections.career %}
+      <div>{{ c.company }} ({{ c.startDate }} ~ {{ c.endDate }})<br>직무: {{ c.position }} / 부서: {{ c.department }} / 직급: {{ c.rank }}<br>업무: {{ c.duties }}</div>
+    {% endfor %}
+  </div>
+  {% endif %}
+
+  {% if content.sections.experience %}
+  <div class="section">
+    <div class="subtitle">경험/활동/교육</div>
+    {% for e in content.sections.experience %}
+      <div>{{ e.activityType }} - {{ e.place }}<br>기간: {{ e.startDate }} ~ {{ e.endDate }}<br>{{ e.description }}</div>
+    {% endfor %}
+  </div>
+  {% endif %}
+
+  {% if content.sections.skills %}
+  <div class="section">
+    <div class="subtitle">스킬</div>
+    <ul>
+      {% for s in content.sections.skills %}<li>{{ s }}</li>{% endfor %}
+    </ul>
+  </div>
+  {% endif %}
+
+  {% if content.sections.certificate %}
+  <div class="section">
+    <div class="subtitle">자격/어학/수상</div>
+    {% for cert in content.sections.certificate %}
+      {% if cert.type == 'license' %}
+        <div>
+          [자격증] {{ cert.license_name }} · {{ cert.issuer }} ({{ cert.pass_date }})
+        </div>
+      {% elif cert.type == 'language' %}
+        <div>
+          [어학] {{ cert.lang }} {{ cert.exam }} {{ cert.score }} ({{ cert.status }})
+        </div>
+      {% elif cert.type == 'award' %}
+        <div>
+          [수상] {{ cert.award_name }} · {{ cert.host }} ({{ cert.award_date }})
+        </div>
+      {% endif %}
+    {% empty %}
+      <p>자격/어학/수상 정보가 없습니다.</p>
+    {% endfor %}
+  </div>
+  {% endif %}
+
+  {% if content.sections.preference %}
+  <div class="section">
+    <div class="subtitle">취업우대사항</div>
+    {% for p in content.sections.preference %}
+      {% if p.type == 'veteran' %}
+        <div>[보훈] {{ p.v_type }} (증서: {{ p.v_cert }})</div>
+      {% elif p.type == 'military' %}
+        <div>[병역] {{ p.m_status }}{% if p.m_status == 'served' %} ({{ p.m_branch }}·{{ p.m_rank }} {{ p.m_start }}~{{ p.m_end }} / {{ p.m_reason }}){% endif %}</div>
+      {% elif p.type == 'employment' %}
+        <div>[지원금] {{ p.e_type }}</div>
+      {% endif %}
+    {% endfor %}
+  </div>
+  {% endif %}
+
+  {% if content.sections.portfolio %}
+  <div class="section">
+    <div class="subtitle">포트폴리오</div>
+    {% for pf in content.sections.portfolio %}
+      <div>{{ pf.project }}<br>{{ pf.description }}</div>
+    {% endfor %}
+  </div>
+  {% endif %}
+
+  {% if content.sections.description %}
+  <div class="section">
+    <div class="subtitle">경력기술서</div>
+    {% for d in content.sections.description %}
+      <div>{{ d.content }}</div>
+    {% endfor %}
+  </div>
+  {% endif %}
+
+  {% if content.sections.introduction %}
+  <div class="section">
+    <div class="subtitle">자기소개서</div>
+    {% for i in content.sections.introduction %}
+      <div><strong>{{ i.title }}</strong><br>{{ i.content }}</div>
+    {% endfor %}
+  </div>
+  {% endif %}
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  <script>
+    window.onload = function () {
+      const resume = document.body;
+      html2pdf().set({
+        margin: 0,
+        filename: '이력서.pdf',
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 2 },
+        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+      }).from(resume).save();
+    }
+  </script>
+</body>
+</html>
