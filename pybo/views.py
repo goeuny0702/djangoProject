@@ -157,8 +157,8 @@ def save_resume(request):
 
         Resume.objects.create(
             user=request.user,
-            title=resume_title,
-            defaults={'content': json.dumps(content_dict)}
+            title=request.POST.get('title'),
+            content=json.dumps(content_dict)
         )
         return redirect('resume_page')
 
