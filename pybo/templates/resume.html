@@ -379,7 +379,7 @@
     <!-- 자기소개서 -->
     <div class="section" id="introduction-section" style="display: none;">
       <div class="section-header" style="display: flex; justify-content: space-between; align-items: center;">
-      <div class="section-title">자기소개서</div>
+        <div class="section-title">자기소개서</div>
       <button class="addbtn" onclick="showIntroductionForm()">+추가</button>
       </div>
 
@@ -400,10 +400,10 @@
             <button type="button" onclick="runAIReview()" class="cencle_save_btn tool-btn">
               AI&nbsp;첨삭
             </button>
-          </div>
+        </div>
           <div style="color: #999; font-size: 14px;">
             총 글자수 <span id="introChars">0</span>자 / <span id="introBytes">0</span> byte
-          </div>
+        </div>
         </div>
 
 
@@ -571,45 +571,45 @@
 
 
 
-    function getCookie(name) {
-      let cookieValue = null;
-      if (document.cookie && document.cookie !== '') {
-        const cookies = document.cookie.split(';');
-        for (let i = 0; i < cookies.length; i++) {
-          const cookie = cookies[i].trim();
-          if (cookie.substring(0, name.length + 1) === (name + '=')) {
-            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-            break;
+      function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+          const cookies = document.cookie.split(';');
+          for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+              cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+              break;
+            }
           }
         }
+        return cookieValue;
       }
-      return cookieValue;
-    }
 
 
 
 
-    function addToResumeList(title) {
-      const listDiv = document.querySelector('.resume-list');
-      const newItem = document.createElement('div');
-      newItem.textContent = title;
-      newItem.onclick = () => loadResume(title);
-      listDiv.appendChild(newItem);
-    }
+      function addToResumeList(title) {
+        const listDiv = document.querySelector('.resume-list');
+        const newItem = document.createElement('div');
+        newItem.textContent = title;
+        newItem.onclick = () => loadResume(title);
+        listDiv.appendChild(newItem);
+      }
 
-    function loadResume(title) {
-      const resumes = JSON.parse(localStorage.getItem('resumeList')) || [];
-      const resume = resumes.find(r => r.basicInfo.title === title);
-      if (!resume) return;
+      function loadResume(title) {
+        const resumes = JSON.parse(localStorage.getItem('resumeList')) || [];
+        const resume = resumes.find(r => r.basicInfo.title === title);
+        if (!resume) return;
 
-      document.getElementById('resume-title').value = resume.basicInfo.title;
-      document.getElementById('name').value = resume.basicInfo.name;
-      document.getElementById('gender').value = resume.basicInfo.gender;
-      document.getElementById('birthdate').value = resume.basicInfo.birthdate;
-      document.getElementById('email').value = resume.basicInfo.email;
-      document.getElementById('phone').value = resume.basicInfo.phone;
-      document.getElementById('address').value = resume.basicInfo.address;
-      document.getElementById('detail-address').value = resume.basicInfo.detailAddress;
+        document.getElementById('resume-title').value = resume.basicInfo.title;
+        document.getElementById('name').value = resume.basicInfo.name;
+        document.getElementById('gender').value = resume.basicInfo.gender;
+        document.getElementById('birthdate').value = resume.basicInfo.birthdate;
+        document.getElementById('email').value = resume.basicInfo.email;
+        document.getElementById('phone').value = resume.basicInfo.phone;
+        document.getElementById('address').value = resume.basicInfo.address;
+        document.getElementById('detail-address').value = resume.basicInfo.detailAddress;
 
       selectedSkills = resume.skills;
 
@@ -627,9 +627,9 @@
         }
       }
 
-      updateSkillList();
+        updateSkillList();
 
-    }
+      }
 
     function loadResumeFromServer(resumeId) {
       selectedResumeId = resumeId;
@@ -1344,16 +1344,16 @@
 
         // 보기 카드 형태로 출력될 HTML 구성
         summary.innerHTML = `
-          <div class="education-card">
-            <h4>${values['학교명'] || ''} (${values['입학년도'] || ''} ~ ${values['졸업년도'] || ''})</h4>
-            <p><strong>전공:</strong> ${values['전공'] || ''}</p>
-            <p><strong>학점:</strong> ${values['학점'] || ''}</p>
-            <p><strong>졸업 구분:</strong> ${values['졸업구분'] || ''}
+    <div class="education-card">
+      <h4>${values['학교명'] || ''} (${values['입학년도'] || ''} ~ ${values['졸업년도'] || ''})</h4>
+      <p><strong>전공:</strong> ${values['전공'] || ''}</p>
+      <p><strong>학점:</strong> ${values['학점'] || ''}</p>
+      <p><strong>졸업 구분:</strong> ${values['졸업구분'] || ''}
               <button onclick="editEducation(this)" class="cencle_save_btn" style="float: right; margin-left: 8px;">수정</button>
               <button onclick="removeEducationForm(this)" class="cencle_save_btn" style="float: right;">삭제</button>
-            </p>
-          </div>
-        `;
+      </p>
+    </div>
+  `;
 
 
         // 입력 요소 숨기기
@@ -1985,16 +1985,16 @@
         }
 
         summary.innerHTML = `
-        <div class="portfolio-card">
-          <h4>${values['프로젝트명'] || ''}</h4>
-          <p><strong>설명:</strong> ${values['프로젝트 설명'] || ''}</p>
-          ${fileNames.length > 0 ? `<p><strong>첨부파일:</strong> ${fileNames.join(', ')}</p>` : ''}
-          <div style="display: flex; justify-content: flex-end; gap: 8px;">
-            <button onclick="editPortfolio(this)" class="cencle_save_btn">수정</button>
-            <button onclick="removePortfolioForm(this)" class="cencle_save_btn">삭제</button>
-          </div>
-        </div>
-      `;
+    <div class="portfolio-card">
+      <h4>${values['프로젝트명'] || ''}</h4>
+      <p><strong>설명:</strong> ${values['프로젝트 설명'] || ''}</p>
+      ${fileNames.length > 0 ? `<p><strong>첨부파일:</strong> ${fileNames.join(', ')}</p>` : ''}
+      <div style="display: flex; justify-content: flex-end; gap: 8px;">
+        <button onclick="editPortfolio(this)" class="cencle_save_btn">수정</button>
+        <button onclick="removePortfolioForm(this)" class="cencle_save_btn">삭제</button>
+      </div>
+    </div>
+  `;
 
         if (!values['프로젝트명'] || !values['프로젝트 설명']) {
           alert('프로젝트명, 프로젝트 설명은 필수 입력 항목입니다.');
