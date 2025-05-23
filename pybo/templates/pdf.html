@@ -1,8 +1,9 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
-  <title>이력서</title>
+  <title>{{ resume.title }} - 이력서</title>
   <style>
     @page {
       size: A4;
@@ -10,140 +11,259 @@
     }
     body {
       font-family: 'Noto Sans KR', sans-serif;
-      margin: auto;
-      padding: 20mm;
-      width: 210mm;
-      min-height: 297mm;
-      color: #333;
-      box-sizing: border-box;
+      line-height: 1.6;
+      margin: 0;
+      padding: 40px;
+      background-color: white;
+    }
+    .resume-container {
+      max-width: 800px;
+      margin: 0 auto;
+      background: white;
+      padding: 40px;
+    }
+    .header {
+      text-align: center;
+      margin-bottom: 30px;
+      border-bottom: 2px solid #333;
+      padding-bottom: 20px;
+    }
+    .profile-image {
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      margin: 0 auto 20px;
+      background-size: cover;
+      background-position: center;
+      border: 3px solid #333;
     }
     .section {
-      border: 1px solid #ccc;
-      padding: 24px;
-      margin-bottom: 32px;
-      border-radius: 6px;
+      margin-bottom: 30px;
     }
-    .header, .subtitle { font-weight: bold; margin-bottom: 16px; }
-    .line { border-top: 1px solid #ccc; margin: 24px 0; }
-    .profile-pic { width: 120px; height: 160px; background: #eee; border: 1px solid #ccc; }
-    ul { padding-left: 20px; }
+    .section-title {
+      font-size: 1.5em;
+      color: #333;
+      border-bottom: 1px solid #333;
+      padding-bottom: 10px;
+      margin-bottom: 20px;
+    }
+    .info-item {
+      margin-bottom: 10px;
+    }
+    .info-label {
+      font-weight: bold;
+      color: #333;
+      display: inline-block;
+      width: 100px;
+    }
+    .card {
+      background: #fff;
+      border: 1px solid #ddd;
+      padding: 15px;
+      margin-bottom: 15px;
+    }
+    .card h4 {
+      margin: 0 0 10px 0;
+      color: #333;
+    }
+    .skill-tag {
+      display: inline-block;
+      background: #f8f9fa;
+      padding: 5px 10px;
+      margin: 3px;
+      border-radius: 15px;
+      font-size: 0.9em;
+      color: #333;
+      border: 1px solid #ddd;
+    }
+    @media print {
+      body {
+        padding: 0;
+      }
+      .resume-container {
+        padding: 20px;
+      }
+    }
   </style>
 </head>
 <body>
-  <div class="section">
-    <div class="header">{{ title }}</div>
-    <div style="display: flex;">
-      <div class="profile-pic"></div>
-      <div style="margin-left: 20px;">
-        <p><strong>{{ content.name }}</strong></p>
-        <p>{{ content.gender }}, {{ content.birthdate }}</p>
-        <p>{{ content.email }}</p>
-        <p>{{ content.phone }}</p>
-        <p>{{ content.address }} {{ content.detail_address }}</p>
+  <div class="resume-container">
+    <div class="header">
+      <h1>{{ resume.title }}</h1>
+      {% if profile_image_url %}
+      <div class="profile-image" style="background-image: url('{{ profile_image_url }}')"></div>
+      {% endif %}
+    </div>
+
+    <!-- 기본 정보 -->
+    <div class="section">
+      <h2 class="section-title">기본 정보</h2>
+      <div class="info-item">
+        <span class="info-label">이름:</span> {{ content.name }}
+      </div>
+      <div class="info-item">
+        <span class="info-label">성별:</span> {{ content.gender }}
+      </div>
+      <div class="info-item">
+        <span class="info-label">생년월일:</span> {{ content.birthdate }}
+      </div>
+      <div class="info-item">
+        <span class="info-label">이메일:</span> {{ content.email }}
+      </div>
+      <div class="info-item">
+        <span class="info-label">연락처:</span> {{ content.phone }}
+      </div>
+      <div class="info-item">
+        <span class="info-label">주소:</span> {{ content.address }} {{ content.detail_address }}
       </div>
     </div>
-  </div>
 
-  {% if content.sections.education %}
-  <div class="section">
-    <div class="subtitle">학력</div>
-    {% for edu in content.sections.education %}
-      <div>{{ edu.school }} ({{ edu.startDate }} ~ {{ edu.endDate }}) - {{ edu.graduation }}<br>전공: {{ edu.major }} / 학점: {{ edu.grade }}</div>
-    {% endfor %}
-  </div>
-  {% endif %}
+    <!-- 학력 -->
+    {% if content.sections.education %}
+    <div class="section">
+      <h2 class="section-title">학력</h2>
+      {% for edu in content.sections.education %}
+      <div class="card">
+        <h4>{{ edu.school }} ({{ edu.startDate }} ~ {{ edu.endDate }})</h4>
+        <p><strong>전공:</strong> {{ edu.major }}</p>
+        <p><strong>학점:</strong> {{ edu.grade }}</p>
+        <p><strong>졸업구분:</strong> {{ edu.graduation }}</p>
+      </div>
+      {% endfor %}
+    </div>
+    {% endif %}
 
-  {% if content.sections.career %}
-  <div class="section">
-    <div class="subtitle">경력</div>
-    {% for c in content.sections.career %}
-      <div>{{ c.company }} ({{ c.startDate }} ~ {{ c.endDate }})<br>직무: {{ c.position }} / 부서: {{ c.department }} / 직급: {{ c.rank }}<br>업무: {{ c.duties }}</div>
-    {% endfor %}
-  </div>
-  {% endif %}
+    <!-- 경력 -->
+    {% if content.sections.career %}
+    <div class="section">
+      <h2 class="section-title">경력</h2>
+      {% for career in content.sections.career %}
+      <div class="card">
+        <h4>{{ career.company }} ({{ career.startDate }} ~ {{ career.endDate }})</h4>
+        <p><strong>직무:</strong> {{ career.position }}</p>
+        <p><strong>근무부서:</strong> {{ career.department }}</p>
+        <p><strong>직급:</strong> {{ career.rank }}</p>
+        <p><strong>담당업무:</strong> {{ career.duties }}</p>
+      </div>
+      {% endfor %}
+    </div>
+    {% endif %}
 
-  {% if content.sections.experience %}
-  <div class="section">
-    <div class="subtitle">경험/활동/교육</div>
-    {% for e in content.sections.experience %}
-      <div>{{ e.activityType }} - {{ e.place }}<br>기간: {{ e.startDate }} ~ {{ e.endDate }}<br>{{ e.description }}</div>
-    {% endfor %}
-  </div>
-  {% endif %}
+    <!-- 스킬 -->
+    {% if content.sections.skills %}
+    <div class="section">
+      <h2 class="section-title">스킬</h2>
+      <div>
+        {% for skill in content.sections.skills %}
+        <span class="skill-tag">{{ skill }}</span>
+        {% endfor %}
+      </div>
+    </div>
+    {% endif %}
 
-  {% if content.sections.skills %}
-  <div class="section">
-    <div class="subtitle">스킬</div>
-    <ul>
-      {% for s in content.sections.skills %}<li>{{ s }}</li>{% endfor %}
-    </ul>
-  </div>
-  {% endif %}
+    <!-- 경험/활동/교육 -->
+    {% if content.sections.experience %}
+    <div class="section">
+      <h2 class="section-title">경험/활동/교육</h2>
+      {% for exp in content.sections.experience %}
+      <div class="card">
+        <h4>{{ exp.activityType }} - {{ exp.place }} ({{ exp.startDate }} ~ {{ exp.endDate }})</h4>
+        <p><strong>활동 설명:</strong> {{ exp.description }}</p>
+      </div>
+      {% endfor %}
+    </div>
+    {% endif %}
 
-  {% if content.sections.certificate %}
-  <div class="section">
-    <div class="subtitle">자격/어학/수상</div>
-    {% for cert in content.sections.certificate %}
-      {% if cert.type == 'license' %}
-        <div>
-          [자격증] {{ cert.license_name }} · {{ cert.issuer }} ({{ cert.pass_date }})
-        </div>
-      {% elif cert.type == 'language' %}
-        <div>
-          [어학] {{ cert.lang }} {{ cert.exam }} {{ cert.score }} ({{ cert.status }})
-        </div>
-      {% elif cert.type == 'award' %}
-        <div>
-          [수상] {{ cert.award_name }} · {{ cert.host }} ({{ cert.award_date }})
-        </div>
-      {% endif %}
-    {% empty %}
-      <p>자격/어학/수상 정보가 없습니다.</p>
-    {% endfor %}
-  </div>
-  {% endif %}
+    <!-- 자격/어학/수상 -->
+    {% if content.sections.certificate %}
+    <div class="section">
+      <h2 class="section-title">자격/어학/수상</h2>
+      {% for cert in content.sections.certificate %}
+      <div class="card">
+        {% if cert.type == 'license' %}
+        <h4>[자격증] {{ cert.license_name }}</h4>
+        <p><strong>발행처:</strong> {{ cert.issuer }}</p>
+        <p><strong>취득일:</strong> {{ cert.pass_date }}</p>
+        {% elif cert.type == 'language' %}
+        <h4>[어학] {{ cert.lang }} {{ cert.exam }}</h4>
+        <p><strong>점수/급수:</strong> {{ cert.score }}</p>
+        <p><strong>상태:</strong> {{ cert.status }}</p>
+        {% else %}
+        <h4>[수상] {{ cert.award_name }}</h4>
+        <p><strong>수여기관:</strong> {{ cert.host }}</p>
+        <p><strong>수상일:</strong> {{ cert.award_date }}</p>
+        {% endif %}
+      </div>
+      {% endfor %}
+    </div>
+    {% endif %}
 
-  {% if content.sections.preference %}
-  <div class="section">
-    <div class="subtitle">취업우대사항</div>
-    {% for p in content.sections.preference %}
-      {% if p.type == 'veteran' %}
-        <div>[보훈] {{ p.v_type }} (증서: {{ p.v_cert }})</div>
-      {% elif p.type == 'military' %}
-        <div>[병역] {{ p.m_status }}{% if p.m_status == 'served' %} ({{ p.m_branch }}·{{ p.m_rank }} {{ p.m_start }}~{{ p.m_end }} / {{ p.m_reason }}){% endif %}</div>
-      {% elif p.type == 'employment' %}
-        <div>[지원금] {{ p.e_type }}</div>
-      {% endif %}
-    {% endfor %}
-  </div>
-  {% endif %}
+    <!-- 취업우대사항 -->
+    {% if content.sections.preference %}
+    <div class="section">
+      <h2 class="section-title">취업우대사항</h2>
+      {% for pref in content.sections.preference %}
+      <div class="card">
+        {% if pref.type == 'veteran' %}
+        <h4>[보훈] {{ pref.v_type }}</h4>
+        <p><strong>증명서 번호:</strong> {{ pref.v_cert }}</p>
+        {% elif pref.type == 'military' %}
+        <h4>[병역] {{ pref.m_status }}</h4>
+        {% if pref.m_status == 'served' %}
+        <p><strong>군종:</strong> {{ pref.m_branch }}</p>
+        <p><strong>계급:</strong> {{ pref.m_rank }}</p>
+        <p><strong>복무기간:</strong> {{ pref.m_start }} ~ {{ pref.m_end }}</p>
+        <p><strong>전역사유:</strong> {{ pref.m_reason }}</p>
+        {% endif %}
+        {% else %}
+        <h4>[고용지원금] {{ pref.e_type }}</h4>
+        {% endif %}
+      </div>
+      {% endfor %}
+    </div>
+    {% endif %}
 
-  {% if content.sections.portfolio %}
-  <div class="section">
-    <div class="subtitle">포트폴리오</div>
-    {% for pf in content.sections.portfolio %}
-      <div>{{ pf.project }}<br>{{ pf.description }}</div>
-    {% endfor %}
-  </div>
-  {% endif %}
+    <!-- 포트폴리오 -->
+    {% if content.sections.portfolio %}
+    <div class="section">
+      <h2 class="section-title">포트폴리오</h2>
+      {% for port in content.sections.portfolio %}
+      <div class="card">
+        <h4>{{ port.project }}</h4>
+        <p><strong>설명:</strong> {{ port.description }}</p>
+        {% if port.files %}
+        <p><strong>첨부파일:</strong> {{ port.files }}</p>
+        {% endif %}
+      </div>
+      {% endfor %}
+    </div>
+    {% endif %}
 
-  {% if content.sections.description %}
-  <div class="section">
-    <div class="subtitle">경력기술서</div>
-    {% for d in content.sections.description %}
-      <div>{{ d.content }}</div>
-    {% endfor %}
-  </div>
-  {% endif %}
+    <!-- 경력기술서 -->
+    {% if content.sections.description %}
+    <div class="section">
+      <h2 class="section-title">경력기술서</h2>
+      {% for desc in content.sections.description %}
+      <div class="card">
+        <div style="white-space: pre-wrap;">{{ desc.content }}</div>
+      </div>
+      {% endfor %}
+    </div>
+    {% endif %}
 
-  {% if content.sections.introduction %}
-  <div class="section">
-    <div class="subtitle">자기소개서</div>
-    {% for i in content.sections.introduction %}
-      <div><strong>{{ i.title }}</strong><br>{{ i.content }}</div>
-    {% endfor %}
+    <!-- 자기소개서 -->
+    {% if content.sections.introduction %}
+    <div class="section">
+      <h2 class="section-title">자기소개서</h2>
+      {% for intro in content.sections.introduction %}
+      <div class="card">
+        <h4>{{ intro.title }}</h4>
+        <div style="white-space: pre-wrap;">{{ intro.content }}</div>
+      </div>
+      {% endfor %}
+    </div>
+    {% endif %}
   </div>
-  {% endif %}
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
   <script>

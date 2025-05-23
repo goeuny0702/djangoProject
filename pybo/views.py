@@ -193,16 +193,27 @@ def get_resume(request, resume_id):
         resume_data = {
             'title': resume.title,
             'content': content_dict,
-            'profile_image_url': resume.profile_image.url if resume.profile_image else None  # ✅ 쉼표도 포함
+            'profile_image_url': resume.profile_image.url if resume.profile_image else None
         }
         return JsonResponse(resume_data)
     except Resume.DoesNotExist:
         return JsonResponse({'error': '이력서를 찾을 수 없습니다.'}, status=404)
 
+@login_required
+def preview_resume(request, resume_id):
+    try:
+        resume = Resume.objects.get(id=resume_id, user=request.user)
+        content_dict = json.loads(resume.content)
+        
+        context = {
+            'resume': resume,
+            'content': content_dict,
+            'profile_image_url': resume.profile_image.url if resume.profile_image else None
+        }
+        return render(request, 'pdf.html', context)
+    except Resume.DoesNotExist:
+        return HttpResponse('이력서를 찾을 수 없습니다.', status=404)
 
-
-
-    
 @login_required
 @csrf_exempt
 def delete_resume(request, resume_id):

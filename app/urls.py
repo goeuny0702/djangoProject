@@ -35,6 +35,7 @@ urlpatterns = [
     path('save_resume/', views.save_resume, name='save_resume'),
     path('get_resume/<int:resume_id>/', views.get_resume, name='get_resume'),
     path('resume/delete/<int:resume_id>/', views.delete_resume, name='delete_resume'),
+    path('resume/preview/<int:resume_id>/', views.preview_resume, name='preview_resume'),  # 이력서 미리보기
     path("api/spellcheck/", views.spellcheck, name="spellcheck"),
     path("api/proofread/",  views.proofread,  name="proofread"),
 
@@ -44,3 +45,5 @@ urlpatterns = [
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
+   
+]
