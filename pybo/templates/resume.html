@@ -517,36 +517,18 @@
         const address = document.getElementById('address').value;
         const detailAddress = document.getElementById('detail-address').value;
 
-        // 각 섹션별 데이터 수집
-        const educationData = collectEducationData();
-        const careerData = collectCareerData();
-        const experienceData = collectExperienceData();
-        const certificateDataCollected = collectCertificateData(); // 변수 이름 변경
-        const preferenceDataCollected = collectPreferenceData(); // 변수 이름 변경
-        const portfolioDataCollected = collectPortfolioData(); // 변수 이름 변경
-        const careerDescriptionDataCollected = collectCareerDescriptionData(); // 변수 이름 변경
-        const introductionData = collectIntroductionData();
-
-
-        const resumeData = {
-          title: title,
-          name: name,
-          gender: gender,
-          birthdate: birthdate,
-          email: email,
-          phone: phone,
-          address: address,
-          'detail-address': detailAddress,
-          skills: JSON.stringify(selectedSkills), // 스킬은 기존 방식 유지
-          education: JSON.stringify(educationData),
-          career: JSON.stringify(careerData),
-          experience: JSON.stringify(experienceData),
-          certificates: JSON.stringify(certificateDataCollected), // 속성 이름 변경
-          preferences: JSON.stringify(preferenceDataCollected), // 속성 이름 변경
-          portfolios: JSON.stringify(portfolioDataCollected), // 속성 이름 변경
-          career_descriptions: JSON.stringify(careerDescriptionDataCollected), // 속성 이름 변경
-          introduction: JSON.stringify(introductionData),
-
+        // sections 객체 정의
+        const sections = {
+          education: collectEducationData() || [],
+          career: collectCareerData() || [],
+          experience: collectExperienceData() || [],
+          certificate: collectCertificateData() || [],
+          preference: collectPreferenceData() || [],
+          portfolio: collectPortfolioData() || [],
+          description: collectCareerDescriptionData() || [],
+          introduction: collectIntroductionData() || [],
+          skills: selectedSkills || [],
+          sectionCheckboxStates: getSectionCheckboxStates()
         };
 
         const formData = new FormData();
