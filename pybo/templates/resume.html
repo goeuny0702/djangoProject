@@ -379,7 +379,7 @@
     <!-- 자기소개서 -->
     <div class="section" id="introduction-section" style="display: none;">
       <div class="section-header" style="display: flex; justify-content: space-between; align-items: center;">
-      <div class="section-title">자기소개서</div>
+        <div class="section-title">자기소개서</div>
       <button class="addbtn" onclick="showIntroductionForm()">+추가</button>
       </div>
 
@@ -400,13 +400,15 @@
             <button type="button" onclick="runAIReview()" class="cencle_save_btn tool-btn">
               AI&nbsp;첨삭
             </button>
-          </div>
+        </div>
           <div style="color: #999; font-size: 14px;">
             총 글자수 <span id="introChars">0</span>자 / <span id="introBytes">0</span> byte
-          </div>
+        </div>
         </div>
 
+
         <div class="form-buttons">
+
           <button onclick="cancelIntroductionForm()" class="cencle_save_btn">취소</button>
           <button onclick="saveIntroductionForm()" class="cencle_save_btn">저장</button>
         </div>
@@ -459,7 +461,8 @@
           </div>
         </div>
 
-        <button class="endbtn">이력서 미리보기</button><br>
+        <button class="endbtn" onclick="previewResume()">이력서 미리보기</button>
+
         <input type="hidden" id="sections-json">
         <button class="endbtn" onclick="saveResume(event)">작성완료</button>
 
@@ -468,6 +471,8 @@
 
 
     <script>
+      let selectedResumeId = null;
+
       const loggedInUserId = "{{ request.user.username }}";
 
        // 사용할 스킬 목록
@@ -497,9 +502,12 @@
         }
       }
 
-      function saveResume(event) {
-        event.preventDefault();  // form 동작 방지
+      // 자기소개서 데이터를 수집하는 함수 (이제 saveResume 위에 위치)
+      function collectIntroductionData() {
+        // ... 함수 내용 ...
+      }
 
+      function saveResume() {
         const title = document.getElementById('resume-title').value;
         const name = document.getElementById('name').value;
         const gender = document.getElementById('gender').value;
@@ -509,7 +517,7 @@
         const address = document.getElementById('address').value;
         const detailAddress = document.getElementById('detail-address').value;
 
-        const sectionCheckboxStates = getSectionCheckboxStates();
+        // sections 객체 정의
         const sections = {
           education: collectEducationData() || [],
           career: collectCareerData() || [],
@@ -520,22 +528,7 @@
           description: collectCareerDescriptionData() || [],
           introduction: collectIntroductionData() || [],
           skills: selectedSkills || [],
-          sectionCheckboxStates: sectionCheckboxStates
-        };
-
-        document.getElementById("sections-json").value = JSON.stringify(sections);
-        console.log("sections-json 값:", document.getElementById("sections-json").value);
-
-        const resumeData = {
-          title: title,
-          name: name,
-          gender: gender,
-          birthdate: birthdate,
-          email: email,
-          phone: phone,
-          address: address,
-          'detail-address': detailAddress,
-          sections_json: JSON.stringify(sections)
+          sectionCheckboxStates: getSectionCheckboxStates()
         };
 
         const formData = new FormData();
@@ -565,62 +558,58 @@
         .then(response => {
           if (response.redirected) {
             window.location.href = response.url;
-          } else if (response.ok) {
-            alert("이력서 저장 완료!");
           } else {
-            return response.text().then(text => {
-              console.error(text);
-              alert("저장 실패: " + text);
-            });
+            alert("저장 실패");
           }
         })
         .catch(error => {
-          console.error("에러 발생:", error);
-          alert("서버 요청 중 오류가 발생했어요.");
+          console.error('Error:', error);
         });
 
+
     }
 
 
-    function getCookie(name) {
-      let cookieValue = null;
-      if (document.cookie && document.cookie !== '') {
-        const cookies = document.cookie.split(';');
-        for (let i = 0; i < cookies.length; i++) {
-          const cookie = cookies[i].trim();
-          if (cookie.substring(0, name.length + 1) === (name + '=')) {
-            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-            break;
+
+      function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+          const cookies = document.cookie.split(';');
+          for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+              cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+              break;
+            }
           }
         }
+        return cookieValue;
       }
-      return cookieValue;
-    }
 
 
 
 
-    function addToResumeList(title) {
-      const listDiv = document.querySelector('.resume-list');
-      const newItem = document.createElement('div');
-      newItem.textContent = title;
-      newItem.onclick = () => loadResume(title);
-      listDiv.appendChild(newItem);
-    }
+      function addToResumeList(title) {
+        const listDiv = document.querySelector('.resume-list');
+        const newItem = document.createElement('div');
+        newItem.textContent = title;
+        newItem.onclick = () => loadResume(title);
+        listDiv.appendChild(newItem);
+      }
 
-    function loadResume(title) {
-      const resumes = JSON.parse(localStorage.getItem('resumeList')) || [];
-      const resume = resumes.find(r => r.basicInfo.title === title);
-      if (!resume) return;
+      function loadResume(title) {
+        const resumes = JSON.parse(localStorage.getItem('resumeList')) || [];
+        const resume = resumes.find(r => r.basicInfo.title === title);
+        if (!resume) return;
 
-      document.getElementById('resume-title').value = resume.basicInfo.title;
-      document.getElementById('name').value = resume.basicInfo.name;
-      document.getElementById('gender').value = resume.basicInfo.gender;
-      document.getElementById('birthdate').value = resume.basicInfo.birthdate;
-      document.getElementById('email').value = resume.basicInfo.email;
-      document.getElementById('phone').value = resume.basicInfo.phone;
-      document.getElementById('address').value = resume.basicInfo.address;
-      document.getElementById('detail-address').value = resume.basicInfo.detailAddress;
+        document.getElementById('resume-title').value = resume.basicInfo.title;
+        document.getElementById('name').value = resume.basicInfo.name;
+        document.getElementById('gender').value = resume.basicInfo.gender;
+        document.getElementById('birthdate').value = resume.basicInfo.birthdate;
+        document.getElementById('email').value = resume.basicInfo.email;
+        document.getElementById('phone').value = resume.basicInfo.phone;
+        document.getElementById('address').value = resume.basicInfo.address;
+        document.getElementById('detail-address').value = resume.basicInfo.detailAddress;
 
       selectedSkills = resume.skills;
 
@@ -638,11 +627,12 @@
         }
       }
 
-      updateSkillList();
+        updateSkillList();
 
-    }
+      }
 
     function loadResumeFromServer(resumeId) {
+      selectedResumeId = resumeId;
       fetch(`/get_resume/${resumeId}/`)
         .then(response => {
           if (!response.ok) throw new Error('이력서 불러오기 실패');
@@ -1354,16 +1344,16 @@
 
         // 보기 카드 형태로 출력될 HTML 구성
         summary.innerHTML = `
-          <div class="education-card">
-            <h4>${values['학교명'] || ''} (${values['입학년도'] || ''} ~ ${values['졸업년도'] || ''})</h4>
-            <p><strong>전공:</strong> ${values['전공'] || ''}</p>
-            <p><strong>학점:</strong> ${values['학점'] || ''}</p>
-            <p><strong>졸업 구분:</strong> ${values['졸업구분'] || ''}
+    <div class="education-card">
+      <h4>${values['학교명'] || ''} (${values['입학년도'] || ''} ~ ${values['졸업년도'] || ''})</h4>
+      <p><strong>전공:</strong> ${values['전공'] || ''}</p>
+      <p><strong>학점:</strong> ${values['학점'] || ''}</p>
+      <p><strong>졸업 구분:</strong> ${values['졸업구분'] || ''}
               <button onclick="editEducation(this)" class="cencle_save_btn" style="float: right; margin-left: 8px;">수정</button>
               <button onclick="removeEducationForm(this)" class="cencle_save_btn" style="float: right;">삭제</button>
-            </p>
-          </div>
-        `;
+      </p>
+    </div>
+  `;
 
 
         // 입력 요소 숨기기
@@ -1995,16 +1985,16 @@
         }
 
         summary.innerHTML = `
-        <div class="portfolio-card">
-          <h4>${values['프로젝트명'] || ''}</h4>
-          <p><strong>설명:</strong> ${values['프로젝트 설명'] || ''}</p>
-          ${fileNames.length > 0 ? `<p><strong>첨부파일:</strong> ${fileNames.join(', ')}</p>` : ''}
-          <div style="display: flex; justify-content: flex-end; gap: 8px;">
-            <button onclick="editPortfolio(this)" class="cencle_save_btn">수정</button>
-            <button onclick="removePortfolioForm(this)" class="cencle_save_btn">삭제</button>
-          </div>
-        </div>
-      `;
+    <div class="portfolio-card">
+      <h4>${values['프로젝트명'] || ''}</h4>
+      <p><strong>설명:</strong> ${values['프로젝트 설명'] || ''}</p>
+      ${fileNames.length > 0 ? `<p><strong>첨부파일:</strong> ${fileNames.join(', ')}</p>` : ''}
+      <div style="display: flex; justify-content: flex-end; gap: 8px;">
+        <button onclick="editPortfolio(this)" class="cencle_save_btn">수정</button>
+        <button onclick="removePortfolioForm(this)" class="cencle_save_btn">삭제</button>
+      </div>
+    </div>
+  `;
 
         if (!values['프로젝트명'] || !values['프로젝트 설명']) {
           alert('프로젝트명, 프로젝트 설명은 필수 입력 항목입니다.');
@@ -2169,6 +2159,7 @@
 
       
       //자기소개서
+
       function collectIntroductionData() {
         const cards = document.querySelectorAll('.intro-card');
         return Array.from(cards).map(card => ({
@@ -2180,17 +2171,56 @@
       
       function showintroduction() {
         document.getElementById('introduction-form').style.display = 'block';
+
+      }
+      function updateIntroCount() {
+        const text = document.getElementById("introTextarea").value;
+        const chars = text.length;
+        const bytes = new Blob([text]).size;
+        document.getElementById("introChars").innerText = chars;
+        document.getElementById("introBytes").innerText = bytes;
+      }
+      
+
+      async function postJSON(url, payload){
+        const resp = await fetch(url, {
+          method:"POST",
+          headers:{ "Content-Type":"application/json" },
+          body: JSON.stringify(payload)
+        });
+        if(!resp.ok) throw new Error(await resp.text());
+        return resp.json();
       }
 
-      function cancelintroduction() {
-        document.getElementById('introduction-form').style.display = 'none';
+      /* 맞춤법 */
+      async function checkSpelling(){
+        const text = document.getElementById("introTextarea").value.trim();
+        if(!text){ alert("내용을 먼저 입력하세요"); return; }
+
+        try{
+          const data = await postJSON("/api/spellcheck/", { text });
+          document.getElementById("introTextarea").value = data.result;
+          updateIntroCount();
+          alert("맞춤법 교정 완료!");
+        }catch(e){
+          console.error(e); alert("교정 실패");
+        }
       }
 
-      function saveintroduction() {
-        // 저장 로직 구현
-        document.getElementById('introduction-form').style.display = 'none';
-      }
+      /* AI 첨삭 */
+      async function runAIReview(){
+        const text = document.getElementById("introTextarea").value.trim();
+        if(!text){ alert("내용을 먼저 입력하세요"); return; }
 
+        try{
+          const data = await postJSON("/api/proofread/", { text });
+          document.getElementById("introTextarea").value = data.result;
+          updateIntroCount();
+          alert("AI 첨삭 완료!");
+        }catch(e){
+          console.error(e); alert("첨삭 실패");
+        }
+      }
 
       window.onload = () => {
         const resumes = JSON.parse(localStorage.getItem('resumeList')) || [];
@@ -2400,6 +2430,69 @@
 
 
 
+
+
+      function previewResume() {
+        if (selectedResumeId) {
+          // 이미 저장된 이력서를 선택한 상태인 경우 → GET 요청으로 미리보기
+          window.open(`/resume/preview/${selectedResumeId}/`, '_blank');
+          return;
+        }
+        const title = document.getElementById('resume-title').value;
+        const name = document.getElementById('name').value;
+        const gender = document.getElementById('gender').value;
+        const birthdate = document.getElementById('birthdate').value;
+        const email = document.getElementById('email').value;
+        const phone = document.getElementById('phone').value;
+        const address = document.getElementById('address').value;
+        const detailAddress = document.getElementById('detail-address').value;
+
+        const sectionCheckboxStates = getSectionCheckboxStates();
+        const sections = {
+          education: collectEducationData() || [],
+          career: collectCareerData() || [],
+          experience: collectExperienceData() || [],
+          certificate: collectCertificateData() || [],
+          preference: collectPreferenceData() || [],
+          portfolio: collectPortfolioData() || [],
+          description: collectCareerDescriptionData() || [],
+          introduction: collectIntroductionData() || [],
+          skills: selectedSkills || [],
+          sectionCheckboxStates: sectionCheckboxStates
+        };
+
+        const formData = new URLSearchParams();
+        formData.append("title", title);
+        formData.append("name", name);
+        formData.append("gender", gender);
+        formData.append("birthdate", birthdate);
+        formData.append("email", email);
+        formData.append("phone", phone);
+        formData.append("address", address);
+        formData.append("detail-address", detailAddress);
+        formData.append("sections_json", JSON.stringify(sections));
+
+        fetch('/save_resume/', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'X-CSRFToken': getCookie('csrftoken'),
+            'X-Requested-With': 'XMLHttpRequest'
+          },
+          body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+          if (data.resume_id) {
+            window.open(`/resume/preview/${data.resume_id}/`, '_blank');
+          } else {
+            alert("이력서 저장에 실패했습니다.");
+          }
+        })
+        .catch(err => {
+          alert("미리보기 실패: " + err);
+        });
+      }
 
 
 
