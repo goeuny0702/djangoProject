@@ -21,7 +21,7 @@ from openai import OpenAIError, RateLimitError, AuthenticationError
 # API 키 설정 (환경변수에서 받아오기)
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
-# ─────────────────── 맞춤법 ───────────────────
+# 맞춤법 검사 API
 @csrf_exempt
 @require_POST
 def spellcheck(request):
@@ -38,7 +38,7 @@ def spellcheck(request):
     corrected = resp.choices[0].message.content.strip()
     return JsonResponse({"result": corrected})
 
-# ─────────────────── AI 첨삭 ───────────────────
+# AI 첨삭 API
 @csrf_exempt
 @require_POST
 def proofread(request):
@@ -124,7 +124,7 @@ def signup_view(request):
 
         user = User.objects.create_user(username=username, password=password1)
         login(request, user)  # 가입 후 바로 로그인 처리
-        messages.success(request, f'{username}님 환영합니다 ♡')
+        messages.success(request, f'{username}님 환영합니다.')
         return redirect('resume_page')
 
     return render(request, 'signup.html')    
@@ -255,8 +255,3 @@ def preview_pdf(request, resume_id):
         'title': title,
         'content': content
     })
-
-
-# ─────────────────── (중복 함수 제거됨 - 위에서 정의됨) ───────────────────
-
-

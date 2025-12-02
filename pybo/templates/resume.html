@@ -4,33 +4,33 @@
 
 <head>
   <meta charset="UTF-8">
-  <title>이력서 작성</title>
+  <title>?�력???�성</title>
   <link rel="stylesheet" href="{% static 'main.css' %}">
 </head>
 
 <body>
   <div class="mycontainer">
     <div class="namecontainer">
-      <h1>{{ user.username }}님 환영합니다 ♡</h1>
+      <h1>{{ user.username }}???�영?�니????/h1>
     </div>
     <div class="logoutcontainer">
-      <div class="logoutbtn"><a href="{% url 'logout' %}">로그아웃</a></div>
+      <div class="logoutbtn"><a href="{% url 'logout' %}">로그?�웃</a></div>
     </div>
     <div class="writecontainer">
-      <div class="writebtn"><a href="#" onclick="resetResumeForm(); return false;">이력서 등록</a></div>
+      <div class="writebtn"><a href="#" onclick="resetResumeForm(); return false;">?�력???�록</a></div>
     </div>
     <div class="sidebar">
-      <div class="resume-management">이력서 관리</div>
+      <div class="resume-management">?�력??관�?/div>
       <div class="resume-list">
         {% for resume in resumes %}
           <div class="resume-item" style="position: relative; padding: 5px;" onmouseenter="this.querySelector('.delete-btn').style.display='inline'" onmouseleave="this.querySelector('.delete-btn').style.display='none'">
             <span onclick="loadResumeFromServer('{{ resume.id }}')" style="cursor: pointer;">
               {{ resume.title }}
             </span>
-            <button class="delete-btn" onclick="deleteResume('{{ resume.id }}')" style="position: absolute; right: 0; top: 50%; transform: translateY(-50%); display: none; background: #f8d7da; border: none; color: #721c24; padding: 2px 6px; border-radius: 4px; cursor: pointer;">삭제</button>
+            <button class="delete-btn" onclick="deleteResume('{{ resume.id }}')" style="position: absolute; right: 0; top: 50%; transform: translateY(-50%); display: none; background: #f8d7da; border: none; color: #721c24; padding: 2px 6px; border-radius: 4px; cursor: pointer;">??��</button>
           </div>
         {% empty %}
-          <p>작성한 이력서가 없습니다.</p>
+          <p>?�성???�력?��? ?�습?�다.</p>
         {% endfor %}
     </div>
   </div>
@@ -40,12 +40,12 @@
   </div>
   <div class="main">
     <div style="display: flex; justify-content: center;">
-      <input type="text" placeholder="이력서 제목" class="input-title" id="resume-title" name="title"><br>
+      <input type="text" placeholder="?�력???�목" class="input-title" id="resume-title" name="title"><br>
     </div>
     <div class="inputgroup"
       style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
-      {% comment %} 사진첨부부 {% endcomment %}
-      <!-- 네모 박스 -->
+      {% comment %} ?�진첨�?부 {% endcomment %}
+      <!-- ?�모 박스 -->
       <div id="profile-image-preview"
         style="width: 20%; height: 200px; background-color: #f8d7da; position: relative; background-size: cover; background-position: center; cursor: pointer;">
       {% if resume.profile_image %}
@@ -65,43 +65,43 @@
 
       
       <div class="personal-info" style="width: 70%;">
-        <input type="text" placeholder="이름" class="text_input_main" id="name">
-        <input type="text" placeholder="성별" class="text_input_main" id="gender">
-        <input type="text" placeholder="생년월일" class="text_input_main" id="birthdate"><br><br>
-        <input type="email" placeholder="이메일" class="text_input_main" id="email">
-        <input type="text" placeholder="휴대폰" class="text_input_main" id="phone"><br><br>
+        <input type="text" placeholder="?�름" class="text_input_main" id="name">
+        <input type="text" placeholder="?�별" class="text_input_main" id="gender">
+        <input type="text" placeholder="?�년?�일" class="text_input_main" id="birthdate"><br><br>
+        <input type="email" placeholder="?�메?? class="text_input_main" id="email">
+        <input type="text" placeholder="?��??? class="text_input_main" id="phone"><br><br>
         <input type="text" placeholder="주소" class="text_input_main" id="address">
-        <input type="text" placeholder="상세주소" class="text_input_main" id="detail-address">
+        <input type="text" placeholder="?�세주소" class="text_input_main" id="detail-address">
       </div>
     </div>
 
 
-    <!--학력-->
+    <!--?�력-->
     <div class="section" id="education-section" style="display: none;">
       <div class="section-header"
         style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
-        <div class="section-title">학력</div>
-        <button class="addbtn" onclick="showEducationForm()">+추가</button>
+        <div class="section-title">?�력</div>
+        <button class="addbtn" onclick="showEducationForm()">+추�?</button>
       </div>
       <div id="education-list"></div>
     </div>
     <div id="education-form-template" style="display: none;">
       <div class="education-entry" style="margin: 5px;">
-        <!-- 저장 결과를 보여줄 영역 -->
+        <!-- ?�??결과�?보여�??�역 -->
         <div class="education-summary" style="display: none;"></div>
-        <input type="text" placeholder="학교명" class="text_input">
+        <input type="text" placeholder="?�교�? class="text_input">
         <select class="text_input" id="education-select">
           <option>졸업</option>
-          <option>재학중</option>
-          <option>휴학중</option>
+          <option>?�학�?/option>
+          <option>?�학�?/option>
         </select>
-        <input type="date" placeholder="입학년도" class="text_input datepicker">
-        <input type="date" placeholder="졸업년도" class="text_input datepicker"><br>
-        <input type="text" placeholder="전공" class="text_input">
-        <input type="text" placeholder="학점" class="text_input">
+        <input type="date" placeholder="?�학?�도" class="text_input datepicker">
+        <input type="date" placeholder="졸업?�도" class="text_input datepicker"><br>
+        <input type="text" placeholder="?�공" class="text_input">
+        <input type="text" placeholder="?�점" class="text_input">
         <div class="form-buttons">
           <button onclick="removeEducationForm(this)" class="cencle_save_btn">취소</button>
-          <button onclick="saveEducation(this)" class="cencle_save_btn">저장</button>
+          <button onclick="saveEducation(this)" class="cencle_save_btn">?�??/button>
         </div>
       </div>
     </div>
@@ -110,167 +110,167 @@
     <div class="section" id="career-section" style="display: none;">
       <div class="section-header" style="display: flex; justify-content: space-between; align-items: center;">
         <div class="section-title">경력</div>
-        <button class="addbtn" onclick="showCareerForm()">+추가</button>
+        <button class="addbtn" onclick="showCareerForm()">+추�?</button>
       </div>
       <div id="career-list"></div>
     </div>
     <div id="career-form-template" style="display: none;">
       <div class="career-entry">
-        <!-- 저장 결과 표시 -->
+        <!-- ?�??결과 ?�시 -->
         <div class="career-summary" style="display: none;"></div>
 
-        <input type="text" placeholder="회사명" class="text_input">
-        <input type="date" placeholder="입사년월" class="text_input datepicker">
-        <input type="date" placeholder="퇴사년월" class="text_input datepicker"><br>
+        <input type="text" placeholder="?�사�? class="text_input">
+        <input type="date" placeholder="?�사?�월" class="text_input datepicker">
+        <input type="date" placeholder="?�사?�월" class="text_input datepicker"><br>
         <input type="text" placeholder="직무" class="text_input">
-        <input type="text" placeholder="근무부서" class="text_input">
+        <input type="text" placeholder="근무부?? class="text_input">
         <input type="text" placeholder="직급" class="text_input"><br>
-        <textarea placeholder="담당업무" class="longtext"></textarea>
+        <textarea placeholder="?�당?�무" class="longtext"></textarea>
 
         <div class="form-buttons">
           <button onclick="removeCareerForm(this)" class="cencle_save_btn">취소</button>
-          <button onclick="saveCareer(this)" class="cencle_save_btn">저장</button>
+          <button onclick="saveCareer(this)" class="cencle_save_btn">?�??/button>
         </div>
       </div>
     </div>
 
-    <!-- 스킬 -->
+    <!-- ?�킬 -->
     <div class="section" id="skill-section" style="display: none;">
       <div class="section-header" style="display: flex; justify-content: space-between; align-items: center;">
-        <div class="section-title">스킬</div>
-        <button class="addbtn" onclick="showskill()">+추가</button>
+        <div class="section-title">?�킬</div>
+        <button class="addbtn" onclick="showskill()">+추�?</button>
       </div>
       <div id="skill-list" style="margin: 10px 0;"></div>
 
       <div id="skill-form" style="display: none;">
         <div class="skill-search">
-          <input type="text" id="skillSearch" placeholder="기술 검색..." onkeyup="searchSkills()" autocomplete="off">
+          <input type="text" id="skillSearch" placeholder="기술 검??.." onkeyup="searchSkills()" autocomplete="off">
           <div id="skillSuggestions" class="suggestions" style="border: 1px solid #ccc; display: none;"></div>
         </div>
         <div class="form-buttons">
           <button onclick="cancelskill()" class="cencle_save_btn">취소</button>
-          <button onclick="saveskill()" class="cencle_save_btn">저장</button>
+          <button onclick="saveskill()" class="cencle_save_btn">?�??/button>
         </div>
       </div>
     </div>
 
-    <!-- 경험/활동/교육 -->
+    <!-- 경험/?�동/교육 -->
     <div class="section" id="experience-section" style="display: none;">
       <div class="section-header" style="display: flex; justify-content: space-between; align-items: center;">
-        <div class="section-title">경험/활동/교육</div>
-        <button class="addbtn" onclick="showExperienceForm()">+추가</button>
+        <div class="section-title">경험/?�동/교육</div>
+        <button class="addbtn" onclick="showExperienceForm()">+추�?</button>
       </div>
       <div id="experience-list"></div>
     </div>
-    <!-- 경험 템플릿 -->
+    <!-- 경험 ?�플�?-->
     <div id="experience-form-template" style="display: none;">
       <div class="experience-entry">
         <div class="experience-summary" style="display: none;"></div>
 
         <select class="text_input">
-          <option value="">활동 유형 선택</option>
-          <option value="campus">교내활동</option>
-          <option value="volunteer">자원봉사</option>
-          <option value="intern">인턴</option>
-          <option value="club">동아리</option>
-          <option value="parttime">아르바이트</option>
-          <option value="social">사회활동</option>
-          <option value="project">수행과제</option>
-          <option value="overseas">해외연수</option>
-          <option value="education">교육이수내역</option>
+          <option value="">?�동 ?�형 ?�택</option>
+          <option value="campus">교내?�동</option>
+          <option value="volunteer">?�원봉사</option>
+          <option value="intern">?�턴</option>
+          <option value="club">?�아�?/option>
+          <option value="parttime">?�르바이??/option>
+          <option value="social">?�회?�동</option>
+          <option value="project">?�행과제</option>
+          <option value="overseas">?�외?�수</option>
+          <option value="education">교육?�수?�역</option>
         </select>
-        <input type="text" placeholder="기관/장소명" class="text_input"><br>
-        <input type="date" placeholder="시작년월" class="text_input datepicker">
-        <input type="date" placeholder="종료년월" class="text_input datepicker"><br>
-        <textarea placeholder="활동 설명" class="longtext"></textarea>
+        <input type="text" placeholder="기�?/?�소�? class="text_input"><br>
+        <input type="date" placeholder="?�작?�월" class="text_input datepicker">
+        <input type="date" placeholder="종료?�월" class="text_input datepicker"><br>
+        <textarea placeholder="?�동 ?�명" class="longtext"></textarea>
 
         <div class="form-buttons">
           <button onclick="removeExperienceForm(this)" class="cencle_save_btn">취소</button>
-          <button onclick="saveExperience(this)" class="cencle_save_btn">저장</button>
+          <button onclick="saveExperience(this)" class="cencle_save_btn">?�??/button>
         </div>
       </div>
     </div>
 
-    <!-- ================= 자격/어학/수상 ================= -->
+    <!-- ================= ?�격/?�학/?�상 ================= -->
     <div class="section" id="certificate-section" style="display:none;">
       <div class="section-header" style="display:flex;justify-content:space-between;align-items:center;">
-        <div class="section-title">자격/어학/수상</div>
-        <button class="addbtn" onclick="showcertificate(false)">+추가</button>
+        <div class="section-title">?�격/?�학/?�상</div>
+        <button class="addbtn" onclick="showcertificate(false)">+추�?</button>
       </div>
 
-      <!-- 저장된 카드가 쌓이는 곳 -->
+      <!-- ?�?�된 카드가 ?�이??�?-->
       <div id="certificate-list"></div>
 
-      <!-- 입력 폼 -->
+      <!-- ?�력 ??-->
       <div id="certificate-form" style="display:none;">
         <select id="certificateType" class="text_input" onchange="showCertificateFields()">
-          <option value="">구분 선택</option>
-          <option value="license">자격증</option>
-          <option value="language">어학</option>
-          <option value="award">수상</option>
+          <option value="">구분 ?�택</option>
+          <option value="license">?�격�?/option>
+          <option value="language">?�학</option>
+          <option value="award">?�상</option>
         </select>
 
-        <!-- 자격증 -->
+        <!-- ?�격�?-->
         <div id="licenseFields" class="cert-fields" style="display:none;">
-          <input name="license_name" type="text" placeholder="자격증명" class="text_input">
-          <input name="issuer" type="text" placeholder="발행처" class="text_input">
-          <input name="pass_date" type="month" class="text_input" placeholder="합격년월">
+          <input name="license_name" type="text" placeholder="?�격증명" class="text_input">
+          <input name="issuer" type="text" placeholder="발행�? class="text_input">
+          <input name="pass_date" type="month" class="text_input" placeholder="?�격?�월">
         </div>
 
-        <!-- 어학 -->
+        <!-- ?�학 -->
         <div id="languageFields" class="cert-fields" style="display:none;">
           <select name="lang" class="text_input">
-            <option>영어</option>
-            <option>일본어</option>
-            <option>중국어</option>
+            <option>?�어</option>
+            <option>?�본??/option>
+            <option>중국??/option>
           </select>
-          <input name="exam" type="text" placeholder="어학시험명" class="text_input">
-          <input name="score" type="text" placeholder="급수/점수" class="text_input">
+          <input name="exam" type="text" placeholder="?�학?�험�? class="text_input">
+          <input name="score" type="text" placeholder="급수/?�수" class="text_input">
           <select name="status" class="text_input">
             <option>취득</option>
-            <option>미취득</option>
+            <option>미취??/option>
           </select>
         </div>
 
-        <!-- 수상 -->
+        <!-- ?�상 -->
         <div id="awardFields" class="cert-fields" style="display:none;">
-          <input name="award_name" type="text" placeholder="수상/공모전명" class="text_input">
-          <input name="award_date" type="date" class="text_input" placeholder="수상일">
-          <input name="host" type="text" placeholder="수여/주최기관" class="text_input">
+          <input name="award_name" type="text" placeholder="?�상/공모?�명" class="text_input">
+          <input name="award_date" type="date" class="text_input" placeholder="?�상??>
+          <input name="host" type="text" placeholder="?�여/주최기�?" class="text_input">
         </div>
 
         <div class="form-buttons">
           <button onclick="cancelcertificate()" class="cencle_save_btn">취소</button>
-          <button onclick="savecertificate()" class="cencle_save_btn">저장</button>
+          <button onclick="savecertificate()" class="cencle_save_btn">?�??/button>
         </div>
       </div>
     </div>
 
-    <!-- ================= 취업우대사항 ================= -->
+    <!-- ================= 취업?��??�항 ================= -->
     <div class="section" id="preference-section" style="display:none;">
       <div class="section-header" style="display:flex;justify-content:space-between;align-items:center;">
-        <div class="section-title">취업우대사항</div>
-        <button class="addbtn" onclick="showPreference(false)">+추가</button>
+        <div class="section-title">취업?��??�항</div>
+        <button class="addbtn" onclick="showPreference(false)">+추�?</button>
       </div>
 
-      <!-- 카드 리스트 -->
+      <!-- 카드 리스??-->
       <div id="preference-list"></div>
 
-      <!-- 입력 폼 -->
+      <!-- ?�력 ??-->
       <div id="preference-form" style="display:none;">
         <select id="preferenceType" class="text_input" onchange="showPreferenceFields()">
-          <option value="">구분 선택</option>
-          <option value="veteran">보훈대상</option>
-          <option value="military">병역대상</option>
-          <option value="employment">고용지원금</option>
+          <option value="">구분 ?�택</option>
+          <option value="veteran">보훈?�??/option>
+          <option value="military">병역?�??/option>
+          <option value="employment">고용지?�금</option>
         </select>
 
         <!-- 보훈 -->
         <div id="veteranFields" class="pref-fields" style="display:none;">
           <select name="v_type" class="text_input">
-            <option>국가유공자</option><option>보훈대상자</option>
+            <option>�???�공??/option><option>보훈?�?�자</option>
           </select>
-          <input name="v_cert" type="text" placeholder="증명서 번호" class="text_input">
+          <input name="v_cert" type="text" placeholder="증명??번호" class="text_input">
         </div>
 
         <!-- 병역 -->
@@ -283,126 +283,126 @@
           </select>
 
           <div id="servedDetail" style="display:none;">
-            <input  name="m_start" type="month" class="text_input" placeholder="입대 YYYY-MM" min="1950-01" max="2100-12">
-            <input  name="m_end"   type="month" class="text_input" placeholder="전역 YYYY-MM" min="1950-01" max="2100-12">
+            <input  name="m_start" type="month" class="text_input" placeholder="?��? YYYY-MM" min="1950-01" max="2100-12">
+            <input  name="m_end"   type="month" class="text_input" placeholder="?�역 YYYY-MM" min="1950-01" max="2100-12">
             <select name="m_branch" class="text_input">
-              <option>육군</option><option>해군</option><option>공군</option>
-              <option>해병</option><option>의경</option><option>사회복무요원</option>
+              <option>?�군</option><option>?�군</option><option>공군</option>
+              <option>?�병</option><option>?�경</option><option>?�회복무?�원</option>
             </select>
             <select name="m_rank" class="text_input">
-              <option>이병</option><option>일병</option><option>상병</option><option>병장</option>
-              <option>하사</option><option>중사</option><option>상사</option><option>원사</option>
-              <option>준위</option><option>소위</option><option>중위</option><option>대위</option>
-              <option>소령</option><option>중령</option><option>대령</option>
-              <option>준장</option><option>소장</option><option>중장</option><option>대장</option>
+              <option>?�병</option><option>?�병</option><option>?�병</option><option>병장</option>
+              <option>?�사</option><option>중사</option><option>?�사</option><option>?�사</option>
+              <option>준??/option><option>?�위</option><option>중위</option><option>?�??/option>
+              <option>?�령</option><option>중령</option><option>?�??/option>
+              <option>준??/option><option>?�장</option><option>중장</option><option>?�??/option>
             </select>
             <select name="m_reason" class="text_input">
-              <option>만기전역</option><option>의가사전역</option><option>의병전역</option>
-              <option>소집해제</option><option>불명예전역</option><option>상이전역</option>
+              <option>만기?�역</option><option>?��??�전??/option><option>?�병?�역</option>
+              <option>?�집?�제</option><option>불명?�전??/option><option>?�이?�역</option>
             </select>
           </div>
         </div>
 
-        <!-- 고용지원금 -->
+        <!-- 고용지?�금 -->
         <div id="employmentFields" class="pref-fields" style="display:none;">
           <select name="e_type" class="text_input">
-            <option>청년고용지원금</option><option>장애인고용지원금</option>
+            <option>�?��고용지?�금</option><option>?�애?�고?��??�금</option>
           </select>
         </div>
 
         <div class="form-buttons">
           <button onclick="cancelPreference()" class="cencle_save_btn">취소</button>
-          <button onclick="savePreference()"   class="cencle_save_btn">저장</button>
+          <button onclick="savePreference()"   class="cencle_save_btn">?�??/button>
         </div>
       </div>
     </div>
 
-    <!-- 포트폴리오 -->
+    <!-- ?�트?�리??-->
     <div class="section" id="portfolio-section" style="display: none;">
       <div class="section-header" style="display: flex; justify-content: space-between; align-items: center;">
-        <div class="section-title">포트폴리오</div>
-        <button class="addbtn" onclick="showPortfolioForm()">+추가</button>
+        <div class="section-title">?�트?�리??/div>
+        <button class="addbtn" onclick="showPortfolioForm()">+추�?</button>
       </div>
       <div id="portfolio-list"></div>
     </div>
 
-    <!-- 포트폴리오 템플릿 -->
+    <!-- ?�트?�리???�플�?-->
     <div id="portfolio-form-template" style="display: none;">
       <div class="portfolio-entry">
         <div class="portfolio-summary" style="display: none;"></div>
 
-        <input type="text" placeholder="프로젝트명" class="text_input"><br>
-        <textarea placeholder="프로젝트 설명" class="longtext"></textarea>
+        <input type="text" placeholder="?�로?�트�? class="text_input"><br>
+        <textarea placeholder="?�로?�트 ?�명" class="longtext"></textarea>
         <input type="file" multiple class="text_input file-input">
 
         <div class="form-buttons">
           <button onclick="removePortfolioForm(this)" class="cencle_save_btn">취소</button>
-          <button onclick="savePortfolio(this)" class="cencle_save_btn">저장</button>
+          <button onclick="savePortfolio(this)" class="cencle_save_btn">?�??/button>
         </div>
       </div>
     </div>
 
-    <!--경력기술서-->
+    <!--경력기술??->
     <div class="section" id="description-section" style="display: none;">
       <div class="section-header" style="display: flex; justify-content: space-between; align-items: center;">
-        <div class="section-title">경력기술서</div>
-        <button class="addbtn" onclick="showdescription()">+추가</button>
+        <div class="section-title">경력기술??/div>
+        <button class="addbtn" onclick="showdescription()">+추�?</button>
       </div>
 
       <div id="career-description-list"></div>
 
-      <!-- 입력 폼 -->
+      <!-- ?�력 ??-->
       <div id="career-description-form" style="display: none;">
-        <textarea id="careerDescriptionText" class="longtext" placeholder="경력기술서 내용을 입력하세요..."
+        <textarea id="careerDescriptionText" class="longtext" placeholder="경력기술???�용???�력?�세??.."
           oninput="updateCharCount()" style="width: 100%; height: 200px; font-size: 16px;"></textarea>
           
         <div style="margin-top: 10px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center;">
           <div>
-            <button class="type-tab" onclick="insertTemplate('project')">프로젝트형</button>
-            <button class="type-tab" onclick="insertTemplate('dev')">개발 기술형</button>
-            <button class="type-tab" onclick="insertTemplate('design')">디자이너형</button>
-            <button class="type-tab" onclick="insertTemplate('sales')">영업 성과형</button>
+            <button class="type-tab" onclick="insertTemplate('project')">?�로?�트??/button>
+            <button class="type-tab" onclick="insertTemplate('dev')">개발 기술??/button>
+            <button class="type-tab" onclick="insertTemplate('design')">?�자?�너??/button>
+            <button class="type-tab" onclick="insertTemplate('sales')">?�업 ?�과??/button>
           </div>
           <div style="color: #999; font-size: 14px;">
-            총 글자수 <span id="totalChars">0</span>자 / <span id="totalBytes">0</span> byte
+            �?글?�수 <span id="totalChars">0</span>??/ <span id="totalBytes">0</span> byte
           </div>
         </div>
 
         <div style="margin-top: 10px; text-align: right;">
           <button onclick="canceldescription()" class="cencle_save_btn">취소</button>
-          <button onclick="savedescription()" class="cencle_save_btn">저장</button>
+          <button onclick="savedescription()" class="cencle_save_btn">?�??/button>
         </div>
       </div>
     </div>
 
 
-    <!-- 자기소개서 -->
+    <!-- ?�기?�개??-->
     <div class="section" id="introduction-section" style="display: none;">
       <div class="section-header" style="display: flex; justify-content: space-between; align-items: center;">
-        <div class="section-title">자기소개서</div>
-      <button class="addbtn" onclick="showIntroductionForm()">+추가</button>
+        <div class="section-title">?�기?�개??/div>
+      <button class="addbtn" onclick="showIntroductionForm()">+추�?</button>
       </div>
 
-      <!-- 저장된 자기소개서 카드 리스트 -->
+      <!-- ?�?�된 ?�기?�개??카드 리스??-->
       <div id="introduction-list"></div>
 
-      <!-- 입력 폼 -->
+      <!-- ?�력 ??-->
       <div id="introduction-form" style="display: none; margin-top: 15px;">
-        <input type="text" id="introTitle" placeholder="자기소개서 제목" class="text_input" style="width: 100%; margin-bottom: 10px;">
+        <input type="text" id="introTitle" placeholder="?�기?�개???�목" class="text_input" style="width: 100%; margin-bottom: 10px;">
 
-        <textarea id="introTextarea" placeholder="자기소개서 내용을 입력하세요" oninput="updateIntroCount()" style="width: 100%; height: 200px; font-size: 16px;"></textarea>
+        <textarea id="introTextarea" placeholder="?�기?�개???�용???�력?�세?? oninput="updateIntroCount()" style="width: 100%; height: 200px; font-size: 16px;"></textarea>
 
         <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 5px;">
           <div class="intro-tools">
             <button type="button" onclick="checkSpelling()" class="cencle_save_btn tool-btn">
-              맞춤법&nbsp;검사
+              맞춤�?nbsp;검??
             </button>
             <button type="button" onclick="runAIReview()" class="cencle_save_btn tool-btn">
               AI&nbsp;첨삭
             </button>
         </div>
           <div style="color: #999; font-size: 14px;">
-            총 글자수 <span id="introChars">0</span>자 / <span id="introBytes">0</span> byte
+            �?글?�수 <span id="introChars">0</span>??/ <span id="introBytes">0</span> byte
         </div>
         </div>
 
@@ -410,13 +410,13 @@
         <div class="form-buttons">
 
           <button onclick="cancelIntroductionForm()" class="cencle_save_btn">취소</button>
-          <button onclick="saveIntroductionForm()" class="cencle_save_btn">저장</button>
+          <button onclick="saveIntroductionForm()" class="cencle_save_btn">?�??/button>
         </div>
       </div>
     </div>
 
 
-    {% comment %} my career {% endcomment %}
+    <!-- My Career �г� -->
     <div class="right-panel">
       <div class="right-panel-move">
         <div class="right-panel-title">
@@ -424,7 +424,7 @@
         </div>
         <div class="checkbox-group">
           <div class="checkboxtext">
-            <span>학력</span>
+            <span>?�력</span>
             <input type="checkbox" id="section-education" onchange="toggleSection('education-section')">
           </div>
           <div class="checkboxtext">
@@ -432,39 +432,39 @@
             <input type="checkbox" id="section-career" onchange="toggleSection('career-section')">
           </div>
           <div class="checkboxtext">
-            <span>스킬</span>
+            <span>?�킬</span>
             <input type="checkbox" id="section-skill" onchange="toggleSection('skill-section')">
           </div>
           <div class="checkboxtext">
-            <span>경험/활동/교육</span>
+            <span>경험/?�동/교육</span>
             <input type="checkbox" id="section-experience" onchange="toggleSection('experience-section')">
           </div>
           <div class="checkboxtext">
-            <span>자격/어학/수상</span>
+            <span>?�격/?�학/?�상</span>
             <input type="checkbox" id="section-certificate" onchange="toggleSection('certificate-section')">
           </div>
           <div class="checkboxtext">
-            <span>취업우대사항</span>
+            <span>취업?��??�항</span>
             <input type="checkbox" id="section-preference" onchange="toggleSection('preference-section')">
           </div>
           <div class="checkboxtext">
-            <span>포트폴리오</span>
+            <span>?�트?�리??/span>
             <input type="checkbox" id="section-portfolio" onchange="toggleSection('portfolio-section')">
           </div>
           <div class="checkboxtext">
-            <span>경력기술서</span>
+            <span>경력기술??/span>
             <input type="checkbox" id="section-description" onchange="toggleSection('description-section')">
           </div>
           <div class="checkboxtext">
-            <span>자기소개서</span>
+            <span>?�기?�개??/span>
             <input type="checkbox" id="section-introduction" onchange="toggleSection('introduction-section')">
           </div>
         </div>
 
-        <button class="endbtn" onclick="previewResume()">이력서 미리보기</button>
+        <button class="endbtn" onclick="previewResume()">?�력??미리보기</button>
 
         <input type="hidden" id="sections-json">
-        <button class="endbtn" onclick="saveResume(event)">작성완료</button>
+        <button class="endbtn" onclick="saveResume(event)">?�성?�료</button>
 
       </div>
     </div>
@@ -475,7 +475,7 @@
 
       const loggedInUserId = "{{ request.user.username }}";
 
-       // 사용할 스킬 목록
+       // ?�용???�킬 목록
       const availableSkills = [
       "Python", "Java", "C", "C++", "C#", "JavaScript", "TypeScript", "Go", "Kotlin", "Swift", "Ruby", "PHP", "Rust", "Scala",
       "HTML", "CSS", "React", "Vue.js", "Angular", "Next.js", "Svelte", "Tailwind CSS", "Bootstrap", "jQuery",
@@ -485,7 +485,7 @@
       ];
 
 
-      // 선택된 스킬 저장 배열
+      // ?�택???�킬 ?�??배열
       let selectedSkills = [];
 
       function getSectionCheckboxStates() {
@@ -502,9 +502,9 @@
         }
       }
 
-      // 자기소개서 데이터를 수집하는 함수 (이제 saveResume 위에 위치)
+      // ?�기?�개???�이?��? ?�집?�는 ?�수 (?�제 saveResume ?�에 ?�치)
       function collectIntroductionData() {
-        // ... 함수 내용 ...
+        // ... ?�수 ?�용 ...
       }
 
       function saveResume() {
@@ -517,7 +517,7 @@
         const address = document.getElementById('address').value;
         const detailAddress = document.getElementById('detail-address').value;
 
-        // sections 객체 정의
+        // sections 객체 ?�의
         const sections = {
           education: collectEducationData() || [],
           career: collectCareerData() || [],
@@ -542,7 +542,7 @@
         formData.append('detail-address', detailAddress);
         formData.append('sections_json', JSON.stringify(sections));
 
-        // 프로필 이미지가 있으면 추가
+        // ?�로???��?지가 ?�으�?추�?
         const profileImageFile = document.getElementById('profile-image-input').files[0];
         if (profileImageFile) {
           formData.append('profile_image', profileImageFile);
@@ -559,7 +559,7 @@
           if (response.redirected) {
             window.location.href = response.url;
           } else {
-            alert("저장 실패");
+            alert("?�???�패");
           }
         })
         .catch(error => {
@@ -613,7 +613,7 @@
 
       selectedSkills = resume.skills;
 
-      // 만약 배열이 아니면 빈 배열로 강제
+      // 만약 배열???�니�?�?배열�?강제
       if (!Array.isArray(selectedSkills)) {
         if (typeof selectedSkills === 'string') {
           try {
@@ -635,17 +635,17 @@
       selectedResumeId = resumeId;
       fetch(`/get_resume/${resumeId}/`)
         .then(response => {
-          if (!response.ok) throw new Error('이력서 불러오기 실패');
+          if (!response.ok) throw new Error('?�력??불러?�기 ?�패');
           return response.json();
         })
         .then(data => {
           const resume = data.content;
           if (!resume) {
-            alert("이력서 데이터가 없습니다.");
+            alert("?�력???�이?��? ?�습?�다.");
             return;
           }
 
-          // 기본 정보
+          // 기본 ?�보
           document.getElementById('resume-title').value = data.title || '';
           document.getElementById('name').value = resume.name || '';
           document.getElementById('gender').value = resume.gender || '';
@@ -655,7 +655,7 @@
           document.getElementById('address').value = resume.address || '';
           document.getElementById('detail-address').value = resume.detail_address || '';
 
-          // 기존 리스트들 모두 초기화
+          // 기존 리스?�들 모두 초기??
           document.getElementById('education-list').innerHTML = '';
           document.getElementById('career-list').innerHTML = '';
           document.getElementById('experience-list').innerHTML = '';
@@ -666,7 +666,7 @@
           document.getElementById('career-description-list').innerHTML = '';
           document.getElementById('introduction-list').innerHTML = '';
 
-          // 1. 학력
+          // 1. ?�력
           if (resume.sections && Array.isArray(resume.sections.education)) {
             resume.sections.education.forEach(edu => {
               const list = document.getElementById('education-list');
@@ -675,9 +675,9 @@
               entry.innerHTML = `
                 <div class="education-summary" style="display:block;">
                   <div class="education-card">
-                    <h4>${edu.school || ''} (${edu.startDate || edu['입학년도'] || ''} ~ ${edu.endDate || edu['졸업년도'] || ''})</h4>
-                    <p><strong>전공:</strong> ${edu.major || edu['전공'] || ''}</p>
-                    <p><strong>학점:</strong> ${edu.grade || edu['학점'] || ''}</p>
+                    <h4>${edu.school || ''} (${edu.startDate || edu['?�학?�도'] || ''} ~ ${edu.endDate || edu['졸업?�도'] || ''})</h4>
+                    <p><strong>?�공:</strong> ${edu.major || edu['?�공'] || ''}</p>
+                    <p><strong>?�점:</strong> ${edu.grade || edu['?�점'] || ''}</p>
                     <p><strong>졸업 구분:</strong> ${edu.graduation || edu['졸업구분'] || ''}</p>
                   </div>
                 </div>
@@ -695,11 +695,11 @@
               entry.innerHTML = `
                 <div class="career-summary" style="display:block;">
                   <div class="career-card">
-                    <h4>${career.company || ''} (${career.startDate || career['입사년월'] || ''} ~ ${career.endDate || career['퇴사년월'] || ''})</h4>
+                    <h4>${career.company || ''} (${career.startDate || career['?�사?�월'] || ''} ~ ${career.endDate || career['?�사?�월'] || ''})</h4>
                     <p><strong>직무:</strong> ${career.position || career['직무'] || ''}</p>
-                    <p><strong>근무부서:</strong> ${career.department || career['근무부서'] || ''}</p>
+                    <p><strong>근무부??</strong> ${career.department || career['근무부??] || ''}</p>
                     <p><strong>직급:</strong> ${career.rank || career['직급'] || ''}</p>
-                    <p><strong>담당업무:</strong> ${career.duties || career['담당업무'] || ''}</p>
+                    <p><strong>?�당?�무:</strong> ${career.duties || career['?�당?�무'] || ''}</p>
                   </div>
                 </div>
               `;
@@ -707,7 +707,7 @@
             });
           }
 
-          // 3. 경험/활동/교육
+          // 3. 경험/?�동/교육
           if (resume.sections && Array.isArray(resume.sections.experience)) {
             resume.sections.experience.forEach(exp => {
               const list = document.getElementById('experience-list');
@@ -716,9 +716,9 @@
               entry.innerHTML = `
                 <div class="experience-summary" style="display:block;">
                   <div class="experience-card">
-                    <h4>${exp.activityType || exp['활동 유형'] || ''} - ${exp.place || exp['기관/장소명'] || ''} 
-                      (${exp.startDate || exp['시작년월'] || ''} ~ ${exp.endDate || exp['종료년월'] || ''})</h4>
-                    <p><strong>활동 설명:</strong> ${exp.description || exp['활동 설명'] || ''}</p>
+                    <h4>${exp.activityType || exp['?�동 ?�형'] || ''} - ${exp.place || exp['기�?/?�소�?] || ''} 
+                      (${exp.startDate || exp['?�작?�월'] || ''} ~ ${exp.endDate || exp['종료?�월'] || ''})</h4>
+                    <p><strong>?�동 ?�명:</strong> ${exp.description || exp['?�동 ?�명'] || ''}</p>
                   </div>
                 </div>
               `;
@@ -726,11 +726,11 @@
             });
           }
 
-          // 4. 스킬
+          // 4. ?�킬
           selectedSkills = (resume.sections && Array.isArray(resume.sections.skills)) ? resume.sections.skills : [];
           updateSkillList();
 
-          // 5. 자격/어학/수상
+          // 5. ?�격/?�학/?�상
           if (resume.sections && Array.isArray(resume.sections.certificate)) {
             const list = document.getElementById('certificate-list');
             resume.sections.certificate.forEach(cert => {
@@ -738,24 +738,24 @@
               card.className = 'cert-card';
 
               let detail = '';
-              if (cert.type === 'license' || cert.type === '자격증') {
-                detail = `<strong>[자격증]</strong> ${cert.license_name || cert['자격증명'] || ''} · ${cert.issuer || cert['발행처'] || ''} (${cert.pass_date || cert['합격년월'] || ''})`;
-              } else if (cert.type === 'language' || cert.type === '어학') {
-                detail = `<strong>[어학]</strong> ${cert.lang || cert['언어'] || ''} ${cert.exam || cert['어학시험명'] || ''} ${cert.score || cert['급수/점수'] || ''} (${cert.status || cert['취득상태'] || ''})`;
-              } else if (cert.type === 'award' || cert.type === '수상') {
-                detail = `<strong>[수상]</strong> ${cert.award_name || cert['수상/공모전명'] || ''} · ${cert.host || cert['수여/주최기관'] || ''} (${cert.award_date || cert['수상일'] || ''})`;
+              if (cert.type === 'license' || cert.type === '?�격�?) {
+                detail = `<strong>[?�격�?</strong> ${cert.license_name || cert['?�격증명'] || ''} · ${cert.issuer || cert['발행�?] || ''} (${cert.pass_date || cert['?�격?�월'] || ''})`;
+              } else if (cert.type === 'language' || cert.type === '?�학') {
+                detail = `<strong>[?�학]</strong> ${cert.lang || cert['?�어'] || ''} ${cert.exam || cert['?�학?�험�?] || ''} ${cert.score || cert['급수/?�수'] || ''} (${cert.status || cert['취득?�태'] || ''})`;
+              } else if (cert.type === 'award' || cert.type === '?�상') {
+                detail = `<strong>[?�상]</strong> ${cert.award_name || cert['?�상/공모?�명'] || ''} · ${cert.host || cert['?�여/주최기�?'] || ''} (${cert.award_date || cert['?�상??] || ''})`;
               }
               card.innerHTML = `<span>${detail}</span>`;
               list.appendChild(card);
             });
           }
 
-          // 6. 취업우대사항
+          // 6. 취업?��??�항
           if (resume.sections && resume.sections.preference) {
             const list = document.getElementById('preference-list');
             const prefData = resume.sections.preference;
 
-            // 객체인 경우 배열로 감싸기
+            // 객체??경우 배열�?감싸�?
             const preferences = Array.isArray(prefData) ? prefData : [prefData];
 
             preferences.forEach(pref => {
@@ -764,10 +764,10 @@
               card.className = 'pref-card';
               let detail = '';
 
-              if (pref.type === 'veteran' || pref.type === '보훈대상') {
-                detail = `[보훈] ${pref.v_type || pref['보훈구분'] || ''} (증서: ${pref.v_cert || pref['증명서 번호'] || ''})`;
+              if (pref.type === 'veteran' || pref.type === '보훈?�??) {
+                detail = `[보훈] ${pref.v_type || pref['보훈구분'] || ''} (증서: ${pref.v_cert || pref['증명??번호'] || ''})`;
 
-              } else if (pref.type === 'military' || pref.type === '병역대상') {
+              } else if (pref.type === 'military' || pref.type === '병역?�??) {
                 const statusMap = {
                   'served': '군필',
                   'exempt': '면제',
@@ -779,11 +779,11 @@
                 } else {
                   detail = `[병역] ${statusMap[pref.m_status] || pref.m_status || ''}`;
                 }
-              } else if (pref.type === 'military' || pref.type === '병역대상') {
+              } else if (pref.type === 'military' || pref.type === '병역?�??) {
                 detail = `[병역] ${pref.m_status || ''}`;
 
-              } else if (pref.type === 'employment' || pref.type === '고용지원금') {
-                detail = `[지원금] ${pref.e_type || ''}`;
+              } else if (pref.type === 'employment' || pref.type === '고용지?�금') {
+                detail = `[지?�금] ${pref.e_type || ''}`;
               }
 
               if (detail) {
@@ -795,7 +795,7 @@
 
 
 
-          // 7. 포트폴리오
+          // 7. ?�트?�리??
           if (resume.sections && Array.isArray(resume.sections.portfolio)) {
             const list = document.getElementById('portfolio-list');
             resume.sections.portfolio.forEach(port => {
@@ -807,9 +807,9 @@
               entry.innerHTML = `
                 <div class="portfolio-summary" style="display:block;">
                   <div class="portfolio-card">
-                    <h4>${port.project || port['프로젝트명'] || ''}</h4>
-                    <p><strong>설명:</strong> ${port.description || port['프로젝트 설명'] || ''}</p>
-                    ${files ? `<p><strong>첨부파일:</strong> ${files}</p>` : ''}
+                    <h4>${port.project || port['?�로?�트�?] || ''}</h4>
+                    <p><strong>?�명:</strong> ${port.description || port['?�로?�트 ?�명'] || ''}</p>
+                    ${files ? `<p><strong>첨�??�일:</strong> ${files}</p>` : ''}
                   </div>
                 </div>
               `;
@@ -817,7 +817,7 @@
             });
           }
 
-          // 8. 경력기술서
+          // 8. 경력기술??
           if (resume.sections && Array.isArray(resume.sections.description)) {
             const list = document.getElementById('career-description-list');
             resume.sections.description.forEach(desc => {
@@ -827,13 +827,13 @@
               entry.style.marginTop = "10px";
               entry.style.position = "relative";
               entry.innerHTML = `
-                <div style="white-space: pre-wrap;">${desc.content || desc['내용'] || ''}</div>
+                <div style="white-space: pre-wrap;">${desc.content || desc['?�용'] || ''}</div>
               `;
               list.appendChild(entry);
             });
           }
 
-          // 9. 자기소개서 (여러개 저장할 수 있게)
+          // 9. ?�기?�개??(?�러�??�?�할 ???�게)
           if (resume.sections && Array.isArray(resume.sections.introduction)) {
             const list = document.getElementById('introduction-list');
             resume.sections.introduction.forEach(intro => {
@@ -844,14 +844,14 @@
               entry.style.marginTop = "10px";
               entry.style.position = "relative";
               entry.innerHTML = `
-                <h4>${intro.title || intro['제목'] || ''}</h4>
-                <div style="white-space: pre-wrap;">${intro.content || intro['내용'] || ''}</div>
+                <h4>${intro.title || intro['?�목'] || ''}</h4>
+                <div style="white-space: pre-wrap;">${intro.content || intro['?�용'] || ''}</div>
               `;
               list.appendChild(entry);
             });
           }
 
-          // 10. 체크박스 상태 복원 및 섹션 열기
+          // 10. 체크박스 ?�태 복원 �??�션 ?�기
           if (resume.sections && resume.sections.sectionCheckboxStates) {
             const cb = resume.sections.sectionCheckboxStates;
             Object.keys(cb).forEach(key => {
@@ -866,7 +866,7 @@
             });
           }
 
-          //이미지지
+          //?��?지지
           if (data.profile_image_url) {
             const previewDiv = document.getElementById("profile-image-preview");
             previewDiv.style.backgroundImage = `url('${data.profile_image_url}')`;
@@ -875,7 +875,7 @@
 
         })
         .catch(error => {
-          alert('이력서 불러오기 실패: ' + error.message);
+          alert('?�력??불러?�기 ?�패: ' + error.message);
         });
 
 
@@ -888,7 +888,7 @@
 
 
     function deleteResume(resumeId) {
-      if (!confirm("정말 이 이력서를 삭제하시겠습니까?")) return;
+      if (!confirm("?�말 ???�력?��? ??��?�시겠습?�까?")) return;
 
       fetch(`/resume/delete/${resumeId}/`, {
         method: 'POST',
@@ -899,15 +899,15 @@
       .then(response => response.json())
       .then(data => {
         if (data.success) {
-          alert("이력서가 삭제되었습니다.");
+          alert("?�력?��? ??��?�었?�니??");
           location.reload();
         } else {
-          alert("삭제 실패");
+          alert("??�� ?�패");
         }
       })
       .catch(error => {
-        console.error("삭제 오류:", error);
-        alert("오류 발생");
+        console.error("??�� ?�류:", error);
+        alert("?�류 발생");
       });
     }
 
@@ -916,7 +916,7 @@
 
 
 
-      // 각 섹션별 데이터 수집 함수들
+      // �??�션�??�이???�집 ?�수??
       function collectEducationData() {
         const summaries = document.querySelectorAll('.education-summary');
 
@@ -925,9 +925,9 @@
           if (!card) return null;
 
           const schoolText = card.querySelector('h4')?.textContent || '';
-          const majorText = card.querySelector('p:nth-child(2)')?.textContent.replace('전공:', '').trim() || '';
-          const gradeText = card.querySelector('p:nth-child(3)')?.textContent.replace('학점:', '').trim() || '';
-          const graduationText = card.querySelector('p:nth-child(4)')?.textContent.split('삭제')[0].replace('졸업 구분:', '').trim() || '';
+          const majorText = card.querySelector('p:nth-child(2)')?.textContent.replace('?�공:', '').trim() || '';
+          const gradeText = card.querySelector('p:nth-child(3)')?.textContent.replace('?�점:', '').trim() || '';
+          const graduationText = card.querySelector('p:nth-child(4)')?.textContent.split('??��')[0].replace('졸업 구분:', '').trim() || '';
 
           return {
             school: schoolText,
@@ -944,11 +944,11 @@
         return Array.from(careerEntries).map(entry => {
           const companyText = entry.querySelector('h4').textContent;
           const positionText = entry.querySelector('p:nth-child(2)').textContent.replace('직무:', '').trim();
-          const departmentText = entry.querySelector('p:nth-child(3)').textContent.replace('근무부서:', '').trim();
+          const departmentText = entry.querySelector('p:nth-child(3)').textContent.replace('근무부??', '').trim();
           const rankText = entry.querySelector('p:nth-child(4)').textContent.replace('직급:', '').trim();
-          const dutiesText = entry.querySelector('p:nth-child(5)').textContent.replace('담당업무:', '').trim();
+          const dutiesText = entry.querySelector('p:nth-child(5)').textContent.replace('?�당?�무:', '').trim();
 
-          // 회사명과 기간 분리
+          // ?�사명과 기간 분리
           const [company, period] = companyText.split(' (');
           const [startDate, endDate] = period.replace(')', '').split(' ~ ');
 
@@ -963,14 +963,14 @@
           };
         });
       }
-      //경험/활동/교육
+      //경험/?�동/교육
       function collectExperienceData() {
         const experienceEntries = document.querySelectorAll('.experience-card');
         return Array.from(experienceEntries).map(entry => {
           const activityText = entry.querySelector('h4').textContent;
-          const descriptionText = entry.querySelector('p:nth-child(2)').textContent.replace('활동 설명:', '').trim();
+          const descriptionText = entry.querySelector('p:nth-child(2)').textContent.replace('?�동 ?�명:', '').trim();
 
-          // 활동 유형, 기관/장소명, 기간 분리
+          // ?�동 ?�형, 기�?/?�소�? 기간 분리
           const [activityType, placeAndPeriod] = activityText.split(' - ');
           const [place, period] = placeAndPeriod.split(' (');
           const [startDate, endDate] = period.replace(')', '').split(' ~ ');
@@ -984,15 +984,15 @@
           };
         });
       }
-      //자격/어학/수상
+      //?�격/?�학/?�상
       function collectCertificateData() {
         const certificateEntries = document.querySelectorAll('.cert-card');
         return Array.from(certificateEntries).map(entry => {
           const detailText = entry.querySelector('span').textContent;
           
-          // 자격증, 어학, 수상 구분
-          if (detailText.includes('[자격증]')) {
-            const [_, info] = detailText.split('[자격증]');
+          // ?�격�? ?�학, ?�상 구분
+          if (detailText.includes('[?�격�?')) {
+            const [_, info] = detailText.split('[?�격�?');
             const [name, issuerAndDate] = info.split('·');
             const [issuer, date] = issuerAndDate.split('(');
             
@@ -1002,8 +1002,8 @@
               issuer: issuer.trim(),
               pass_date: date.replace(')', '').trim()
             };
-          } else if (detailText.includes('[어학]')) {
-            const [_, info] = detailText.split('[어학]');
+          } else if (detailText.includes('[?�학]')) {
+            const [_, info] = detailText.split('[?�학]');
             const [lang, exam, score, status] = info.split(' ');
             
             return {
@@ -1014,7 +1014,7 @@
               status: status.replace('(', '').replace(')', '').trim()
             };
           } else {
-            const [_, info] = detailText.split('[수상]');
+            const [_, info] = detailText.split('[?�상]');
             const [name, hostAndDate] = info.split('·');
             const [host, date] = hostAndDate.split('(');
             
@@ -1027,28 +1027,28 @@
           }
         });
       }
-      //취업우대사항
+      //취업?��??�항
       function collectPreferenceData() {
-        return preferenceData;  // ← 전역 배열 preferenceData를 그대로 반환
+        return preferenceData;  // ???�역 배열 preferenceData�?그�?�?반환
       }
 
-      //포트폴리오
+      //?�트?�리??
       function collectPortfolioData() {
         const portfolioEntries = document.querySelectorAll('.portfolio-card');
         return Array.from(portfolioEntries).map(entry => {
           const projectName = entry.querySelector('h4').textContent;
-          const description = entry.querySelector('p:nth-child(2)').textContent.replace('설명:', '').trim();
+          const description = entry.querySelector('p:nth-child(2)').textContent.replace('?�명:', '').trim();
           const filesText = entry.querySelector('p:nth-child(3)')?.textContent;
-          const files = filesText ? filesText.replace('첨부파일:', '').trim() : '';
+          const files = filesText ? filesText.replace('첨�??�일:', '').trim() : '';
           
-          // localStorage에 저장
+          // localStorage???�??
           const portfolioData = {
             project: projectName,
             description: description,
             files: files
           };
           
-          // 기존 데이터 가져오기
+          // 기존 ?�이??가?�오�?
           let savedPortfolios = JSON.parse(localStorage.getItem('portfolios') || '[]');
           savedPortfolios.push(portfolioData);
           localStorage.setItem('portfolios', JSON.stringify(savedPortfolios));
@@ -1056,18 +1056,18 @@
           return portfolioData;
         });
       }
-      //경력기술서
+      //경력기술??
       function collectCareerDescriptionData() {
         const descriptionCards = document.querySelectorAll('.career-desc-card');
         const descriptions = Array.from(descriptionCards).map(card => {
           const content = card.querySelector('div').innerText;
           
-          // localStorage에 저장
+          // localStorage???�??
           const descriptionData = {
             content: content
           };
           
-          // 기존 데이터 가져오기
+          // 기존 ?�이??가?�오�?
           let savedDescriptions = JSON.parse(localStorage.getItem('careerDescriptions') || '[]');
           savedDescriptions.push(descriptionData);
           localStorage.setItem('careerDescriptions', JSON.stringify(savedDescriptions));
@@ -1079,7 +1079,7 @@
       }
 
 
-      // 추가 버튼 누르면 검색창 보이기
+      // 추�? 버튼 ?�르�?검?�창 보이�?
       function showskill() {
         document.getElementById("skill-form").style.display = "block";
         document.getElementById("skillSearch").value = "";
@@ -1087,7 +1087,7 @@
         document.getElementById("skillSuggestions").style.display = "none";
       }
 
-      // 취소 버튼 누르면 검색창 숨기기
+      // 취소 버튼 ?�르�?검?�창 ?�기�?
       function cancelskill() {
         document.getElementById("skill-form").style.display = "none";
         document.getElementById("skillSearch").value = "";
@@ -1095,14 +1095,14 @@
         document.getElementById("skillSuggestions").style.display = "none";
       }
 
-      // 저장 버튼 누르면 선택된 스킬 화면에 출력
+      // ?�??버튼 ?�르�??�택???�킬 ?�면??출력
       function saveskill() {
       updateSkillList();
       document.getElementById("skill-form").style.display = "none";
       }
 
 
-      // 자동완성 검색
+      // ?�동?�성 검??
       function searchSkills() {
       const input = document.getElementById("skillSearch").value.toLowerCase();
       const suggestionsBox = document.getElementById("skillSuggestions");
@@ -1135,10 +1135,10 @@
           document.getElementById("skillSearch").value = "";
           suggestionsBox.style.display = "none";
 
-          // ✅ 리스트 실시간 업데이트
+          // ??리스???�시�??�데?�트
           const list = document.getElementById("skill-list");
           updateSkillList();
-          searchSkills(); // 중복 제거용
+          searchSkills(); // 중복 ?�거??
 
         };
 
@@ -1171,10 +1171,10 @@
         span.style.backgroundColor = "none";
         span.style.cursor = "default";
 
-        const skillText = document.createTextNode(`✔ ${skill}`);
+        const skillText = document.createTextNode(`??${skill}`);
         span.appendChild(skillText);
 
-        const closeBtn = document.createElement("span");  // ✅ 선언 먼저!
+        const closeBtn = document.createElement("span");  // ???�언 먼�?!
         closeBtn.className = "delete-btn";
         closeBtn.textContent = "×";
         closeBtn.style.position = "absolute";
@@ -1187,9 +1187,9 @@
         closeBtn.style.padding = "0 4px";
         closeBtn.style.borderRadius = "50%";
         closeBtn.style.border = "1px solid #ccc";
-        closeBtn.style.display = "none"; // ❗ 선언 이후에 display 조작
+        closeBtn.style.display = "none"; // ???�언 ?�후??display 조작
 
-        // 마우스 오버 시 보이기
+        // 마우???�버 ??보이�?
         span.addEventListener("mouseenter", () => {
           closeBtn.style.display = "inline";
         });
@@ -1213,19 +1213,19 @@
 
 
 
-      //토글 
+      //?��? 
       function toggleSection(sectionId) {
         const section = document.getElementById(sectionId);
         section.style.display = section.style.display === 'none' ? 'block' : 'none';
       }
 
       
-      //학력 추가
+      //?�력 추�?
       function showEducationForm() {
 
         const list = document.getElementById('education-list');
 
-        // 입력란이 보이는 상태 = 아직 저장되지 않은 폼이 열려있다는 뜻
+        // ?�력?�??보이???�태 = ?�직 ?�?�되지 ?��? ?�이 ?�려?�다????
         const isFormOpen = Array.from(list.querySelectorAll('.education-entry')).some(entry => {
           const inputs = entry.querySelectorAll('input, textarea');
           return Array.from(inputs).some(input => input.style.display !== 'none');
@@ -1240,40 +1240,40 @@
         clone.style.display = 'block';
         list.appendChild(clone);
       }
-      //학력 삭제
+      //?�력 ??��
       function removeEducationForm(button) {
         const entry = button.closest(".education-entry");
         if (entry) {
           entry.remove();
         }
       }
-      // 학력 수정하기
+      // ?�력 ?�정?�기
       function editEducation(button) {
         const entry = button.closest(".education-entry");
         const summary = entry.querySelector(".education-summary");
         const inputs = entry.querySelectorAll("input, select");
         const formButtons = entry.querySelector(".form-buttons");
 
-        // 요약 카드 숨기기
+        // ?�약 카드 ?�기�?
         summary.style.display = "none";
 
-        // 입력 필드 다시 보이게
+        // ?�력 ?�드 ?�시 보이�?
         inputs.forEach(input => input.style.display = "inline-block");
 
-        // 기존 card-buttons 제거
+        // 기존 card-buttons ?�거
         const cardButtons = summary.querySelector(".card-buttons");
         if (cardButtons) {
           cardButtons.remove();
         }
 
-        // 저장/삭제 버튼 다시 생성
+        // ?�????�� 버튼 ?�시 ?�성
         if (formButtons) {
           formButtons.style.display = "flex";
           formButtons.style.justifyContent = "flex-end";
           formButtons.style.gap = "8px";
         }
       }
-      //학력 저장 
+      //?�력 ?�??
       function saveEducation(button) {
         const entry = button.closest(".education-entry");
         const summary = entry.querySelector(".education-summary");
@@ -1286,23 +1286,23 @@
           if (input.tagName.toLowerCase() === "select") {
             values["졸업구분"] = input.options[input.selectedIndex].text;
           } else {
-            const key = input.placeholder || '선택';
+            const key = input.placeholder || '?�택';
             values[key] = input.value.trim();
           }
         });
 
-        // 날짜 형식 검증
-        const startDate = new Date(values['입학년도']);
-        const endDate = new Date(values['졸업년도']);
+        // ?�짜 ?�식 검�?
+        const startDate = new Date(values['?�학?�도']);
+        const endDate = new Date(values['졸업?�도']);
 
         if (startDate > endDate) {
-          alert('졸업년도는 입학년도보다 이후여야 합니다.');
+          alert('졸업?�도???�학?�도보다 ?�후?�야 ?�니??');
           return;
         }
 
-        // 필수 입력값 검증
-        if (!values['학교명'] || !values['입학년도'] || !values['졸업년도'] || !values['전공'] || !values['학점']) {
-          alert('학교명, 입학년도, 졸업년도는 필수 입력 항목입니다.');
+        // ?�수 ?�력�?검�?
+        if (!values['?�교�?] || !values['?�학?�도'] || !values['졸업?�도'] || !values['?�공'] || !values['?�점']) {
+          alert('?�교�? ?�학?�도, 졸업?�도???�수 ?�력 ??��?�니??');
           return;
         }
 
@@ -1335,36 +1335,36 @@
               selectedSkills.push(skill);
               document.getElementById("skillSearch").value = "";
               suggestionsBox.style.display = "none";
-              searchSkills(); // 다시 실행해서 새 목록 반영
+              searchSkills(); // ?�시 ?�행?�서 ??목록 반영
             };
             suggestionsBox.appendChild(div);
           });
         }
 
 
-        // 보기 카드 형태로 출력될 HTML 구성
+        // 보기 카드 ?�태�?출력??HTML 구성
         summary.innerHTML = `
     <div class="education-card">
-      <h4>${values['학교명'] || ''} (${values['입학년도'] || ''} ~ ${values['졸업년도'] || ''})</h4>
-      <p><strong>전공:</strong> ${values['전공'] || ''}</p>
-      <p><strong>학점:</strong> ${values['학점'] || ''}</p>
+      <h4>${values['?�교�?] || ''} (${values['?�학?�도'] || ''} ~ ${values['졸업?�도'] || ''})</h4>
+      <p><strong>?�공:</strong> ${values['?�공'] || ''}</p>
+      <p><strong>?�점:</strong> ${values['?�점'] || ''}</p>
       <p><strong>졸업 구분:</strong> ${values['졸업구분'] || ''}
-              <button onclick="editEducation(this)" class="cencle_save_btn" style="float: right; margin-left: 8px;">수정</button>
-              <button onclick="removeEducationForm(this)" class="cencle_save_btn" style="float: right;">삭제</button>
+              <button onclick="editEducation(this)" class="cencle_save_btn" style="float: right; margin-left: 8px;">?�정</button>
+              <button onclick="removeEducationForm(this)" class="cencle_save_btn" style="float: right;">??��</button>
       </p>
     </div>
   `;
 
 
-        // 입력 요소 숨기기
+        // ?�력 ?�소 ?�기�?
         inputs.forEach(input => input.style.display = "none");
 
-        // 버튼 숨기기
+        // 버튼 ?�기�?
         if (formButtons) {
           formButtons.style.display = "none";
         }
 
-        // 요약 카드 보이기
+        // ?�약 카드 보이�?
         summary.style.display = "block";
       }
 
@@ -1373,7 +1373,7 @@
 
         const list = document.getElementById("career-list");
 
-        // 현재 열려 있는 폼이 있는지 확인 (input/textarea가 보이는 상태)
+        // ?�재 ?�려 ?�는 ?�이 ?�는지 ?�인 (input/textarea가 보이???�태)
         const isFormOpen = Array.from(list.querySelectorAll(".career-entry")).some(entry => {
           const inputs = entry.querySelectorAll("input, textarea");
           return Array.from(inputs).some(input => input.style.display !== "none");
@@ -1388,106 +1388,106 @@
         clone.style.display = "block";
         list.appendChild(clone);
       }
-      //경력 삭제
+      //경력 ??��
       function removeCareerForm(button) {
         const entry = button.closest(".career-entry");
         if (entry) {
           entry.remove();
         }
       }
-      //경력 저장
+      //경력 ?�??
       function saveCareer(button) {
         const entry = button.closest(".career-entry");
         const summary = entry.querySelector(".career-summary");
 
-        // input과 textarea 모두 선택
+        // input�?textarea 모두 ?�택
         const inputs = entry.querySelectorAll("input, textarea");
         const values = {};
 
-        // 입력값 수집
+        // ?�력�??�집
         inputs.forEach(input => {
           values[input.placeholder] = input.value;
         });
 
-        // 필수 입력값 검증
-        if (!values['회사명'] || !values['입사년월'] || !values['퇴사년월'] || !values['근무부서'] || !values['직무'] || !values['담당업무']) {
-          alert('회사명, 입사년월, 퇴사년월, 근무부서, 직무, 담당업무는 필수 입력 항목입니다.');
+        // ?�수 ?�력�?검�?
+        if (!values['?�사�?] || !values['?�사?�월'] || !values['?�사?�월'] || !values['근무부??] || !values['직무'] || !values['?�당?�무']) {
+          alert('?�사�? ?�사?�월, ?�사?�월, 근무부?? 직무, ?�당?�무???�수 ?�력 ??��?�니??');
           return;
         }
 
-        // 날짜 형식 검증
-        const startDate = new Date(values['입사년월']);
-        const endDate = new Date(values['퇴사년월']);
+        // ?�짜 ?�식 검�?
+        const startDate = new Date(values['?�사?�월']);
+        const endDate = new Date(values['?�사?�월']);
 
         if (startDate > endDate) {
-          alert('퇴사년월는 입사년월보다 이후여야 합니다.');
+          alert('?�사?�월???�사?�월보다 ?�후?�야 ?�니??');
           return;
         }
 
-        // HTML 템플릿 생성
+        // HTML ?�플�??�성
         const careerCard = document.createElement('div');
         careerCard.className = 'career-card';
         careerCard.innerHTML = `
-          <h4>${values['회사명'] || ''} (${values['입사년월'] || ''} ~ ${values['퇴사년월'] || ''})</h4>
+          <h4>${values['?�사�?] || ''} (${values['?�사?�월'] || ''} ~ ${values['?�사?�월'] || ''})</h4>
           <p><strong>직무:</strong> ${values['직무'] || ''}</p>
-          <p><strong>근무부서:</strong> ${values['근무부서'] || ''}</p>
+          <p><strong>근무부??</strong> ${values['근무부??] || ''}</p>
           <p><strong>직급:</strong> ${values['직급'] || ''}</p>
-          <p><strong>담당업무:</strong> ${values['담당업무'] || ''}</p>
+          <p><strong>?�당?�무:</strong> ${values['?�당?�무'] || ''}</p>
           <div class="card-buttons" style="display: flex; justify-content: flex-end; gap: 8px;">
-            <button onclick="editCareer(this)" class="cencle_save_btn">수정</button>
-            <button onclick="removeCareerForm(this)" class="cencle_save_btn">삭제</button>
+            <button onclick="editCareer(this)" class="cencle_save_btn">?�정</button>
+            <button onclick="removeCareerForm(this)" class="cencle_save_btn">??��</button>
           </div>
         `;
 
-        // 기존 내용 지우고 새로운 카드 추가
+        // 기존 ?�용 지?�고 ?�로??카드 추�?
         summary.innerHTML = '';
         summary.appendChild(careerCard);
 
-        // 입력 요소 숨기기
+        // ?�력 ?�소 ?�기�?
         inputs.forEach(input => input.style.display = "none");
 
-        // 저장/취소 버튼 숨기기
+        // ?�??취소 버튼 ?�기�?
         const formButtons = entry.querySelector(".form-buttons");
         if (formButtons) formButtons.style.display = "none";
 
-        // 요약 카드 표시
+        // ?�약 카드 ?�시
         summary.style.display = "block";
 
-        // localStorage에 저장
+        // localStorage???�??
         const careerData = {
-          company: values['회사명'],
-          startDate: values['입사년월'],
-          endDate: values['퇴사년월'],
+          company: values['?�사�?],
+          startDate: values['?�사?�월'],
+          endDate: values['?�사?�월'],
           position: values['직무'],
-          department: values['근무부서'],
+          department: values['근무부??],
           rank: values['직급'],
-          duties: values['담당업무']
+          duties: values['?�당?�무']
         };
 
-        // 기존 데이터 가져오기
+        // 기존 ?�이??가?�오�?
         let savedCareers = JSON.parse(localStorage.getItem('careers') || '[]');
         savedCareers.push(careerData);
         localStorage.setItem('careers', JSON.stringify(savedCareers));
       }
-      //경력 수정
+      //경력 ?�정
       function editCareer(button) {
         const entry = button.closest(".career-entry");
         const summary = entry.querySelector(".career-summary");
 
-        // input과 textarea 모두 선택
+        // input�?textarea 모두 ?�택
         const inputs = entry.querySelectorAll("input, textarea");
 
-        // 요약 카드 숨김
+        // ?�약 카드 ?��?
         summary.style.display = "none";
 
-        // 모든 입력 필드 다시 보이기
+        // 모든 ?�력 ?�드 ?�시 보이�?
         inputs.forEach(input => input.style.display = "inline-block");
 
-        // 요약 카드 내 버튼 그룹 제거
+        // ?�약 카드 ??버튼 그룹 ?�거
         const cardButtons = summary.querySelector(".card-buttons");
         if (cardButtons) cardButtons.remove();
 
-        // 저장/취소 버튼 다시 보이게 + 정렬 스타일 적용
+        // ?�??취소 버튼 ?�시 보이�?+ ?�렬 ?��????�용
         const formButtons = entry.querySelector(".form-buttons");
         if (formButtons) {
           formButtons.style.display = "flex";
@@ -1496,12 +1496,12 @@
         }
       }
 
-      //경험/활동/교육
+      //경험/?�동/교육
       function showExperienceForm() {
 
         const list = document.getElementById("experience-list");
 
-        // 현재 입력 중인 폼이 있는지 확인 //
+        // ?�재 ?�력 중인 ?�이 ?�는지 ?�인 //
         const isFormOpen = Array.from(list.querySelectorAll(".experience-entry")).some(entry => {
           const inputs = entry.querySelectorAll("input, textarea");
           return Array.from(inputs).some(input => input.style.display !== "none");
@@ -1515,92 +1515,92 @@
         list.appendChild(clone);
       }
 
-      //경험/활동/교육 삭제
+      //경험/?�동/교육 ??��
       function removeExperienceForm(button) {
         const entry = button.closest(".experience-entry");
         if (entry) {
           entry.remove();
         }
       }
-      //경험/활동/교육 저장
+      //경험/?�동/교육 ?�??
       function saveExperience(button) {
         const entry = button.closest(".experience-entry");
         const summary = entry.querySelector(".experience-summary");
         const inputs = entry.querySelectorAll("input, textarea, select");
         const values = {};
 
-        // 입력값 검증
-        const startDate = new Date(entry.querySelector('input[placeholder="시작년월"]').value);
-        const endDate = new Date(entry.querySelector('input[placeholder="종료년월"]').value);
+        // ?�력�?검�?
+        const startDate = new Date(entry.querySelector('input[placeholder="?�작?�월"]').value);
+        const endDate = new Date(entry.querySelector('input[placeholder="종료?�월"]').value);
 
         if (startDate > endDate) {
-          alert('종료년월은 시작년월보다 이후여야 합니다.');
+          alert('종료?�월?� ?�작?�월보다 ?�후?�야 ?�니??');
           return;
         }
 
-        // 필수 입력값 검증
+        // ?�수 ?�력�?검�?
         const activityType = entry.querySelector('select').value;
-        const place = entry.querySelector('input[placeholder="기관/장소명"]').value;
+        const place = entry.querySelector('input[placeholder="기�?/?�소�?]').value;
         const description = entry.querySelector('textarea').value;
 
         if (!activityType || !place || !description) {
-          alert('활동 유형, 기관/장소명, 활동 설명은 필수 입력 항목입니다.');
+          alert('?�동 ?�형, 기�?/?�소�? ?�동 ?�명?� ?�수 ?�력 ??��?�니??');
           return;
         }
 
-        // 값 저장
+        // �??�??
         inputs.forEach(input => {
           if (input.tagName === 'SELECT') {
-            values['활동 유형'] = input.options[input.selectedIndex].text;
+            values['?�동 ?�형'] = input.options[input.selectedIndex].text;
           } else {
             values[input.placeholder] = input.value.trim();
           }
         });
 
-        // 날짜 포맷팅
+        // ?�짜 ?�맷??
         const formatDate = (dateStr) => {
           if (!dateStr) return '';
           const date = new Date(dateStr);
           return `${date.getFullYear()}.${String(date.getMonth() + 1).padStart(2, '0')}`;
         };
 
-        // 경험 데이터 저장
+        // 경험 ?�이???�??
         const experienceData = {
-          activityType: values['활동 유형'],
-          place: values['기관/장소명'],
-          startDate: values['시작년월'],
-          endDate: values['종료년월'],
-          description: values['활동 설명']
+          activityType: values['?�동 ?�형'],
+          place: values['기�?/?�소�?],
+          startDate: values['?�작?�월'],
+          endDate: values['종료?�월'],
+          description: values['?�동 ?�명']
         };
 
-        // localStorage에서 기존 데이터 가져오기
+        // localStorage?�서 기존 ?�이??가?�오�?
         let experiences = JSON.parse(localStorage.getItem('experiences') || '[]');
         experiences.push(experienceData);
         localStorage.setItem('experiences', JSON.stringify(experiences));
 
         summary.innerHTML = `
           <div class="experience-card">
-            <h4>${values['활동 유형'] || ''} - ${values['기관/장소명'] || ''} 
-                (${formatDate(values['시작년월']) || ''} ~ ${formatDate(values['종료년월']) || ''})</h4>
-            <p><strong>활동 설명:</strong> ${values['활동 설명'] || ''}</p>
+            <h4>${values['?�동 ?�형'] || ''} - ${values['기�?/?�소�?] || ''} 
+                (${formatDate(values['?�작?�월']) || ''} ~ ${formatDate(values['종료?�월']) || ''})</h4>
+            <p><strong>?�동 ?�명:</strong> ${values['?�동 ?�명'] || ''}</p>
             <div class="card-buttons" style="display: flex; justify-content: flex-end; gap: 8px;">
-              <button onclick="editExperience(this)" class="cencle_save_btn">수정</button>
-              <button onclick="removeExperienceForm(this)" class="cencle_save_btn">삭제</button>
+              <button onclick="editExperience(this)" class="cencle_save_btn">?�정</button>
+              <button onclick="removeExperienceForm(this)" class="cencle_save_btn">??��</button>
             </div>
           </div>
         `;
 
-        // 입력 필드 숨기기
+        // ?�력 ?�드 ?�기�?
         inputs.forEach(input => input.style.display = "none");
 
-        // 폼 버튼 숨기기
+        // ??버튼 ?�기�?
         const formButtons = entry.querySelector(".form-buttons");
         if (formButtons) formButtons.style.display = "none";
 
-        // 요약 카드 표시
+        // ?�약 카드 ?�시
         summary.style.display = "block";
       }
-      //경험/활동/교육 수정
+      //경험/?�동/교육 ?�정
       function editExperience(button) {
         const entry = button.closest(".experience-entry");
         const summary = entry.querySelector(".experience-summary");
@@ -1620,7 +1620,7 @@
       }
 
 
-      /* =========================================== 자격/어학/수상 */
+      /* =========================================== ?�격/?�학/?�상 */
       let certificateData = [];
       let certEditIndex = null;
       let editingCardEl = null;
@@ -1629,91 +1629,91 @@
         const form = document.getElementById('certificate-form');
         form.style.display = 'block';
 
-        /* 새 항목일 때 완전 초기화 */
+        /* ????��?????�전 초기??*/
         if (!isEdit) {
           certEditIndex = null;
-          resetCertForm();   // 드롭다운 초기화
+          resetCertForm();   // ?�롭?�운 초기??
         }
 
-        showCertificateFields();   // 타입별 필드 토글
+        showCertificateFields();   // ?�?�별 ?�드 ?��?
       }
       function cancelcertificate() {
         document.getElementById('certificate-form').style.display = 'none';
 
-        /* ★ 숨겨둔 카드가 있으면 다시 보이게 */
+        /* ???�겨??카드가 ?�으�??�시 보이�?*/
         if (editingCardEl) {
           editingCardEl.style.display = '';
           editingCardEl = null;
           certEditIndex = null;
         }
-        resetCertForm();   // 빈 폼 유지
+        resetCertForm();   // �????��?
       }
       function showCertificateFields() {
         const type = document.getElementById('certificateType').value;
 
-        /* (A) 아무 것도 선택하지 않은 상태면 전부 감춤 */
+        /* (A) ?�무 것도 ?�택?��? ?��? ?�태�??��? 감춤 */
         if (!type) {
           document.querySelectorAll('.cert-fields').forEach(el => el.style.display = 'none');
           return;
         }
 
-        /* (B) 선택값이 있을 때만 해당 블록 보여 줌 */
+        /* (B) ?�택값이 ?�을 ?�만 ?�당 블록 보여 �?*/
         document.querySelectorAll('.cert-fields').forEach(el => {
           el.style.display = el.id.startsWith(type) ? 'block' : 'none';
         });
       }
       function savecertificate() {
         const type = document.getElementById('certificateType').value;
-        if (!type) { alert('구분을 선택하세요'); return; }
+        if (!type) { alert('구분???�택?�세??); return; }
 
-        /* 활성 필드에서 값 수집 */
+        /* ?�성 ?�드?�서 �??�집 */
         const visible = document.querySelector(`#${type}Fields`);
         const obj = { type };
         visible.querySelectorAll('input, select').forEach(el => obj[el.name] = el.value.trim());
 
-        /* 값이 하나라도 비어 있으면 저장 막기(선택) */
-        if (Object.values(obj).some(v => v === '')) { alert('모든 항목을 입력하세요'); return; }
+        /* 값이 ?�나?�도 비어 ?�으�??�??막기(?�택) */
+        if (Object.values(obj).some(v => v === '')) { alert('모든 ??��???�력?�세??); return; }
 
-        /* 새 항목 vs 수정 항목 구분 */
+        /* ????�� vs ?�정 ??�� 구분 */
         if (certEditIndex === null) {
           certificateData.push(obj);
         } else {
           certificateData[certEditIndex] = obj;
         }
 
-        renderCertificateList();      // 리스트 다시 그림
+        renderCertificateList();      // 리스???�시 그림
         certEditIndex = null;
-        editingCardEl = null;         // ★ 리셋
+        editingCardEl = null;         // ??리셋
         resetCertForm();
-        cancelcertificate();    // ← 폼 숨김
+        cancelcertificate();    // ?????��?
       }
       function renderCertificateList() {
         const list = document.getElementById('certificate-list');
         list.innerHTML = '';
 
         certificateData.forEach((it, idx) => {
-          /* ① 카드 div */
+          /* ??카드 div */
           const card = document.createElement('div');
           card.className = 'cert-card';
 
-          /* ② 상세 문자열 */
+          /* ???�세 문자??*/
           let detail = '';
           if (it.type === 'license') {
-            detail = `<strong>[자격증]</strong> ${it.license_name} · ${it.issuer} (${it.pass_date})`;
+            detail = `<strong>[?�격�?</strong> ${it.license_name} · ${it.issuer} (${it.pass_date})`;
           } else if (it.type === 'language') {
-            detail = `<strong>[어학]</strong> ${it.lang} ${it.exam} ${it.score} (${it.status})`;
+            detail = `<strong>[?�학]</strong> ${it.lang} ${it.exam} ${it.score} (${it.status})`;
           } else {
-            detail = `<strong>[수상]</strong> ${it.award_name} · ${it.host} (${it.award_date})`;
+            detail = `<strong>[?�상]</strong> ${it.award_name} · ${it.host} (${it.award_date})`;
           }
 
-          /* ③ 버튼 묶음 */
+          /* ??버튼 묶음 */
           const btnBox = `
       <div class="card-actions" style="display: flex; justify-content: flex-end; gap: 8px;">
-        <button class="cencle_save_btn" onclick="editCertificate(${idx})">수정</button>
-        <button class="cencle_save_btn" onclick="deleteCertificate(${idx})">삭제</button>
+        <button class="cencle_save_btn" onclick="editCertificate(${idx})">?�정</button>
+        <button class="cencle_save_btn" onclick="deleteCertificate(${idx})">??��</button>
       </div>`;
 
-          /* ④ 카드 완성 & 삽입 */
+          /* ??카드 ?�성 & ?�입 */
           card.innerHTML = `<span>${detail}</span>${btnBox}`;
           list.appendChild(card);
         });
@@ -1722,11 +1722,11 @@
         certEditIndex = index;
         const it = certificateData[index];
 
-        /* ① 카드 DOM을 찾아 숨기고 변수에 보관 */
+        /* ??카드 DOM??찾아 ?�기�?변?�에 보�? */
         editingCardEl = document.querySelectorAll('.cert-card')[index];
         if (editingCardEl) editingCardEl.style.display = 'none';
 
-        /* ② 폼 열기 & 값 주입(기존 코드) */
+        /* ?????�기 & �?주입(기존 코드) */
         showcertificate(true);
         document.getElementById('certificateType').value = it.type;
         showCertificateFields();
@@ -1740,32 +1740,32 @@
         }
       }
       function deleteCertificate(index) {
-        if (confirm('삭제하시겠습니까?')) { certificateData.splice(index, 1); renderCertificateList(); }
+        if (confirm('??��?�시겠습?�까?')) { certificateData.splice(index, 1); renderCertificateList(); }
       }
       function resetCertForm() {
         const form = document.getElementById('certificate-form');
 
-        /* 드롭다운 첫 번째 값 */
+        /* ?�롭?�운 �?번째 �?*/
         document.getElementById('certificateType').selectedIndex = 0;
 
-        /* 모든 input 값 제거 */
+        /* 모든 input �??�거 */
         form.querySelectorAll('input').forEach(el => el.value = '');
 
-        /* 나머지 select 도 첫 번째 값으로 */
+        /* ?�머지 select ??�?번째 값으�?*/
         form.querySelectorAll('select').forEach(el => {
           if (el !== document.getElementById('certificateType')) el.selectedIndex = 0;
         });
 
-        /* 세부 필드 전부 숨김 */
+        /* ?��? ?�드 ?��? ?��? */
         document.querySelectorAll('.cert-fields').forEach(el => el.style.display = 'none');
       }
 
-      /* ======================================= 취업우대사항 */
+      /* ======================================= 취업?��??�항 */
       let preferenceData = [];
       let prefEditIndex  = null;
       let prefCardHidden = null;
 
-      /* ① 폼 열기 */
+      /* ?????�기 */
       function showPreference(isEdit=false){
         const form = document.getElementById('preference-form');
         form.style.display='block';
@@ -1778,7 +1778,7 @@
         showPreferenceFields();
       }
 
-      /* ② 폼 닫기 */
+      /* ?????�기 */
       function cancelPreference(){
         document.getElementById('preference-form').style.display='none';
         if(prefCardHidden){ prefCardHidden.style.display=''; prefCardHidden=null; }
@@ -1786,7 +1786,7 @@
         resetPrefForm();
       }
 
-      /* ③ 드롭다운에 맞춰 부분 필드 토글 */
+      /* ???�롭?�운??맞춰 부�??�드 ?��? */
       function showPreferenceFields(){
         const type = document.getElementById('preferenceType').value;
         if(!type){
@@ -1798,11 +1798,11 @@
         });
       }
 
-      /* ④ 저장 */
+      /* ???�??*/
       function savePreference() {
         const type = document.getElementById('preferenceType').value;
         if (!type) {
-          alert('구분 선택');
+          alert('구분 ?�택');
           return;
         }
 
@@ -1813,7 +1813,7 @@
           obj.v_cert = document.querySelector('[name="v_cert"]').value.trim();
 
           if (!obj.v_type || !obj.v_cert) {
-            alert('모든 항목 입력');
+            alert('모든 ??�� ?�력');
             return;
           }
 
@@ -1821,11 +1821,11 @@
           obj.m_status = document.querySelector('[name="m_status"]').value.trim();
 
           if (!obj.m_status) {
-            alert('병역 구분 입력');
+            alert('병역 구분 ?�력');
             return;
           }
 
-          // 군필일 경우에만 추가 필드 입력 받기
+          // 군필??경우?�만 추�? ?�드 ?�력 받기
           if (obj.m_status === 'served') {
             obj.m_start = document.querySelector('[name="m_start"]').value.trim();
             obj.m_end = document.querySelector('[name="m_end"]').value.trim();
@@ -1834,7 +1834,7 @@
             obj.m_reason = document.querySelector('[name="m_reason"]').value.trim();
 
             if (!obj.m_start || !obj.m_end || !obj.m_branch || !obj.m_rank || !obj.m_reason) {
-              alert('군필 항목 모두 입력하세요');
+              alert('군필 ??�� 모두 ?�력?�세??);
               return;
             }
           }
@@ -1842,7 +1842,7 @@
         } else if (type === 'employment') {
           obj.e_type = document.querySelector('[name="e_type"]').value.trim();
           if (!obj.e_type) {
-            alert('지원금 종류 입력');
+            alert('지?�금 종류 ?�력');
             return;
           }
         }
@@ -1861,7 +1861,7 @@
       }
 
 
-      /* ⑤ 카드 렌더 */
+      /* ??카드 ?�더 */
       function renderPreferenceList(){
         const list=document.getElementById('preference-list');
         list.innerHTML='';
@@ -1876,21 +1876,21 @@
             detail = `[병역] ${it.m_status}`;   // 면제·미필
           }
         }
-          else detail=`[지원금] ${it.e_type}`;
+          else detail=`[지?�금] ${it.e_type}`;
 
           const card=document.createElement('div');
           card.className='pref-card';
           card.innerHTML=`
             <span>${detail}</span>
             <div class="card-actions">
-              <button class="cencle_save_btn" onclick="editPreference(${idx})">수정</button>
-              <button class="cencle_save_btn" onclick="deletePreference(${idx})">삭제</button>
+              <button class="cencle_save_btn" onclick="editPreference(${idx})">?�정</button>
+              <button class="cencle_save_btn" onclick="deletePreference(${idx})">??��</button>
             </div>`;
           list.appendChild(card);
         });
       }
 
-      /* ⑥ 수정 */
+      /* ???�정 */
       function editPreference(idx){
         prefEditIndex = idx;
         prefCardHidden = document.querySelectorAll('.pref-card')[idx];
@@ -1912,15 +1912,15 @@
         }
       }   
 
-      /* ⑦ 삭제 */
+      /* ????�� */
       function deletePreference(idx){
-        if(confirm('삭제하시겠습니까?')){
+        if(confirm('??��?�시겠습?�까?')){
           preferenceData.splice(idx,1);
           renderPreferenceList();
         }
       }
 
-      /* ⑧ 폼 리셋 */
+      /* ????리셋 */
       function resetPrefForm(){
         const form=document.getElementById('preference-form');
         document.getElementById('preferenceType').selectedIndex=0;
@@ -1931,17 +1931,17 @@
         document.querySelectorAll('.pref-fields').forEach(el=>el.style.display='none');
       }
 
-      /* 병역 구분 선택 → 군필 상세 입력 노출 */
+      /* 병역 구분 ?�택 ??군필 ?�세 ?�력 ?�출 */
       function toggleMilitaryDetail(){
         const val = document.getElementById('mStatus').value;
         document.getElementById('servedDetail').style.display = (val === 'served') ? 'inline-block' : 'none';
       }
 
-      //포트폴리오
+      //?�트?�리??
       function showPortfolioForm() {
         const list = document.getElementById('portfolio-list');
 
-        // 폼이 실제로 열려 있는지 확인: 입력란이 보이는 entry만
+        // ?�이 ?�제�??�려 ?�는지 ?�인: ?�력?�??보이??entry�?
         const isFormOpen = Array.from(list.querySelectorAll('.portfolio-entry')).some(entry => {
           const inputs = entry.querySelectorAll('input, textarea');
           return Array.from(inputs).some(input => input.style.display !== 'none');
@@ -1956,14 +1956,14 @@
         clone.style.display = 'block';
         list.appendChild(clone);
       }
-      //포폴 삭제
+      //?�폴 ??��
       function removePortfolioForm(button) {
         const entry = button.closest(".portfolio-entry");
         if (entry) {
           entry.remove();
         }
       }
-      //포폴 저장
+      //?�폴 ?�??
       function savePortfolio(button) {
         const entry = button.closest(".portfolio-entry");
         const summary = entry.querySelector(".portfolio-summary");
@@ -1978,7 +1978,7 @@
           }
         });
 
-        // 파일 이름 목록 생성
+        // ?�일 ?�름 목록 ?�성
         const fileNames = [];
         for (let i = 0; i < fileInput.files.length; i++) {
           fileNames.push(fileInput.files[i].name);
@@ -1986,18 +1986,18 @@
 
         summary.innerHTML = `
     <div class="portfolio-card">
-      <h4>${values['프로젝트명'] || ''}</h4>
-      <p><strong>설명:</strong> ${values['프로젝트 설명'] || ''}</p>
-      ${fileNames.length > 0 ? `<p><strong>첨부파일:</strong> ${fileNames.join(', ')}</p>` : ''}
+      <h4>${values['?�로?�트�?] || ''}</h4>
+      <p><strong>?�명:</strong> ${values['?�로?�트 ?�명'] || ''}</p>
+      ${fileNames.length > 0 ? `<p><strong>첨�??�일:</strong> ${fileNames.join(', ')}</p>` : ''}
       <div style="display: flex; justify-content: flex-end; gap: 8px;">
-        <button onclick="editPortfolio(this)" class="cencle_save_btn">수정</button>
-        <button onclick="removePortfolioForm(this)" class="cencle_save_btn">삭제</button>
+        <button onclick="editPortfolio(this)" class="cencle_save_btn">?�정</button>
+        <button onclick="removePortfolioForm(this)" class="cencle_save_btn">??��</button>
       </div>
     </div>
   `;
 
-        if (!values['프로젝트명'] || !values['프로젝트 설명']) {
-          alert('프로젝트명, 프로젝트 설명은 필수 입력 항목입니다.');
+        if (!values['?�로?�트�?] || !values['?�로?�트 ?�명']) {
+          alert('?�로?�트�? ?�로?�트 ?�명?� ?�수 ?�력 ??��?�니??');
           return;
         }
 
@@ -2007,7 +2007,7 @@
 
         summary.style.display = "block";
       }
-      //포폴 수정
+      //?�폴 ?�정
       function editPortfolio(button) {
         const entry = button.closest(".portfolio-entry");
         const summary = entry.querySelector(".portfolio-summary");
@@ -2026,7 +2026,7 @@
       }
 
 
-      //경력기술서
+      //경력기술??
       function showdescription() {
         document.getElementById('career-description-form').style.display = 'block';
       }
@@ -2037,7 +2037,7 @@
       }
       function updateCharCount() {
         const textArea = document.getElementById("careerDescriptionText");
-        if (!textArea) return;  // 텍스트 영역이 아직 없으면 그냥 함수 종료
+        if (!textArea) return;  // ?�스???�역???�직 ?�으�?그냥 ?�수 종료
 
         const text = textArea.value;
         const total = text.length;
@@ -2060,7 +2060,7 @@
       function savedescription() {
         const text = document.getElementById("careerDescriptionText").value;
         if (!text.trim()) {
-          alert("내용을 입력하세요.");
+          alert("?�용???�력?�세??");
           return;
         }
 
@@ -2069,8 +2069,8 @@
         summaryContainer.innerHTML = `
           <div style="white-space: pre-wrap;">${text}</div>
           <div style="margin-top: 10px; text-align: right;">
-            <button onclick="editDescription(this)" class="cencle_save_btn">수정</button>
-            <button onclick="removeDescription(this)" class="cencle_save_btn">삭제</button>
+            <button onclick="editDescription(this)" class="cencle_save_btn">?�정</button>
+            <button onclick="removeDescription(this)" class="cencle_save_btn">??��</button>
           </div>
         `;
 
@@ -2108,48 +2108,48 @@
         switch (type) {
           case "project":
             content =
-              `1) 프로젝트명:
+              `1) ?�로?�트�?
 
-    - 연계/소속회사 : (연계/소속회사가 없을 경우, 해당 항목을 지우고 작성하세요)
-    - 수행 기간 : YYYY.MM ~ YYYY.MM (약 N개월)
-    - 주요 역할 : 화면 설계 및 서비스 기획
-    - 업무 성과 :`;
+    - ?�계/?�속?�사 : (?�계/?�속?�사가 ?�을 경우, ?�당 ??��??지?�고 ?�성?�세??
+    - ?�행 기간 : YYYY.MM ~ YYYY.MM (??N개월)
+    - 주요 ??�� : ?�면 ?�계 �??�비??기획
+    - ?�무 ?�과 :`;
             break;
 
           case "dev":
             content =
-              `1) 프로젝트명:
+              `1) ?�로?�트�?
 
-    - 연계/소속회사 : (연계/소속회사가 없을 경우, 해당 항목을 지우고 작성하세요)
-    - 주요 업무 : 백엔드 담당
-    - 담당 역할 :
-    - 기술 스택 : (운영체제, 개발언어, 데이터베이스 등)
-    - 업무 기간 : YYYY.MM ~ YYYY.MM (약 N개월)
-    - 개발 인원 :
-    - 상세 내용 :`;
+    - ?�계/?�속?�사 : (?�계/?�속?�사가 ?�을 경우, ?�당 ??��??지?�고 ?�성?�세??
+    - 주요 ?�무 : 백엔???�당
+    - ?�당 ??�� :
+    - 기술 ?�택 : (?�영체제, 개발?�어, ?�이?�베?�스 ??
+    - ?�무 기간 : YYYY.MM ~ YYYY.MM (??N개월)
+    - 개발 ?�원 :
+    - ?�세 ?�용 :`;
             break;
 
           case "design":
             content =
-              `1) 주요 업무 : 콘텐츠 제작
+              `1) 주요 ?�무 : 콘텐�??�작
 
-    - 사용 Tool : ex) photoshop
-    - 업무기간 : YYYY.MM ~ YYYY.MM (약 N개월)
-    - 포트폴리오 URL :
-    - 상세내용 :`;
+    - ?�용 Tool : ex) photoshop
+    - ?�무기간 : YYYY.MM ~ YYYY.MM (??N개월)
+    - ?�트?�리??URL :
+    - ?�세?�용 :`;
             break;
 
           case "sales":
             content =
-              `1) 프로젝트명:
+              `1) ?�로?�트�?
 
-    - 연계/소속회사 : (연계/소속회사가 없을 경우, 해당 항목을 지우고 작성하세요)
-    - 주요 업무 :
-    - 수행 기간 : YYYY.MM ~ YYYY.MM (약 N개월)
-    - 담당 지역 :
-    - 계약 건수 : 월 평균 _건
-    - 고객 수 : ex. 인수 30%, 신규개척 70%
-    - 상세 내용 :`;
+    - ?�계/?�속?�사 : (?�계/?�속?�사가 ?�을 경우, ?�당 ??��??지?�고 ?�성?�세??
+    - 주요 ?�무 :
+    - ?�행 기간 : YYYY.MM ~ YYYY.MM (??N개월)
+    - ?�당 지??:
+    - 계약 건수 : ???�균 _�?
+    - 고객 ??: ex. ?�수 30%, ?�규개척 70%
+    - ?�세 ?�용 :`;
             break;
         }
 
@@ -2158,7 +2158,7 @@
       }
 
       
-      //자기소개서
+      //?�기?�개??
 
       function collectIntroductionData() {
         const cards = document.querySelectorAll('.intro-card');
@@ -2192,33 +2192,33 @@
         return resp.json();
       }
 
-      /* 맞춤법 */
+      /* 맞춤�?*/
       async function checkSpelling(){
         const text = document.getElementById("introTextarea").value.trim();
-        if(!text){ alert("내용을 먼저 입력하세요"); return; }
+        if(!text){ alert("?�용??먼�? ?�력?�세??); return; }
 
         try{
           const data = await postJSON("/api/spellcheck/", { text });
           document.getElementById("introTextarea").value = data.result;
           updateIntroCount();
-          alert("맞춤법 교정 완료!");
+          alert("맞춤�?교정 ?�료!");
         }catch(e){
-          console.error(e); alert("교정 실패");
+          console.error(e); alert("교정 ?�패");
         }
       }
 
       /* AI 첨삭 */
       async function runAIReview(){
         const text = document.getElementById("introTextarea").value.trim();
-        if(!text){ alert("내용을 먼저 입력하세요"); return; }
+        if(!text){ alert("?�용??먼�? ?�력?�세??); return; }
 
         try{
           const data = await postJSON("/api/proofread/", { text });
           document.getElementById("introTextarea").value = data.result;
           updateIntroCount();
-          alert("AI 첨삭 완료!");
+          alert("AI 첨삭 ?�료!");
         }catch(e){
-          console.error(e); alert("첨삭 실패");
+          console.error(e); alert("첨삭 ?�패");
         }
       }
 
@@ -2229,7 +2229,7 @@
 
 
       function resetResumeForm() {
-        // 1. 기본 정보 입력란 비우기
+        // 1. 기본 ?�보 ?�력?� 비우�?
         document.getElementById('resume-title').value = '';
         document.getElementById('name').value = '';
         document.getElementById('gender').value = '';
@@ -2239,7 +2239,7 @@
         document.getElementById('address').value = '';
         document.getElementById('detail-address').value = '';
 
-        // 2. 체크박스 모두 해제 + 폼 모두 닫기
+        // 2. 체크박스 모두 ?�제 + ??모두 ?�기
         const sectionNames = [
           'education', 'career', 'skill', 'experience', 'certificate',
           'preference', 'portfolio', 'career-description', 'introduction'
@@ -2251,8 +2251,8 @@
           if (section) section.style.display = 'none';
         });
 
-        // 3. 각 항목 리스트 비우기
-        // 학력/경력/스킬 등 리스트 부분 초기화
+        // 3. �???�� 리스??비우�?
+        // ?�력/경력/?�킬 ??리스??부�?초기??
         const sectionListIds = [
           'education-list', 'career-list', 'skill-list', 'experience-list',
           'certificate-list', 'preference-list', 'portfolio-list',
@@ -2263,11 +2263,11 @@
           if (el) el.innerHTML = '';
         });
 
-        // 4. 스킬 태그 초기화
+        // 4. ?�킬 ?�그 초기??
         selectedSkills = [];
         updateSkillList();
 
-        // 5. 기타(포트폴리오, 경력기술서 등 임시 입력폼도 닫기)
+        // 5. 기�?(?�트?�리?? 경력기술?????�시 ?�력?�도 ?�기)
         const formIds = [
           'education-form-template', 'career-form-template', 'skill-form',
           'experience-form-template', 'certificate-form', 'preference-form',
@@ -2278,14 +2278,14 @@
           if (f) f.style.display = 'none';
         });
 
-        // 6. sectionData 등 데이터 배열들도 비울 것 있으면 여기서 비우기
-        // 예: certificateData = [], preferenceData = []
+        // 6. sectionData ???�이??배열?�도 비울 �??�으�??�기??비우�?
+        // ?? certificateData = [], preferenceData = []
 
         if (typeof certificateData !== 'undefined') certificateData = [];
         if (typeof preferenceData !== 'undefined') preferenceData = [];
 
-        // 7. 이미지 초기화
-        // 프로필 이미지 초기화
+        // 7. ?��?지 초기??
+        // ?�로???��?지 초기??
         const previewDiv = document.getElementById("profile-image-preview");
         const fileInput = document.getElementById("profile-image-input");
         const uploadPlus = document.getElementById("upload-plus");
@@ -2297,14 +2297,14 @@
           uploadPlus.style.display = 'inline';
         }
         if (fileInput) {
-          fileInput.value = '';  // input[type=file] 초기화
+          fileInput.value = '';  // input[type=file] 초기??
 }
 
 
       
       }
 
-      //자기소개서
+      //?�기?�개??
       function showIntroductionForm() {
         document.getElementById("introduction-form").style.display = "block";
       }
@@ -2320,7 +2320,7 @@
         const title = document.getElementById("introTitle").value.trim();
         const content = document.getElementById("introTextarea").value.trim();
         if (!title || !content) {
-          alert("제목과 내용을 모두 입력하세요.");
+          alert("?�목�??�용??모두 ?�력?�세??");
           return;
         }
 
@@ -2335,8 +2335,8 @@
           <h4 style="margin-bottom: 10px;">${title}</h4>
           <div class="intro-content" style="white-space: pre-wrap; margin-bottom: 20px;">${contentHTML}</div>
           <div style="text-align: right; margin-top: 10px;">
-            <button onclick="editIntroduction(this)" class="cencle_save_btn">수정</button>
-            <button onclick="removeIntroduction(this)" class="cencle_save_btn">삭제</button>
+            <button onclick="editIntroduction(this)" class="cencle_save_btn">?�정</button>
+            <button onclick="removeIntroduction(this)" class="cencle_save_btn">??��</button>
           </div>
         `;
         document.getElementById("introduction-list").appendChild(card);
@@ -2354,7 +2354,7 @@
       }
       function removeIntroduction(button) {
         const card = button.closest(".intro-card");
-        if (confirm("정말 삭제하시겠습니까?")) {
+        if (confirm("?�말 ??��?�시겠습?�까?")) {
           card.remove();
         }
       }
@@ -2377,38 +2377,38 @@
         return resp.json();
       }
 
-      /* 맞춤법 */
+      /* 맞춤�?*/
       async function checkSpelling(){
         const text = document.getElementById("introTextarea").value.trim();
-        if(!text){ alert("내용을 먼저 입력하세요"); return; }
+        if(!text){ alert("?�용??먼�? ?�력?�세??); return; }
 
         try{
           const data = await postJSON("/api/spellcheck/", { text });
           document.getElementById("introTextarea").value = data.result;
           updateIntroCount();
-          alert("맞춤법 교정 완료!");
+          alert("맞춤�?교정 ?�료!");
         }catch(e){
-          console.error(e); alert("교정 실패");
+          console.error(e); alert("교정 ?�패");
         }
       }
 
       /* AI 첨삭 */
       async function runAIReview(){
         const text = document.getElementById("introTextarea").value.trim();
-        if(!text){ alert("내용을 먼저 입력하세요"); return; }
+        if(!text){ alert("?�용??먼�? ?�력?�세??); return; }
 
         try{
           const data = await postJSON("/api/proofread/", { text });
           document.getElementById("introTextarea").value = data.result;
           updateIntroCount();
-          alert("AI 첨삭 완료!");
+          alert("AI 첨삭 ?�료!");
         }catch(e){
-          console.error(e); alert("첨삭 실패");
+          console.error(e); alert("첨삭 ?�패");
         }
       }
 
       
-      // 이미지 선택 시 미리보기로 표시
+      // ?��?지 ?�택 ??미리보기�??�시
       function previewProfileImage(event) {
         const input = event.target;
         const previewDiv = document.getElementById("profile-image-preview");
@@ -2417,13 +2417,13 @@
           const reader = new FileReader();
           reader.onload = function(e) {
             previewDiv.style.backgroundImage = `url('${e.target.result}')`;
-            document.getElementById("upload-plus").style.display = 'none';  // + 버튼 숨김
+            document.getElementById("upload-plus").style.display = 'none';  // + 버튼 ?��?
           };
           reader.readAsDataURL(input.files[0]);
         }
       }
 
-      // div 클릭 시 파일 선택 input 열기
+      // div ?�릭 ???�일 ?�택 input ?�기
       document.getElementById("profile-image-preview").addEventListener("click", function() {
         document.getElementById("profile-image-input").click();
       });
@@ -2434,7 +2434,7 @@
 
       function previewResume() {
         if (selectedResumeId) {
-          // 이미 저장된 이력서를 선택한 상태인 경우 → GET 요청으로 미리보기
+          // ?��? ?�?�된 ?�력?��? ?�택???�태??경우 ??GET ?�청?�로 미리보기
           window.open(`/resume/preview/${selectedResumeId}/`, '_blank');
           return;
         }
@@ -2486,11 +2486,11 @@
           if (data.resume_id) {
             window.open(`/resume/preview/${data.resume_id}/`, '_blank');
           } else {
-            alert("이력서 저장에 실패했습니다.");
+            alert("?�력???�?�에 ?�패?�습?�다.");
           }
         })
         .catch(err => {
-          alert("미리보기 실패: " + err);
+          alert("미리보기 ?�패: " + err);
         });
       }
 

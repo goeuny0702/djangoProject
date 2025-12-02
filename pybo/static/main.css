@@ -198,13 +198,7 @@ body {
   width: 45%;
 }
 
-/* longtext 기존 스타일 - 새 스타일로 대체됨 (아래 참조) */
-
-/* 기존 section 스타일 - 새 스타일로 대체됨 (아래 참조) */
-
-/* 기존 addbtn 스타일 - 새 스타일로 대체됨 (아래 참조) */
-
-/* 마이커리어 부분분 */
+/* My Career 패널 */
 .right-panel {
   position: fixed;
   right: 0;
@@ -277,8 +271,6 @@ body {
 }
 
 
-/* 기존 skill-tag, form-buttons 스타일 - 새 스타일로 대체됨 (아래 참조) */
-
 .skill-tag .delete-btn {
   position: absolute;
   top: -6px;
@@ -304,10 +296,8 @@ body {
   padding-bottom: 12px;
 }
 
-/* 기존 카드 스타일 - 새 스타일로 대체됨 (아래 참조) */
-
 /* ========================================
-   기본정보 카드 (핑크 테마)
+   기본정보 카드
    ======================================== */
 .basic-info-card {
   background: #ffffff;
