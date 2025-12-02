@@ -2,82 +2,337 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>회원가입</title>
   <style>
-    body {
+    * {
       margin: 0;
       padding: 0;
-      background: linear-gradient(to bottom right, #fcdce4, #e2c8d9);
-      font-family: 'Segoe UI', sans-serif;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', 'Malgun Gothic', sans-serif;
+      background: linear-gradient(135deg, #fff0f5 0%, #fce4ec 50%, #f8bbd9 100%);
+      min-height: 100vh;
       display: flex;
       justify-content: center;
       align-items: center;
-      height: 100vh;
+      padding: 20px;
     }
 
-    .signup-box {
-      background: rgba(255, 255, 255, 0.3);
-      border-radius: 15px;
-      padding: 40px;
-      width: 350px;
-      backdrop-filter: blur(12px);
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    .signup-container {
+      background: #ffffff;
+      border-radius: 20px;
+      box-shadow: 0 10px 40px rgba(255, 105, 180, 0.15);
+      width: 100%;
+      max-width: 440px;
+      padding: 50px 40px;
+    }
+
+    .signup-title {
       text-align: center;
+      margin-bottom: 40px;
     }
 
-    .signup-box img {
-      width: 70px;
-      height: 70px;
-      border-radius: 50%;
+    .signup-title h1 {
+      font-size: 24px;
+      font-weight: 600;
+      color: #333;
+    }
+
+    .signup-title h1 span {
+      color: #ff69b4;
+      font-weight: 700;
+    }
+
+    .signup-title p {
+      color: #888;
+      font-size: 14px;
+      margin-top: 10px;
+    }
+
+    .input-group {
       margin-bottom: 20px;
     }
 
-    .signup-box input[type="text"],
-    .signup-box input[type="password"] {
-      width: 90%;
-      padding: 12px;
-      margin: 10px 0;
-      border: none;
-      border-radius: 5px;
-      outline: none;
+    .input-group label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      color: #555;
+      margin-bottom: 8px;
     }
 
-    .signup-box input[type="submit"] {
-      background-color: #f48c9b;
-      color: white;
-      padding: 12px;
+    .input-group label .required {
+      color: #ff69b4;
+      margin-left: 2px;
+    }
+
+    .input-group input {
       width: 100%;
-      border: none;
-      border-radius: 5px;
+      padding: 14px 16px;
+      font-size: 14px;
+      border: 2px solid #f5d1ea;
+      border-radius: 10px;
+      outline: none;
+      transition: all 0.3s ease;
+      background: #fffbfc;
+    }
+
+    .input-group input:focus {
+      border-color: #ff69b4;
+      background: #ffffff;
+      box-shadow: 0 0 0 4px rgba(255, 105, 180, 0.1);
+    }
+
+    .input-group input::placeholder {
+      color: #bbb;
+    }
+
+    .input-hint {
+      font-size: 11px;
+      color: #999;
+      margin-top: 6px;
+    }
+
+    .password-match {
+      font-size: 12px;
+      margin-top: 6px;
+    }
+
+    .password-match.success {
+      color: #4caf50;
+    }
+
+    .password-match.error {
+      color: #ff69b4;
+    }
+
+    .terms-section {
+      margin: 24px 0;
+      padding: 16px;
+      background: #fffbfc;
+      border: 1px solid #f5d1ea;
+      border-radius: 10px;
+    }
+
+    .terms-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: #555;
+      margin-bottom: 12px;
+    }
+
+    .checkbox-label {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 13px;
+      color: #666;
       cursor: pointer;
-      margin-top: 20px;
+      margin-bottom: 8px;
     }
 
-    .signup-box input[type="submit"]:hover {
-      background-color: #e46b86;
+    .checkbox-label:last-child {
+      margin-bottom: 0;
     }
 
-    .field-icon {
-      margin-right: 8px;
+    .checkbox-label input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      accent-color: #ff69b4;
+      cursor: pointer;
+    }
+
+    .checkbox-label a {
+      color: #ff69b4;
+      text-decoration: none;
+    }
+
+    .checkbox-label a:hover {
+      text-decoration: underline;
+    }
+
+    .signup-btn {
+      width: 100%;
+      padding: 16px;
+      background: linear-gradient(135deg, #ff8ec7 0%, #ff69b4 100%);
+      color: white;
+      border: none;
+      border-radius: 12px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(255, 105, 180, 0.3);
+      margin-top: 10px;
+    }
+
+    .signup-btn:hover {
+      background: linear-gradient(135deg, #ff69b4 0%, #ff4da6 100%);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(255, 105, 180, 0.4);
+    }
+
+    .login-link {
+      text-align: center;
+      margin-top: 24px;
+      font-size: 14px;
+      color: #666;
+    }
+
+    .login-link a {
+      color: #ff69b4;
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .login-link a:hover {
+      text-decoration: underline;
+    }
+
+    /* 에러 메시지 스타일 */
+    .error-message {
+      background: #fff0f5;
+      border: 1px solid #f5d1ea;
+      border-radius: 8px;
+      padding: 12px 16px;
+      margin-bottom: 20px;
+      color: #c06090;
+      font-size: 13px;
+      text-align: center;
+    }
+
+    /* 성공 메시지 스타일 */
+    .success-message {
+      background: #f0fff4;
+      border: 1px solid #a8e6cf;
+      border-radius: 8px;
+      padding: 12px 16px;
+      margin-bottom: 20px;
+      color: #2e7d32;
+      font-size: 13px;
+      text-align: center;
+    }
+
+    /* 반응형 */
+    @media (max-width: 480px) {
+      .signup-container {
+        padding: 40px 24px;
+      }
+
+      .signup-title h1 {
+        font-size: 20px;
+      }
     }
   </style>
 </head>
 <body>
-  <form class="signup-box" method="POST">
-    {% csrf_token %}
-    <img src="https://cdn-icons-png.flaticon.com/512/847/847969.png" alt="user icon">
-    
-    <div>
-      <input type="text" name="username" placeholder="Username" required>
-    </div>
-    <div>
-      <input type="password" name="password1" placeholder="Password" required>
-    </div>
-    <div>
-      <input type="password" name="password2" placeholder="Confirm Password" required>
+  <div class="signup-container">
+    <div class="signup-title">
+      <h1>간편하게 <span>회원가입</span>하세요</h1>
+      <p>몇 가지 정보만 입력하면 바로 시작할 수 있어요!</p>
     </div>
 
-    <input type="submit" value="SIGN UP">
-  </form>
+    {% if messages %}
+      {% for message in messages %}
+        {% if message.tags == 'error' %}
+          <div class="error-message">{{ message }}</div>
+        {% else %}
+          <div class="success-message">{{ message }}</div>
+        {% endif %}
+      {% endfor %}
+    {% endif %}
+
+    <form method="POST">
+      {% csrf_token %}
+      
+      <div class="input-group">
+        <label>아이디 <span class="required">*</span></label>
+        <input type="text" name="username" placeholder="영문, 숫자 조합 4~20자" value="{{ username|default:'' }}" required>
+        <div class="input-hint">영문 소문자, 숫자를 조합하여 입력해주세요.</div>
+      </div>
+      
+      <div class="input-group">
+        <label>비밀번호 <span class="required">*</span></label>
+        <input type="password" name="password1" id="password1" placeholder="8자 이상 입력" required>
+        <div class="input-hint">영문, 숫자, 특수문자를 조합하여 8자 이상 입력해주세요.</div>
+      </div>
+
+      <div class="input-group">
+        <label>비밀번호 확인 <span class="required">*</span></label>
+        <input type="password" name="password2" id="password2" placeholder="비밀번호를 다시 입력" required>
+        <div class="password-match" id="passwordMatch"></div>
+      </div>
+
+      <div class="terms-section">
+        <div class="terms-title">약관 동의</div>
+        <label class="checkbox-label">
+          <input type="checkbox" id="agreeAll" onclick="toggleAll()">
+          <span><strong>전체 동의</strong></span>
+        </label>
+        <label class="checkbox-label">
+          <input type="checkbox" name="agree_terms" class="agree-item" required>
+          <span><a href="#">이용약관</a> 동의 (필수)</span>
+        </label>
+        <label class="checkbox-label">
+          <input type="checkbox" name="agree_privacy" class="agree-item" required>
+          <span><a href="#">개인정보 처리방침</a> 동의 (필수)</span>
+        </label>
+        <label class="checkbox-label">
+          <input type="checkbox" name="agree_marketing" class="agree-item">
+          <span>마케팅 정보 수신 동의 (선택)</span>
+        </label>
+      </div>
+
+      <button type="submit" class="signup-btn">회원가입</button>
+    </form>
+
+    <div class="login-link">
+      이미 계정이 있으신가요? <a href="{% url 'login' %}">로그인하기</a>
+    </div>
+  </div>
+
+  <script>
+    // 비밀번호 확인 실시간 체크
+    const password1 = document.getElementById('password1');
+    const password2 = document.getElementById('password2');
+    const passwordMatch = document.getElementById('passwordMatch');
+
+    function checkPasswordMatch() {
+      if (password2.value === '') {
+        passwordMatch.textContent = '';
+        passwordMatch.className = 'password-match';
+      } else if (password1.value === password2.value) {
+        passwordMatch.textContent = '✓ 비밀번호가 일치합니다.';
+        passwordMatch.className = 'password-match success';
+      } else {
+        passwordMatch.textContent = '✗ 비밀번호가 일치하지 않습니다.';
+        passwordMatch.className = 'password-match error';
+      }
+    }
+
+    password1.addEventListener('input', checkPasswordMatch);
+    password2.addEventListener('input', checkPasswordMatch);
+
+    // 전체 동의 체크박스
+    function toggleAll() {
+      const agreeAll = document.getElementById('agreeAll');
+      const items = document.querySelectorAll('.agree-item');
+      items.forEach(item => {
+        item.checked = agreeAll.checked;
+      });
+    }
+
+    // 개별 체크박스 변경 시 전체 동의 상태 업데이트
+    document.querySelectorAll('.agree-item').forEach(item => {
+      item.addEventListener('change', function() {
+        const agreeAll = document.getElementById('agreeAll');
+        const items = document.querySelectorAll('.agree-item');
+        agreeAll.checked = Array.from(items).every(i => i.checked);
+      });
+    });
+  </script>
 </body>
 </html>

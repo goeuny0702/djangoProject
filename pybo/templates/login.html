@@ -2,96 +2,315 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>로그인</title>
   <style>
-    body {
+    * {
       margin: 0;
       padding: 0;
-      background: linear-gradient(to bottom right, #fcdce4, #e2c8d9);
-      font-family: 'Segoe UI', sans-serif;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', 'Malgun Gothic', sans-serif;
+      background: linear-gradient(135deg, #fff0f5 0%, #fce4ec 50%, #f8bbd9 100%);
+      min-height: 100vh;
       display: flex;
       justify-content: center;
       align-items: center;
-      height: 100vh;
+      padding: 20px;
     }
 
-    .login-box {
-      background: rgba(255, 255, 255, 0.3);
-      border-radius: 15px;
-      padding: 40px;
-      width: 350px;
-      backdrop-filter: blur(12px);
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    .login-container {
+      background: #ffffff;
+      border-radius: 20px;
+      box-shadow: 0 10px 40px rgba(255, 105, 180, 0.15);
+      width: 100%;
+      max-width: 440px;
+      padding: 50px 40px;
+    }
+
+    .login-title {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .login-title h1 {
+      font-size: 24px;
+      font-weight: 600;
+      color: #333;
+    }
+
+    .login-title h1 span {
+      color: #ff69b4;
+      font-weight: 700;
+    }
+
+    .input-group {
+      margin-bottom: 16px;
+    }
+
+    .input-group input {
+      width: 100%;
+      padding: 16px 0;
+      font-size: 15px;
+      border: none;
+      border-bottom: 2px solid #e8e8e8;
+      outline: none;
+      transition: all 0.3s ease;
+      background: transparent;
+    }
+
+    .input-group input:focus {
+      border-bottom-color: #ff69b4;
+    }
+
+    .input-group input::placeholder {
+      color: #aaa;
+    }
+
+    .options-row {
+      display: flex;
+      justify-content: flex-start;
+      gap: 24px;
+      margin: 20px 0 30px 0;
+    }
+
+    .checkbox-label {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      color: #666;
+      cursor: pointer;
+    }
+
+    .checkbox-label input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      accent-color: #ff69b4;
+      cursor: pointer;
+    }
+
+    .login-btn {
+      width: 100%;
+      padding: 16px;
+      background: linear-gradient(135deg, #ff8ec7 0%, #ff69b4 100%);
+      color: white;
+      border: none;
+      border-radius: 12px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(255, 105, 180, 0.3);
+    }
+
+    .login-btn:hover {
+      background: linear-gradient(135deg, #ff69b4 0%, #ff4da6 100%);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(255, 105, 180, 0.4);
+    }
+
+    .links-row {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin-top: 24px;
+      font-size: 13px;
+    }
+
+    .links-row a {
+      color: #666;
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .links-row a:hover {
+      color: #ff69b4;
+    }
+
+    .links-row .divider {
+      color: #ddd;
+    }
+
+    .social-section {
+      margin-top: 40px;
+      padding-top: 30px;
+      border-top: 1px solid #eee;
+    }
+
+    .social-title {
+      text-align: center;
+      font-size: 13px;
+      color: #888;
+      margin-bottom: 24px;
+      position: relative;
+    }
+
+    .social-title::before,
+    .social-title::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      width: 60px;
+      height: 1px;
+      background: #e8e8e8;
+    }
+
+    .social-title::before {
+      left: 40px;
+    }
+
+    .social-title::after {
+      right: 40px;
+    }
+
+    .social-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+    }
+
+    .social-btn {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      font-weight: bold;
+      transition: all 0.2s ease;
+    }
+
+    .social-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    .social-btn.naver {
+      background: #03c75a;
+      color: white;
+    }
+
+    .social-btn.kakao {
+      background: #fee500;
+      color: #3c1e1e;
+    }
+
+    .social-btn.google {
+      background: #ffffff;
+      border: 1px solid #ddd;
+      color: #333;
+    }
+
+    .social-btn.facebook {
+      background: #1877f2;
+      color: white;
+    }
+
+    .social-btn.apple {
+      background: #000000;
+      color: white;
+    }
+
+    /* 에러 메시지 스타일 */
+    .error-message {
+      background: #fff0f5;
+      border: 1px solid #f5d1ea;
+      border-radius: 8px;
+      padding: 12px 16px;
+      margin-bottom: 20px;
+      color: #c06090;
+      font-size: 13px;
       text-align: center;
     }
 
-    .login-box img {
-      width: 70px;
-      height: 70px;
-      border-radius: 50%;
-      margin-bottom: 20px;
-    }
+    /* 반응형 */
+    @media (max-width: 480px) {
+      .login-container {
+        padding: 40px 24px;
+      }
 
-    .login-box input[type="text"],
-    .login-box input[type="password"] {
-      width: 90%;
-      padding: 12px;
-      margin: 10px 0;
-      border: none;
-      border-radius: 5px;
-      outline: none;
-    }
+      .login-title h1 {
+        font-size: 20px;
+      }
 
-    .login-box input[type="submit"] {
-      background-color: #f48c9b;
-      color: white;
-      padding: 12px;
-      width: 100%;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      margin-top: 20px;
-    }
+      .social-title::before,
+      .social-title::after {
+        width: 30px;
+      }
 
-    .login-box input[type="submit"]:hover {
-      background-color: #e46b86;
-    }
+      .social-title::before {
+        left: 20px;
+      }
 
-    .login-box a {
-      color: #555;
-      font-size: 0.9em;
-      display: block;
-      margin-top: 15px;
-      text-decoration: none;
-    }
-
-    .login-box a:hover {
-      text-decoration: underline;
+      .social-title::after {
+        right: 20px;
+      }
     }
   </style>
 </head>
 <body>
-  <form class="login-box" method="POST">
-    {% csrf_token %}
-    <img src="https://cdn-icons-png.flaticon.com/512/847/847969.png" alt="user icon">
-    
-    <div>
-      <input type="text" name="username" placeholder="Username" required>
-    </div>
-    <div>
-      <input type="password" name="password" placeholder="Password" required>
+  <div class="login-container">
+    <div class="login-title">
+      <h1><span>로그인</span>이 필요한 서비스입니다.</h1>
     </div>
 
-    <input type="submit" value="LOGIN">
-    
-    <a href="{% url 'signup' %}">아직 회원이 아니신가요? 회원가입하기</a>
-  </form>
-  {% if messages %}
-  <script>
-    {% for message in messages %}
-      alert("{{ message }}");
-    {% endfor %}
-  </script>
-{% endif %}
+    {% if messages %}
+      {% for message in messages %}
+        {% if message.tags == 'error' %}
+          <div class="error-message">{{ message }}</div>
+        {% endif %}
+      {% endfor %}
+    {% endif %}
+
+    <form method="POST">
+      {% csrf_token %}
+      
+      <div class="input-group">
+        <input type="text" name="username" placeholder="아이디" required>
+      </div>
+      
+      <div class="input-group">
+        <input type="password" name="password" placeholder="비밀번호" required>
+      </div>
+
+      <div class="options-row">
+        <label class="checkbox-label">
+          <input type="checkbox" name="remember_me">
+          <span>로그인 유지</span>
+        </label>
+        <label class="checkbox-label">
+          <input type="checkbox" name="save_id">
+          <span>아이디 저장</span>
+        </label>
+      </div>
+
+      <button type="submit" class="login-btn">로그인</button>
+    </form>
+
+    <div class="links-row">
+      <a href="#">아이디 찾기</a>
+      <span class="divider">|</span>
+      <a href="#">비밀번호 찾기</a>
+      <span class="divider">|</span>
+      <a href="{% url 'signup' %}">회원가입</a>
+    </div>
+
+    <div class="social-section">
+      <div class="social-title">소셜 계정으로 간편 로그인</div>
+      <div class="social-buttons">
+        <button type="button" class="social-btn naver" title="네이버 로그인">N</button>
+        <button type="button" class="social-btn kakao" title="카카오 로그인">💬</button>
+        <button type="button" class="social-btn google" title="구글 로그인">G</button>
+        <button type="button" class="social-btn facebook" title="페이스북 로그인">f</button>
+        <button type="button" class="social-btn apple" title="애플 로그인">🍎</button>
+      </div>
+    </div>
+  </div>
 </body>
 </html>

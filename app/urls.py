@@ -29,7 +29,8 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("ai_chat/", views.ai_chat, name="ai_chat"),
     path('signup/', views.signup_view, name='signup'),  # 회원가입
-    path('', views.login_view, name='login'),  # 로그인
+    path('', views.login_view, name='login'),  # 로그인 (루트)
+    path('login/', views.login_view, name='login_page'),  # 로그인 (/login/)
     path('logout/', views.logout_view, name='logout'),  # 로그아웃
     path('resume/', views.resume_page, name='resume_page'),  # 이력서
     path('save_resume/', views.save_resume, name='save_resume'),
@@ -44,5 +45,3 @@ urlpatterns = [
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-
-   

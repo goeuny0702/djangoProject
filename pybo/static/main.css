@@ -154,64 +154,55 @@ body {
 
 .input-title {
   width: 100%;
-  height: 48px;
-  padding: 0 16px;
-  font-size: 24px;
-  border: 2px solid #ccc;
-  border-radius: 10px;
+  height: 52px;
+  padding: 0 18px;
+  font-size: 20px;
+  font-weight: 600;
+  border: 2px solid #f5d1ea;
+  border-radius: 12px;
   margin-bottom: 24px;
+  background: #ffffff;
+  transition: all 0.2s ease;
+}
+
+.input-title:focus {
+  outline: none;
+  border-color: #ff69b4;
+  box-shadow: 0 0 0 4px rgba(255, 105, 180, 0.15);
+}
+
+.input-title::placeholder {
+  color: #c0c0c0;
+  font-weight: 400;
 }
 
 .text_input_main,
 .text_input {
-  padding: 10px;
-  font-size: 16px;
-  border: 1px solid #ccc;
+  padding: 10px 14px;
+  font-size: 14px;
+  border: 1px solid #f5d1ea;
   border-radius: 8px;
   margin-bottom: 10px;
+  background: #ffffff;
+  transition: all 0.2s ease;
+}
+
+.text_input_main:focus,
+.text_input:focus {
+  outline: none;
+  border-color: #ff69b4;
+  box-shadow: 0 0 0 3px rgba(255, 105, 180, 0.15);
 }
 
 .text_input_main {
   width: 45%;
 }
 
-.longtext {
-  width: 100%;
-  height: 150px;
-  padding: 12px;
-  font-size: 16px;
-  /* border: 1px solid #ccc; */
-  border-radius: 8px;
-}
+/* longtext 기존 스타일 - 새 스타일로 대체됨 (아래 참조) */
 
-.section {
-  margin-top: 30px;
-  padding: 20px;
-  border: 1px solid #eee;
-  border-radius: 10px;
-  background: #fdfdfd;
-}
+/* 기존 section 스타일 - 새 스타일로 대체됨 (아래 참조) */
 
-.section-title {
-  font-size: 20px;
-  font-weight: bold;
-  margin-bottom: 12px;
-  color: #333;
-}
-
-.addbtn {
-  background: linear-gradient(to right, #ff8ec7, #ffa6d1);
-  color: white;
-  border: none;
-  border-radius: 8px;
-  padding: 8px 16px;
-  font-size: 14px;
-  cursor: pointer;
-}
-
-.addbtn:hover {
-  background: #ff69b4;
-}
+/* 기존 addbtn 스타일 - 새 스타일로 대체됨 (아래 참조) */
 
 /* 마이커리어 부분분 */
 .right-panel {
@@ -286,60 +277,329 @@ body {
 }
 
 
-.skill-tag {
-  border: 2px solid #f5d1ea;
-  border-radius: 8px;
-  padding: 4px 12px;
-  margin: 6px;
-  display: inline-block;
-  position: relative;
-  background: #fff0f5;
-  font-size: 14px;
-}
+/* 기존 skill-tag, form-buttons 스타일 - 새 스타일로 대체됨 (아래 참조) */
 
 .skill-tag .delete-btn {
   position: absolute;
-  top: 2px;
-  right: 6px;
+  top: -6px;
+  right: -6px;
   background: white;
-  border: 1px solid #ccc;
+  border: 2px solid #ff69b4;
   border-radius: 50%;
-  color: #ff4d4d;
-  width: 16px;
-  height: 16px;
-  line-height: 14px;
+  color: #ff69b4;
+  width: 20px;
+  height: 20px;
+  line-height: 16px;
   text-align: center;
   display: none;
+  font-size: 12px;
+  font-weight: bold;
 }
 
 .skill-tag:hover .delete-btn {
   display: inline-block;
 }
 
-.form-buttons {
-  padding-top: 5px;
-}
-
-.form-buttons
-.cencle_save_btn {
-  background: #ff69b4;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  padding: 8px 16px;
-  font-size: 14px;
-  cursor: pointer;
-}
-
-.form-buttons
-.cencle_save_btn:hover {
-  background: #f5d1ea;
-}
-
 .skill-search {
-  padding-bottom: 10px
+  padding-bottom: 12px;
 }
 
+/* 기존 카드 스타일 - 새 스타일로 대체됨 (아래 참조) */
+
+/* ========================================
+   기본정보 카드 (핑크 테마)
+   ======================================== */
+.basic-info-card {
+  background: #ffffff;
+  border: 2px solid #f5d1ea;
+  border-radius: 16px;
+  margin-bottom: 30px;
+  box-shadow: 0 4px 16px rgba(255, 105, 180, 0.1);
+  overflow: hidden;
+}
+
+.basic-info-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 18px 24px;
+  background: linear-gradient(135deg, #ff8ec7 0%, #ffa6d1 100%);
+  border-bottom: 2px solid #f5d1ea;
+}
+
+.basic-info-header .header-icon {
+  font-size: 22px;
+}
+
+.basic-info-header h2 {
+  font-size: 18px;
+  font-weight: 700;
+  color: #ffffff;
+  margin: 0;
+  flex: 1;
+}
+
+.basic-info-header .required-notice {
+  font-size: 11px;
+  color: #fff;
+  background: rgba(255, 255, 255, 0.25);
+  padding: 4px 10px;
+  border-radius: 12px;
+}
+
+.basic-info-content {
+  display: flex;
+  gap: 28px;
+  padding: 24px;
+}
+
+/* 프로필 이미지 영역 */
+.profile-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 140px;
+}
+
+.profile-image-box {
+  width: 130px;
+  height: 170px;
+  border: 2px dashed #f5d1ea;
+  border-radius: 12px;
+  background: linear-gradient(145deg, #fff0f5 0%, #fce4ec 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.profile-image-box:hover {
+  border-color: #ff69b4;
+  background: linear-gradient(145deg, #ffe6f1 0%, #ffd6e7 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(255, 105, 180, 0.25);
+}
+
+.upload-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  color: #d48fb0;
+}
+
+.upload-placeholder .camera-icon {
+  font-size: 32px;
+  opacity: 0.8;
+}
+
+.upload-placeholder .upload-text {
+  font-size: 12px;
+  font-weight: 500;
+  color: #c06090;
+}
+
+.photo-guide {
+  margin-top: 8px;
+  font-size: 10px;
+  color: #b0b0b0;
+  text-align: center;
+}
+
+/* 인적사항 입력 영역 */
+.info-fields-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.info-group {
+  background: #fffbfc;
+  border: 1px solid #f5d1ea;
+  border-radius: 12px;
+  padding: 16px 18px;
+}
+
+.group-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #ff69b4;
+  margin-bottom: 14px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #f5d1ea;
+}
+
+.group-title .group-icon {
+  font-size: 16px;
+}
+
+.fields-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+}
+
+.fields-grid.address-grid {
+  grid-template-columns: 1fr;
+}
+
+.field-row {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.field-row.full-width {
+  grid-column: 1 / -1;
+}
+
+.field-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: #666;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.field-label.required::after {
+  content: "*";
+  color: #ff69b4;
+  font-weight: 700;
+}
+
+.field-input {
+  width: 100%;
+  height: 40px;
+  padding: 0 12px;
+  font-size: 13px;
+  border: 1px solid #e8e8e8;
+  border-radius: 8px;
+  background: #ffffff;
+  transition: all 0.2s ease;
+  box-sizing: border-box;
+}
+
+.field-input:focus {
+  outline: none;
+  border-color: #ff69b4;
+  box-shadow: 0 0 0 3px rgba(255, 105, 180, 0.15);
+}
+
+.field-input::placeholder {
+  color: #c0c0c0;
+}
+
+.field-select {
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23ff69b4' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  padding-right: 32px;
+}
+
+/* ========================================
+   섹션 카드 공통 스타일 (학력, 경력, 스킬 등)
+   ======================================== */
+.section {
+  margin-top: 24px;
+  padding: 0;
+  border: 2px solid #f5d1ea;
+  border-radius: 16px;
+  background: #ffffff;
+  box-shadow: 0 4px 16px rgba(255, 105, 180, 0.1);
+  overflow: hidden;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 20px;
+  background: linear-gradient(135deg, #ff8ec7 0%, #ffa6d1 100%);
+  border-bottom: 2px solid #f5d1ea;
+}
+
+.section-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: #ffffff;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.section-title::before {
+  font-size: 18px;
+}
+
+/* 각 섹션별 아이콘 */
+#education-section .section-title::before { content: "🎓"; }
+#career-section .section-title::before { content: "💼"; }
+#skill-section .section-title::before { content: "⚡"; }
+#experience-section .section-title::before { content: "🏆"; }
+#certificate-section .section-title::before { content: "📜"; }
+#preference-section .section-title::before { content: "⭐"; }
+#portfolio-section .section-title::before { content: "📁"; }
+#description-section .section-title::before { content: "📝"; }
+#introduction-section .section-title::before { content: "✍️"; }
+
+/* 추가 버튼 스타일 개선 */
+.addbtn {
+  background: rgba(255, 255, 255, 0.95);
+  color: #ff69b4;
+  border: none;
+  border-radius: 20px;
+  padding: 8px 18px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.addbtn:hover {
+  background: #ffffff;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* 섹션 내부 리스트 영역 */
+#education-list,
+#career-list,
+#skill-list,
+#experience-list,
+#certificate-list,
+#preference-list,
+#portfolio-list,
+#career-description-list,
+#introduction-list {
+  padding: 16px 20px;
+  min-height: 20px;
+}
+
+/* 입력 폼 영역 */
+.education-entry,
+.career-entry,
+.experience-entry,
+.portfolio-entry {
+  padding: 16px 20px;
+  background: #fffbfc;
+  border-top: 1px solid #f5d1ea;
+}
+
+/* 카드 스타일 통일 */
 .pref-card,
 .career-card,
 .cert-card,
@@ -347,8 +607,288 @@ body {
 .education-card,
 .intro-card,
 .portfolio-card,
-.career-desc-card,
-.experience-card {
-  border-bottom: 1px solid #ddd;
-  padding: 10px 0;
+.career-desc-card {
+  background: #fffbfc;
+  border: 1px solid #f5d1ea;
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 12px;
+  transition: all 0.2s ease;
+}
+
+.pref-card:hover,
+.career-card:hover,
+.cert-card:hover,
+.experience-card:hover,
+.education-card:hover,
+.intro-card:hover,
+.portfolio-card:hover,
+.career-desc-card:hover {
+  border-color: #ff69b4;
+  box-shadow: 0 4px 12px rgba(255, 105, 180, 0.15);
+}
+
+.pref-card h4,
+.career-card h4,
+.cert-card h4,
+.experience-card h4,
+.education-card h4,
+.intro-card h4,
+.portfolio-card h4,
+.career-desc-card h4 {
+  color: #ff69b4;
+  font-size: 15px;
+  font-weight: 600;
+  margin: 0 0 10px 0;
+}
+
+.pref-card p,
+.career-card p,
+.cert-card p,
+.experience-card p,
+.education-card p,
+.intro-card p,
+.portfolio-card p,
+.career-desc-card p {
+  color: #555;
+  font-size: 13px;
+  margin: 4px 0;
+  line-height: 1.5;
+}
+
+.pref-card strong,
+.career-card strong,
+.cert-card strong,
+.experience-card strong,
+.education-card strong,
+.intro-card strong,
+.portfolio-card strong,
+.career-desc-card strong {
+  color: #888;
+  font-weight: 500;
+}
+
+/* 스킬 섹션 스타일 */
+#skill-form {
+  padding: 16px 20px;
+  background: #fffbfc;
+  border-top: 1px solid #f5d1ea;
+}
+
+.skill-search input {
+  width: 100%;
+  height: 42px;
+  padding: 0 14px;
+  font-size: 14px;
+  border: 1px solid #f5d1ea;
+  border-radius: 8px;
+  background: #ffffff;
+  transition: all 0.2s ease;
+}
+
+.skill-search input:focus {
+  outline: none;
+  border-color: #ff69b4;
+  box-shadow: 0 0 0 3px rgba(255, 105, 180, 0.15);
+}
+
+#skillSuggestions {
+  background: #fff;
+  border: 1px solid #f5d1ea;
+  border-radius: 8px;
+  margin-top: 4px;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+#skillSuggestions div {
+  padding: 10px 14px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+#skillSuggestions div:hover {
+  background: #fff0f5;
+}
+
+/* 스킬 태그 개선 */
+.skill-tag {
+  border: 2px solid #f5d1ea;
+  border-radius: 20px;
+  padding: 6px 14px;
+  margin: 4px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  position: relative;
+  background: linear-gradient(135deg, #fff0f5 0%, #fce4ec 100%);
+  font-size: 13px;
+  font-weight: 500;
+  color: #c06090;
+  transition: all 0.2s ease;
+}
+
+.skill-tag:hover {
+  border-color: #ff69b4;
+  background: linear-gradient(135deg, #ffe6f1 0%, #ffd6e7 100%);
+}
+
+/* 자격/어학/수상 폼 */
+#certificate-form,
+#preference-form {
+  padding: 16px 20px;
+  background: #fffbfc;
+  border-top: 1px solid #f5d1ea;
+}
+
+/* 경력기술서/자기소개서 폼 */
+#career-description-form,
+#introduction-form {
+  padding: 16px 20px;
+  background: #fffbfc;
+  border-top: 1px solid #f5d1ea;
+}
+
+#career-description-form textarea,
+#introduction-form textarea {
+  width: 100%;
+  min-height: 180px;
+  padding: 14px;
+  font-size: 14px;
+  border: 1px solid #f5d1ea;
+  border-radius: 10px;
+  background: #ffffff;
+  resize: vertical;
+  transition: all 0.2s ease;
+  box-sizing: border-box;
+}
+
+#career-description-form textarea:focus,
+#introduction-form textarea:focus {
+  outline: none;
+  border-color: #ff69b4;
+  box-shadow: 0 0 0 3px rgba(255, 105, 180, 0.15);
+}
+
+/* 템플릿 버튼 */
+.type-tab {
+  background: #fff0f5;
+  color: #ff69b4;
+  border: 1px solid #f5d1ea;
+  border-radius: 16px;
+  padding: 6px 14px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-right: 6px;
+}
+
+.type-tab:hover {
+  background: #ff69b4;
+  color: #fff;
+  border-color: #ff69b4;
+}
+
+/* AI 도구 버튼 */
+.tool-btn {
+  background: linear-gradient(135deg, #ff8ec7 0%, #ffa6d1 100%);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 14px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-right: 8px;
+}
+
+.tool-btn:hover {
+  background: linear-gradient(135deg, #ff69b4 0%, #ff8ec7 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(255, 105, 180, 0.3);
+}
+
+/* 저장/취소 버튼 통일 */
+.cencle_save_btn {
+  background: #ff69b4;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 20px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.cencle_save_btn:hover {
+  background: #ff4da6;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(255, 105, 180, 0.3);
+}
+
+.form-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  padding-top: 16px;
+  margin-top: 16px;
+  border-top: 1px solid #f5d1ea;
+}
+
+/* 텍스트 인풋 스타일 통일 */
+.text_input {
+  padding: 10px 14px;
+  font-size: 14px;
+  border: 1px solid #f5d1ea;
+  border-radius: 8px;
+  margin-bottom: 10px;
+  background: #ffffff;
+  transition: all 0.2s ease;
+}
+
+.text_input:focus {
+  outline: none;
+  border-color: #ff69b4;
+  box-shadow: 0 0 0 3px rgba(255, 105, 180, 0.15);
+}
+
+/* 롱텍스트 스타일 */
+.longtext {
+  width: 100%;
+  min-height: 120px;
+  padding: 14px;
+  font-size: 14px;
+  border: 1px solid #f5d1ea;
+  border-radius: 10px;
+  background: #ffffff;
+  transition: all 0.2s ease;
+  box-sizing: border-box;
+}
+
+.longtext:focus {
+  outline: none;
+  border-color: #ff69b4;
+  box-shadow: 0 0 0 3px rgba(255, 105, 180, 0.15);
+}
+
+/* 반응형 */
+@media (max-width: 768px) {
+  .basic-info-content {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .profile-section {
+    margin-bottom: 20px;
+  }
+  
+  .fields-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .field-row.full-width {
+    grid-column: 1;
+  }
 }
