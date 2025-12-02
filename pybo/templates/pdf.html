@@ -76,12 +76,43 @@
       color: #333;
       border: 1px solid #ddd;
     }
+    
+    /* 페이지 나누기 설정 */
+    .section {
+      page-break-inside: avoid;
+      break-inside: avoid;
+    }
+    .card {
+      page-break-inside: avoid;
+      break-inside: avoid;
+    }
+    .section-title {
+      page-break-after: avoid;
+      break-after: avoid;
+    }
+    h4 {
+      page-break-after: avoid;
+      break-after: avoid;
+    }
+    
+    /* 특정 섹션 전에 페이지 나누기 */
+    .page-break-before {
+      page-break-before: always;
+      break-before: always;
+    }
+    
     @media print {
       body {
         padding: 0;
       }
       .resume-container {
         padding: 20px;
+      }
+      .section {
+        page-break-inside: avoid;
+      }
+      .card {
+        page-break-inside: avoid;
       }
     }
   </style>
@@ -241,7 +272,7 @@
 
     <!-- 경력기술서 -->
     {% if content.sections.description %}
-    <div class="section">
+    <div class="section page-break-before">
       <h2 class="section-title">경력기술서</h2>
       {% for desc in content.sections.description %}
       <div class="card">
@@ -253,7 +284,7 @@
 
     <!-- 자기소개서 -->
     {% if content.sections.introduction %}
-    <div class="section">
+    <div class="section page-break-before">
       <h2 class="section-title">자기소개서</h2>
       {% for intro in content.sections.introduction %}
       <div class="card">
@@ -268,13 +299,23 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
   <script>
     window.onload = function () {
-      const resume = document.body;
+      const resume = document.querySelector('.resume-container');
       html2pdf().set({
-        margin: 0,
+        margin: [10, 10, 10, 10],
         filename: '이력서.pdf',
         image: { type: 'jpeg', quality: 0.98 },
-        html2canvas: { scale: 2 },
-        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+        html2canvas: { 
+          scale: 2,
+          useCORS: true,
+          logging: false
+        },
+        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
+        pagebreak: { 
+          mode: ['avoid-all', 'css', 'legacy'],
+          before: '.page-break-before',
+          after: '.page-break-after',
+          avoid: ['.card', '.section', '.info-item', 'h4', '.section-title']
+        }
       }).from(resume).save();
     }
   </script>

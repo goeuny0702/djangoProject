@@ -193,13 +193,39 @@ def save_resume(request):
         resume.content = json.dumps(content_dict)
         resume.save()
 
+        # AJAX 요청인 경우 JSON 응답 반환
+        if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+            return JsonResponse({'resume_id': resume.id})
+        
         return redirect('resume_page')
 
 
 @login_required
 def resume_page(request):
-    resumes = Resume.objects.filter(user=request.user)  # 로그인한 유저 것만
-    return render(request, 'resume.html', {'resumes': resumes})
+    resumes = Resume.objects.filter(user=request.user).order_by('-created_at')
+    
+    # 가장 최근 이력서의 기본정보 가져오기
+    default_info = {}
+    if resumes.exists():
+        latest_resume = resumes.first()
+        try:
+            content = json.loads(latest_resume.content)
+            default_info = {
+                'name': content.get('name', ''),
+                'gender': content.get('gender', ''),
+                'birthdate': content.get('birthdate', ''),
+                'email': content.get('email', ''),
+                'phone': content.get('phone', ''),
+                'address': content.get('address', ''),
+                'detail_address': content.get('detail_address', ''),
+            }
+        except:
+            pass
+    
+    return render(request, 'resume.html', {
+        'resumes': resumes,
+        'default_info': json.dumps(default_info)
+    })
 
 
 @login_required
